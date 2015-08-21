@@ -7,7 +7,7 @@ var	fs      = require( 'fs'         ),
 	request = require( 'request'    ),
 	oauth   = require( 'oauth-lite' );
 
-cli.setUsage( 'wp-api-cli [OPTIONS] post [list|create]' );
+cli.setUsage( 'wp-api-cli [OPTIONS] <COMMAND>' );
 
 cli.option_width = 30;
 
@@ -22,7 +22,8 @@ cli.parse({
 	/* Post */
 	post_type:    [ false, 'Post type to be created or updated', 'STRING', 'post' ],
 	post_title:   [ false, 'Post title to be created or updated', 'STRING', '' ],
-	post_content: [ false, 'Content of post to be created or updated', 'STRING' ]
+	post_content: [ false, 'Content of post to be created or updated', 'STRING' ],
+	post_file:    [ false, 'Content of FILE will be used as content of post', 'FILE' ]
 }, {
 	post_list:   'List all published posts',
 	post_create: 'Creates a new post'
@@ -159,26 +160,24 @@ function step5_listPosts( context ) {
 }
 
 function step5_createPost( context ) {
-	var fileName = context.args[0];
+	var fileName = context.options.post_file;
 
 	if ( fileName ) {
-		if ( fileName === '-' ) {
-			cli.withStdin( function ( stdin ) {
-				context.postContent = stdin;
-				step5_doCreatePost( context );
-			});
-		} else {
-			fs.readFile( fileName, 'utf8', function ( error, data ) {
-				if ( error ) {
-					cli.fatal( 'Error while loading post content from file ' + fileName + ': ' + error );
-				}
-				context.postContent = data;
-				step5_doCreatePost( context );
-			});
-		}
-	} else {
+		fs.readFile( fileName, 'utf8', function ( error, data ) {
+			if ( error ) {
+				cli.fatal( 'Error while loading post content from file ' + fileName + ': ' + error );
+			}
+			context.postContent = data;
+			step5_doCreatePost( context );
+		});
+	} else if ( context.options.post_content ) {
 		context.postContent = context.options.post_content;
 		step5_doCreatePost( context );
+	} else {
+		cli.withStdin( function ( stdin ) {
+			context.postContent = stdin;
+			step5_doCreatePost( context );
+		});
 	}
 }
 
