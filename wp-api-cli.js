@@ -23,6 +23,9 @@ cli.parse({
 	post_type:    [ false, 'Post type to be created or updated', 'STRING', 'post' ],
 	post_title:   [ false, 'Post title to be created or updated', 'STRING', '' ],
 	post_content: [ false, 'Content of post to be created or updated', 'STRING' ]
+}, {
+	post_list:   'List all published posts',
+	post_create: 'Creates a new post'
 });
 
 cli.main( function ( args, options ) {
@@ -136,16 +139,9 @@ function step3_authenticate( context ) {
 }
 
 function step4_handleCommand( context ) {
-	var command;
-
-	context.collection = context.args[0];
-	context.action = context.args[1];
-
-	command = context.collection + ' ' + context.action;
-
-	if ( command === 'post list' ) {
+	if ( cli.command === 'post_list' ) {
 		step5_listPosts( context );
-	} else if ( command === 'post create' ) {
+	} else if ( cli.command === 'post_create' ) {
 		step5_createPost( context );
 	}
 }
@@ -163,7 +159,7 @@ function step5_listPosts( context ) {
 }
 
 function step5_createPost( context ) {
-	var fileName = context.args[2];
+	var fileName = context.args[0];
 
 	if ( fileName ) {
 		if ( fileName === '-' ) {
