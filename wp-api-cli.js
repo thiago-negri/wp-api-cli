@@ -9,6 +9,8 @@ var	fs      = require( 'fs'         ),
 
 cli.setUsage( 'wp-api-cli [OPTIONS] post [list|create]' );
 
+cli.option_width = 30;
+
 cli.parse({
 	url:   [ 'u', '(Required) Set base URL to use', 'STRING' ],
 	debug: [ 'd', 'Turns on debugging mode, will output interactions with server' ],
