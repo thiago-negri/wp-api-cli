@@ -6,13 +6,6 @@ var	fs    = require( 'fs'           ),
 	cli   = require( 'cli'          ),
 	WpApi = require( './lib/wp-api' );
 
-/*
- * Do not give an error when using self-signed certificate for HTTPS
- *
- * TODO Change this to an option
- */
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 cli.setUsage( 'wp-api-cli [OPTIONS] <COMMAND>' );
 
 cli.option_width = 30;
@@ -20,6 +13,9 @@ cli.option_width = 30;
 cli.parse({
 	site:  [ 's', '(Required) Set base URL to use', 'STRING' ],
 	debug: [ 'd', 'Turns on debugging mode, will output interactions with server' ],
+
+	/* Support HTTPS with self signed certificate. */
+	insecure: [ 'k', 'Allow connections to SSL sites without certs' ],
 
 	/* HTTP Basic-Auth */
 	user: [ 'u', 'Set username to use for HTTP Basic Authentication', 'STRING' ],
@@ -38,6 +34,11 @@ cli.parse({
 cli.main( function ( args, options ) {
 	var	config,
 		wpApi;
+
+	/* Allow connections to SSL sites without certs */
+	if ( options.insecure ) {
+		process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+	}
 
 	validateAndSanitize( options );
 
