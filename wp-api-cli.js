@@ -31,7 +31,7 @@ cli.parse({
 	 *
 	 * Helpers: 'post_json', 'post_content_file'.
 	 */
-	post_json:           [ false, 'Content of FILE will be used as the entire request, other "file_*" options are ignored.', 'FILE' ],
+	post_json:           [ false, 'Content of FILE will be used as the entire request, other "post_*" options are ignored.', 'FILE' ],
 	post_date:           [ false, 'The date the object was published.', 'STRING' ],
 	post_date_gmt:       [ false, 'The date the object was published, as GMT.', 'STRING' ],
 	post_guid:           [ false, 'The globally unique identifier for the object.', 'STRING' ],
