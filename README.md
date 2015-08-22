@@ -26,12 +26,206 @@ Installing
 1. Install [WP-API/Basic-Auth from Git](https://github.com/WP-API/Basic-Auth) to support HTTP Basic Authentication, activate it.
 2. Use options `--user` and `--pass` with every request you make.
 
-Examples
+Commands
 --------
 
-List all posts: `wp-api-cli --site=http://example.com post_list`
+### Help
 
-Create a new post: `wp-api-cli --site=http://example.com --post_title="Hello, WP-API" --post_content="WP-API is awesome!" post_create`
+See all available arguments and commands by reading the help.
+
+```bash
+wp-api-cli --help
+```
+
+### List all Posts
+
+```bash
+wp-api-cli -s https://example.com post_list
+```
+
+### Create a Post
+
+#### From file
+
+To create a new Post from a file, use `post_json` argument to point to the file.
+The file content should be a JSON with the [schema expected from WP-API endpoint](http://v2.wp-api.org/#posts).
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_json post.json \
+	post_create
+```
+
+#### From the command line
+
+You may create a new Post from the command line, by using the `post_*` arguments.
+
+The content of the Post may be set by:
+
+1. `post_content_file=FILE`, the content will be the FILE content.
+2. `post_content=STRING`, the content will be the STRING set to this argument.
+3. `post_content_file=stdin`, the content will be read from STDIN.
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_title "Hello, WP-API" \
+	--post_content_file hello-wp-api.html \
+	post_create
+```
+
+### Fetch a Post
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	post_get
+```
+
+### Update a Post
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	--post_title "Hello, dear WP-API" \
+	post_update
+```
+
+### Delete a Post
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	post_delete
+```
+
+
+### List all Pages
+
+```bash
+wp-api-cli -s https://example.com page_list
+```
+
+### Create a Page
+
+#### From file
+
+To create a new Page from a file, use `page_json` argument to point to the file.
+The file content should be a JSON with the [schema expected from WP-API endpoint](http://v2.wp-api.org/#pages).
+
+```bash
+wp-api-cli -s https://example.com \
+	--page_json page.json \
+	post_create
+```
+
+#### From the command line
+
+You may create a new Page from the command line, by using the `page_*` arguments.
+
+The content of the Page may be set by:
+
+1. `page_content_file=FILE`, the content will be the FILE content.
+2. `page_content=STRING`, the content will be the STRING set to this argument.
+3. `page_content_file=stdin`, the content will be read from STDIN.
+
+```bash
+wp-api-cli -s https://example.com \
+	--page_title "Hello, WP-API" \
+	--page_content_file hello-wp-api.html \
+	page_create
+```
+
+### Fetch a Page
+
+```bash
+wp-api-cli -s https://example.com \
+	--page_id 2 \
+	page_get
+```
+
+### Update a Page
+
+```bash
+wp-api-cli -s https://example.com \
+	--page_id 2 \
+	--page_title "Hello, dear WP-API" \
+	page_update
+```
+
+### Delete a Page
+
+```bash
+wp-api-cli -s https://example.com \
+	--page_id 2 \
+	page_delete
+```
+
+
+### List all Medias
+
+```bash
+wp-api-cli -s https://example.com media_list
+```
+
+### Create a Media
+
+A Media is made of metadata and a file attachment.
+
+The file attachment may be set by options:
+
+1. `media_file`: Set the file to be loaded as an attachment.
+2. `media_file_name`: Optional. Set the resulting file name in the server. If set, you **must** set `media_file_type` too.
+3. `media_file_type`: Optional. Set the Content-Type of the attachment. If set, you **must** set `media_file_name` too.
+
+#### Metadata from file
+
+To create a new Media from a file, use `media_json` argument to point to the file.
+The file content should be a JSON with the [schema expected from WP-API endpoint](http://v2.wp-api.org/#media).
+
+```bash
+wp-api-cli -s https://example.com \
+	--media_json media.json \
+	--media_file TheMedia.png \
+	media_create
+```
+
+#### Metadata from the command line
+
+You may create a new Media from the command line, by using the `media_*` arguments.
+
+```bash
+wp-api-cli -s https://example.com \
+	--media_alt_text "A picture of myself" \
+	--media_file TheMedia.png \
+	media_create
+```
+
+### Fetch a Media
+
+```bash
+wp-api-cli -s https://example.com \
+	--media_id 2 \
+	media_get
+```
+
+### Update a Media
+
+```bash
+wp-api-cli -s https://example.com \
+	--media_id 2 \
+	--media_caption "That's me" \
+	media_update
+```
+
+### Delete a Media
+
+(!) This is not working. Server is returning 501. See "[WP-API/WP-API: Can't delete Media](https://github.com/WP-API/WP-API/issues/1493)".
+
+```bash
+wp-api-cli -s https://example.com \
+	--media_id 2 \
+	media_delete
+```
 
 Useful Links
 ------------
@@ -48,5 +242,6 @@ Related Issues and Pull Requests
 --------------------------------
 
 - [WP-API/WP-API: Can't retrieve unpublished posts](https://github.com/WP-API/WP-API/issues/1491)
+- [WP-API/WP-API: Can't delete Media](https://github.com/WP-API/WP-API/issues/1493)
 - [WP-API/WP-API: Fix file upload for attachments](https://github.com/WP-API/WP-API/pull/1492)
 - [WP-API/OAuth1: Fix signature check for sub-folder WP installs](https://github.com/WP-API/OAuth1/pull/78)
