@@ -55,9 +55,13 @@ cli.parse({
 	post_sticky:         [ false, 'Whether or not the object should be treated as sticky. Accepts true, false.', 'STRING' ],
 }, {
 	authenticate: 'Authenticate with site, will issue OAuth tokens',
-	post_list:    'List all published posts',
-	post_create:  'Creates a new post, use "post_*" options',
-	post_update:  'Updates a post, use "post_*" options'
+
+	/* Posts */
+	post_list:    'List all Posts',
+	post_create:  'Create a Post, use "post_*" options',
+	post_get:     'Retrieve a Post, use "post_id" option',
+	post_update:  'Update a Post, use "post_*" options',
+	post_delete:  'Delete a Post, use "post_id" option'
 });
 
 cli.main( function ( args, options ) {
@@ -134,12 +138,30 @@ function processCommand( args, options, wpApi ) {
 			});
 			break;
 
+		case 'post_get':
+			wpApi.getPost( options.post_id, function ( error, thePost ) {
+				if ( error ) {
+					cli.fatal( error );
+				}
+				console.log( thePost );
+			});
+			break;
+
 		case 'post_create':
 			createPost( args, options, wpApi );
 			break;
 
 		case 'post_update':
 			updatePost( args, options, wpApi );
+			break;
+
+		case 'post_delete':
+			wpApi.deletePost( options.post_id, function ( error, thePost ) {
+				if ( error ) {
+					cli.fatal( error );
+				}
+				cli.ok('Post deleted.');
+			});
 			break;
 	}
 }
