@@ -43,3 +43,9 @@ Useful Links
 - [WP-API/Basic-Auth project on GitHub](https://github.com/WP-API/Basic-Auth)
 - [Node.js](https://nodejs.org/)
 - [WP-CLI](http://wp-cli.org/)
+
+Related Issues and Pull Requests
+--------------------------------
+
+- [WP-API/WP-API: Can't retrieve unpublished posts](https://github.com/WP-API/WP-API/issues/1491)
+- [WP-API/OAuth1: Fix signature check for sub-folder WP installs](https://github.com/WP-API/OAuth1/pull/78)
