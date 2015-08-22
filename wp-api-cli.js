@@ -4,9 +4,14 @@
 
 var	fs    = require( 'fs'           ),
 	cli   = require( 'cli'          ),
-	request = require('request'),
-	WpApi = require( './lib/wp-api' ),
-	oauth = require( 'oauth-lite'   );
+	WpApi = require( './lib/wp-api' );
+
+/*
+ * Do not give an error when using self-signed certificate for HTTPS
+ *
+ * TODO Change this to an option
+ */
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 cli.setUsage( 'wp-api-cli [OPTIONS] <COMMAND>' );
 

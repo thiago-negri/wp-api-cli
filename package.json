@@ -14,7 +14,7 @@
   "license": "GPL-2.0",
   "dependencies": {
     "cli": "^0.9.0",
-    "oauth-lite": "^0.1.1",
+    "oauth-1.0a": "^0.2.1",
     "request": "^2.61.0"
   }
 }

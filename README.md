@@ -9,6 +9,7 @@ Installing
 1. WP-API v2 depends on the latest WordPress.org, so [download it from Subversion](https://wordpress.org/download/svn/).
 2. Install [WP-API plugin from Git](https://github.com/WP-API/WP-API) and activate it.
 3. Install [WP-API/OAuth1 from Git](https://github.com/WP-API/OAuth1) to support OAuth authentication, activate it.
+    - If your WordPress install is inside a folder, please check [pull request 78](https://github.com/WP-API/OAuth1/pull/78).
 4. Install [WP-API/Basic-Auth from Git](https://github.com/WP-API/Basic-Auth) to support HTTP Basic Authentication, activate it.
 5. Install [WP-CLI](http://wp-cli.org/) to generate OAuth keys.
 6. Create a new OAuth key for the CLI: `wp oauth1 add`.
