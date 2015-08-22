@@ -81,8 +81,8 @@ function validateAndSanitize( options ) {
 function createPost( args, options ) {
 	var fileName = options.post_file,
 		thePost = {
-			type:    options.post_type,
-			title:   options.post_title
+			type:  options.post_type,
+			title: options.post_title
 		};
 
 	if ( fileName ) {
