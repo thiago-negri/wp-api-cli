@@ -715,28 +715,23 @@ function updateMedia( args, options, wpApi, callback ) {
 function resolveMedia( args, options, callback ) {
 	if ( options.media_json !== null ) {
 		fs.readFile( options.media_json, 'utf8', function ( error, fileContent ) {
+			var theMedia;
+
 			if ( error ) {
 				callback( error );
 				return;
 			}
-			callback( false, fileContent );
+
+			theMedia = fileContent;
+
+			loadMediaFile( args, options, theMedia );
+
+			callback( false, theMedia );
 		});
 	} else {
 		var	theMedia = {};
 
-		if ( options.media_file !== null ) {
-			if ( options.media_file_name !== null || options.media_file_type !== null ) {
-				theMedia.file = {
-					value: fs.createReadStream( options.media_file ),
-					options: {
-						filename:    options.media_file_name,
-						contentType: options.media_file_type
-					}
-				};
-			} else {
-				theMedia.file = fs.createReadStream( options.media_file );
-			}
-		}
+		loadMediaFile( args, options, theMedia );
 
 		if ( options.media_date !== null ) {
 			theMedia.date = options.media_date;
@@ -806,5 +801,21 @@ function resolveMedia( args, options, callback ) {
 		}
 
 		callback( false, theMedia );
+	}
+}
+
+function loadMediaFile( args, options, theMedia ) {
+	if ( options.media_file !== null ) {
+		if ( options.media_file_name !== null || options.media_file_type !== null ) {
+			theMedia.file = {
+				value: fs.createReadStream( options.media_file ),
+				options: {
+					filename:    options.media_file_name,
+					contentType: options.media_file_type
+				}
+			};
+		} else {
+			theMedia.file = fs.createReadStream( options.media_file );
+		}
 	}
 }
