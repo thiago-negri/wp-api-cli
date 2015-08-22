@@ -219,7 +219,7 @@ wp-api-cli -s https://example.com \
 
 ### Delete a Media
 
-(!) This is not working. Server is returning 501. See "[WP-API/WP-API: Can't delete Media](https://github.com/WP-API/WP-API/issues/1493)".
+(!) This is not working. See "[WP-API/WP-API: Can't delete Media](https://github.com/WP-API/WP-API/issues/1493)".
 
 ```bash
 wp-api-cli -s https://example.com \
