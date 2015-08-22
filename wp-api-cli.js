@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-/* FIXME Change 'context' to an object (prototype). */
-
 var	fs    = require( 'fs'           ),
 	cli   = require( 'cli'          ),
 	WpApi = require( './lib/wp-api' );
