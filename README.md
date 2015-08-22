@@ -17,16 +17,20 @@ Installing
     - If your WordPress install is inside a folder, please check [pull request 78](https://github.com/WP-API/OAuth1/pull/78).
 2. Install [WP-CLI](http://wp-cli.org/) to generate OAuth keys.
 3. Go to your WordPress installation folder and create a new consumer key and secret for this CLI:
+
     ```bash
     wp oauth1 add
-	```
+    ```
+
 4. Authenticate this CLI:
+
     ```bash
     wp-api-cli --site=http://example.com \
-		--oauth_key=CONSUMER_KEY \
-		--oauth_secret=CONSUMER_SECRET \
-		authenticate
-	```
+    	--oauth_key=CONSUMER_KEY \
+    	--oauth_secret=CONSUMER_SECRET \
+    	authenticate
+    ```
+
 5. It will ask for an authorization token. Follow the steps on the browser, copy the authorization token and paste it in the console.
 6. It will create a file with the OAuth tokens (`oauth.json`) for further use -- this is a sensitive file, make sure to protected it!
 
