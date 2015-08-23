@@ -55,6 +55,16 @@ cli.parse({
 	post_sticky:         [ false, 'Whether or not the object should be treated as sticky. Accepts true, false.', 'STRING' ],
 
 	/*
+	 * Meta for a Post schema
+	 *
+	 * Helpers: 'meta_json'
+	 */
+	meta_json:  [ false, 'Content of FILE will be used as the entire request, other "meta_*" options are ignored.', 'FILE' ],
+	meta_id:    [ false, 'Unique identifier for the object.', 'STRING' ],
+	meta_key:   [ false, 'The key for the custom field.', 'STRING' ],
+	meta_value: [ false, 'The value of the custom field.', 'STRING' ],
+
+	/*
 	 * Page schema
 	 *
 	 * Helpers: 'page_json', 'page_content_file'.
@@ -123,6 +133,13 @@ cli.parse({
 	post_get:     'Retrieve a Post, use "post_id" option',
 	post_update:  'Update a Post, use "post_*" options',
 	post_delete:  'Delete a Post, use "post_id" option',
+
+	/* Meta for a Post */
+	meta_list:    'List all Meta for a Post, use "post_id" option',
+	meta_create:  'Create a Meta for a Post, use "post_id" and "meta_*" options',
+	meta_get:     'Retrieve a Meta for a Post, use "post_id" and "meta_id" options',
+	meta_update:  'Update a Meta for a Post, use "post_id" and "meta_*" options',
+	meta_delete:  'Delete a Meta for a Post, use "post_id" and "meta_id" options',
 
 	/* Page */
 	page_list:    'List all Pages',
@@ -240,6 +257,46 @@ function processCommand( args, options, wpApi ) {
 					cli.fatal( error );
 				}
 				cli.ok('Post deleted.');
+			});
+			break;
+
+
+		/*
+		 * Meta for a Post
+		 */
+
+		case 'meta_list':
+			wpApi.listMeta( options.post_id, function ( error, data ) {
+				if ( error ) {
+					cli.fatal( error );
+				}
+				console.log( data );
+			});
+			break;
+
+		case 'meta_get':
+			wpApi.getMeta( options.post_id, options.meta_id, function ( error, thePost ) {
+				if ( error ) {
+					cli.fatal( error );
+				}
+				console.log( thePost );
+			});
+			break;
+
+		case 'meta_create':
+			createMeta( args, options, wpApi );
+			break;
+
+		case 'meta_update':
+			updateMeta( args, options, wpApi );
+			break;
+
+		case 'meta_delete':
+			wpApi.deleteMeta( options.post_id, options.meta_id, function ( error ) {
+				if ( error ) {
+					cli.fatal( error );
+				}
+				cli.ok('Meta deleted.');
 			});
 			break;
 
@@ -526,6 +583,69 @@ function resolvePostContent( args, options, callback ) {
 	}
 }
 
+/*
+ * Meta for a Post
+ */
+
+function createMeta( args, options, wpApi, callback ) {
+	resolveMeta( args, options, function ( error, theMeta ) {
+		if ( error ) {
+			callback( error );
+			return;
+		}
+
+		wpApi.createMeta( options.post_id, theMeta, function ( error, createdMeta ) {
+			if ( error ) {
+				cli.fatal( error );
+			}
+			cli.ok( 'Meta created.' );
+			console.log( createdMeta );
+		});
+	});
+}
+
+function updateMeta( args, options, wpApi, callback ) {
+	resolveMeta( args, options, function ( error, theMeta ) {
+		if ( error ) {
+			callback( error );
+			return;
+		}
+
+		wpApi.updateMeta( options.post_id, theMeta, function ( error, createdMeta ) {
+			if ( error ) {
+				cli.fatal( error );
+			}
+			cli.ok( 'Meta updated.' );
+			console.log( createdMeta );
+		});
+	});
+}
+
+function resolveMeta( args, options, callback ) {
+	if ( options.meta_json !== null ) {
+		fs.readFile( options.meta_json, 'utf8', function ( error, fileContent ) {
+			if ( error ) {
+				callback( error );
+				return;
+			}
+			callback( false, fileContent );
+		});
+	} else {
+		var	theMeta = {};
+
+		if ( options.meta_id !== null ) {
+			theMeta.id = options.meta_id;
+		}
+		if ( options.meta_key !== null ) {
+			theMeta.key = options.meta_key;
+		}
+		if ( options.meta_value !== null ) {
+			theMeta.value = options.meta_value;
+		}
+
+		callback( false, theMeta );
+	}
+}
 
 /*
  * Page

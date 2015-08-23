@@ -111,6 +111,71 @@ wp-api-cli -s https://example.com \
 	post_delete
 ```
 
+### List all Meta for a Post
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	meta_list
+```
+
+### Create a Meta for a Post
+
+#### From file
+
+To create a new Meta for a Post from a file, use `meta_json` argument to point to the file.
+The file content should be a JSON with the [schema expected from WP-API endpoint](http://v2.wp-api.org/#meta-for-a-post).
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	--meta_json meta.json
+	meta_create
+```
+
+#### From command line
+
+You may create a new Meta for a Post from the command line, by using the `meta_*` arguments.
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	--meta_key ListeningTo \
+	--meta_value "My Music" \
+	meta_create
+```
+
+### Fetch a Meta for a Post
+
+(!) Not working. See [WP-API/WP-API: Can't read a specific Meta for a Post](https://github.com/WP-API/WP-API/issues/1494).
+
+```
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	--meta_id 5 \
+	meta_get
+```
+
+### Update a Meta for a Post
+
+```
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	--meta_id 5 \
+	--meta_value "My Awesome Value" \
+	meta_update
+```
+
+### Delete a Meta for a Post
+
+(!) Not working. See [WP-API/WP-API: Can't delete Meta for a Post](https://github.com/WP-API/WP-API/issues/1495).
+
+```
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	--meta_id 5 \
+	meta_delete
+```
 
 ### List all Pages
 
@@ -256,5 +321,7 @@ Related Issues and Pull Requests
 
 - [WP-API/WP-API: Can't retrieve unpublished posts](https://github.com/WP-API/WP-API/issues/1491)
 - [WP-API/WP-API: Can't delete Media](https://github.com/WP-API/WP-API/issues/1493)
+- [WP-API/WP-API: Can't read a specific Meta for a Post](https://github.com/WP-API/WP-API/issues/1494)
+- [WP-API/WP-API: Can't delete Meta for a Post](https://github.com/WP-API/WP-API/issues/1495)
 - [WP-API/WP-API: Fix file upload for attachments](https://github.com/WP-API/WP-API/pull/1492)
 - [WP-API/OAuth1: Fix signature check for sub-folder WP installs](https://github.com/WP-API/OAuth1/pull/78)
