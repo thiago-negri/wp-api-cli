@@ -3,6 +3,7 @@
 var	cli         = require( 'cli'                     ),
 	WpApi       = require( './lib/wp-api'            ),
 	cliInsecure = require( './lib/modules/insecure'  ),
+	cliForce    = require( './lib/modules/force'     ),
 	cliAuth     = require( './lib/modules/auth'      ),
 	cliPosts    = require( './lib/modules/posts'     ),
 	cliPages    = require( './lib/modules/pages'     ),
@@ -16,6 +17,7 @@ function loadModules() {
 	var	modules;
 	modules = [
 		cliInsecure,
+		cliForce,
 		cliAuth,
 		cliPosts,
 		cliPages,

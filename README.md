@@ -48,6 +48,7 @@ The project is structured as follows:
 2. File `lib/wp-api.js` is the class that communicates with the REST APIs.
 3. Files in `lib/modules` are the modules that provide options and commands to be used at the command line.
     - `lib/modules/auth.js` handles authentication.
+	- `lib/modules/force.js` handles forcing an operation (delete instead of trashing).
 	- `lib/modules/insecure.js` allows connection to insecure sites (e.g. self-signed certificates).
 	- `lib/modules/media.js` handles all commands relating to Media.
 	- `lib/modules/pages.js` handles all commands relating to Pages.
