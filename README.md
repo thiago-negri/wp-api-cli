@@ -39,6 +39,23 @@ Installing
 1. Install [WP-API/Basic-Auth from Git](https://github.com/WP-API/Basic-Auth) to support HTTP Basic Authentication, activate it.
 2. Use options `--user` and `--pass` with every request you make.
 
+Developers
+----------
+
+The project is structured as follows:
+
+1. File `wp-api-cli.js` is the entry point, it will load all modules in `lib`.
+2. File `lib/wp-api.js` is the class that communicates with the REST APIs.
+3. Files in `lib/modules` are the modules that provide options and commands to be used at the command line.
+    - `lib/modules/auth.js` handles authentication.
+	- `lib/modules/insecure.js` allows connection to insecure sites (e.g. self-signed certificates).
+	- `lib/modules/media.js` handles all commands relating to Media.
+	- `lib/modules/pages.js` handles all commands relating to Pages.
+	- `lib/modules/posts.js` handles all commands relating to Posts and Meta for Posts.
+
+If you want to create a new set of commands, drop a file in `lib/modules` and load it in `wp-api-cli.js`.
+*TODO - Create a auto-loading mechanism.*
+
 Commands
 --------
 
