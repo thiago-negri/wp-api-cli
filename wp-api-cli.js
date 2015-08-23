@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-var	fs       = require( 'fs'                  ),
-	cli      = require( 'cli'                 ),
-	readline = require( 'readline'            ),
-	open     = require( 'open'                ),
+var	cli      = require( 'cli'                 ),
 	WpApi    = require( './lib/wp-api'        ),
+	cliAuth  = require( './lib/modules/auth'  ),
 	cliPosts = require( './lib/modules/posts' ),
 	cliPages = require( './lib/modules/pages' ),
 	cliMedia = require( './lib/modules/media' ),
@@ -20,16 +18,14 @@ function buildOptions() {
 
 			/* Support HTTPS with self signed certificate. */
 			insecure: [ 'k', 'Allow connections to SSL sites without certs' ],
-
-			/* HTTP Basic-Auth */
-			user: [ 'u', 'Set username to use for HTTP Basic Authentication', 'STRING' ],
-			pass: [ 'p', 'Set password to use for HTTP Basic Authentication', 'STRING' ],
-
-			/* OAuth */
-			oauth_key:    [ false, 'OAuth Consumer Key', 'STRING' ],
-			oauth_secret: [ false, 'OAuth Consumer Secret', 'STRING' ],
-			oauth_file:   [ 'o', 'OAuth authorization file created by "authenticate" command', 'FILE', 'oauth.json' ],
 		};
+
+	/* Load all options from Auth module. */
+	for ( key in cliAuth.options ) {
+		if ( cliAuth.options.hasOwnProperty( key ) ) {
+			options[ key ] = cliAuth.options[ key ];
+		}
+	}
 
 	/* Load all options from Posts module. */
 	for ( key in cliPosts.options ) {
@@ -56,9 +52,14 @@ function buildOptions() {
 }
 
 function buildCommands() {
-	var commands = {
-			authenticate: 'Authenticate with site, will issue OAuth tokens',
-		};
+	var commands = {};
+
+	/* Load all commands from OAuth module. */
+	for ( key in cliAuth.commands ) {
+		if ( cliAuth.commands.hasOwnProperty( key ) ) {
+			commands[ key ] = cliAuth.commands[ key ].label;
+		}
+	}
 
 	/* Load all commands from Posts module. */
 	for ( key in cliPosts.commands ) {
@@ -101,40 +102,19 @@ cli.main( function ( args, options ) {
 		process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 	}
 
-	if ( ( ! options.user || ! options.pass ) && cli.command !== 'authenticate' ) {
-		cli.info( 'Using OAuth authentication.' );
-		fs.readFile( options.oauth_file, 'utf8', function ( error, content ) {
-			var oauthConfig;
+	config = {
+		site:  options.site,
+		debug: options.debug,
+	};
+	wpApi = new WpApi( config );
 
-			if ( error ) {
-				cli.fatal( error );
-			}
-
-			oauthConfig = JSON.parse( content );
-
-			config = {
-				site:  options.site,
-				debug: options.debug,
-				oauth: oauthConfig
-			};
-
-			wpApi = new WpApi( config );
-
-			processCommand( args, options, wpApi );
-		});
-	} else {
-		cli.info( 'Using HTTP Basic authentication.' );
-		config = {
-			site:  options.site,
-			user:  options.user,
-			pass:  options.pass,
-			debug: options.debug
-		};
-
-		wpApi = new WpApi( config );
-
+	/* Initialize Auth module */
+	cliAuth.init( cli, args, options, wpApi, function ( error ) {
+		if ( error ) {
+			cli.fatal( error );
+		}
 		processCommand( args, options, wpApi );
-	}
+	});
 });
 
 /**
@@ -151,6 +131,16 @@ function validateAndSanitize( options ) {
 
 function processCommand( args, options, wpApi ) {
 	var key;
+
+	/* Handle Auth module commands */
+	for ( key in cliAuth.commands ) {
+		if ( cliAuth.commands.hasOwnProperty( key ) ) {
+			if ( cli.command === key ) {
+				cliAuth.commands[ key ].handler( cli, args, options, wpApi );
+				return;
+			}
+		}
+	}
 
 	/* Handle Posts module commands */
 	for ( key in cliPosts.commands ) {
@@ -181,68 +171,4 @@ function processCommand( args, options, wpApi ) {
 			}
 		}
 	}
-
-	switch ( cli.command ) {
-		case 'authenticate':
-			authenticate( args, options, wpApi );
-			break;
-	}
-}
-
-function authenticate( args, options, wpApi ) {
-	var oauthConfig = {
-		oauth_consumer_key:    options.oauth_key,
-		oauth_consumer_secret: options.oauth_secret
-	};
-
-	if ( ! oauthConfig.oauth_consumer_key || ! oauthConfig.oauth_consumer_secret ) {
-		cli.fatal( 'Missing OAuth consumer key and secret.' );
-	}
-
-	wpApi.fetchOauthRequestToken( oauthConfig, function ( error, response ) {
-		var rl;
-		if ( error ) {
-			cli.fatal( error );
-		}
-
-		oauthConfig.oauth_token = response.oauth_token;
-		oauthConfig.oauth_token_secret = response.oauth_token_secret;
-
-		cli.info( 'Follow authorization process on browser.' );
-		open( response.authorizeUrl );
-
-		rl = readline.createInterface({
-			input: process.stdin,
-			output: process.stdout
-		});
-
-		rl.question( 'Enter your verification token: ', function ( verificationToken ) {
-			if ( ! verificationToken ) {
-				return;
-			}
-
-			oauthConfig.oauth_verifier = verificationToken;
-
-			wpApi.fetchOauthAccessToken( oauthConfig, function ( error, response ) {
-				if ( error ) {
-					cli.fatal( error );
-				}
-
-				var oauthCredentials = {
-					oauth_consumer_key:    oauthConfig.oauth_consumer_key,
-					oauth_consumer_secret: oauthConfig.oauth_consumer_secret,
-					oauth_token:           response.oauth_token,
-					oauth_token_secret:    response.oauth_token_secret
-				};
-
-				fs.writeFile( 'oauth.json', JSON.stringify( oauthCredentials ), function ( error ) {
-					if ( error ) {
-						cli.fatal( error );
-					}
-					cli.ok( 'Credentials saved as "oauth.json". This is a sensitive file, make sure to protect it.');
-					rl.close();
-				});
-			});
-		});
-	});
 }
