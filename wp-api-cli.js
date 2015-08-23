@@ -1,160 +1,139 @@
 #!/usr/bin/env node
 
-var	fs       = require( 'fs'           ),
-	cli      = require( 'cli'          ),
-	readline = require( 'readline'     ),
-	open     = require( 'open'         ),
-	WpApi    = require( './lib/wp-api' );
+var	fs       = require( 'fs'                  ),
+	cli      = require( 'cli'                 ),
+	readline = require( 'readline'            ),
+	open     = require( 'open'                ),
+	WpApi    = require( './lib/wp-api'        ),
+	cliPosts = require( './lib/modules/posts' ),
+
+	options  = buildOptions(),
+	commands = buildCommands();
+
+function buildOptions() {
+	var	key,
+		options = {
+			site:  [ 's', '(Required) Set base URL to use', 'STRING' ],
+			debug: [ 'd', 'Turns on debugging mode, will output interactions with server' ],
+
+			/* Support HTTPS with self signed certificate. */
+			insecure: [ 'k', 'Allow connections to SSL sites without certs' ],
+
+			/* HTTP Basic-Auth */
+			user: [ 'u', 'Set username to use for HTTP Basic Authentication', 'STRING' ],
+			pass: [ 'p', 'Set password to use for HTTP Basic Authentication', 'STRING' ],
+
+			/* OAuth */
+			oauth_key:    [ false, 'OAuth Consumer Key', 'STRING' ],
+			oauth_secret: [ false, 'OAuth Consumer Secret', 'STRING' ],
+			oauth_file:   [ 'o', 'OAuth authorization file created by "authenticate" command', 'FILE', 'oauth.json' ],
+
+			/*
+			 * Page schema
+			 *
+			 * Helpers: 'page_json', 'page_content_file'.
+			 */
+			page_json:           [ false, 'Content of FILE will be used as the entire request, other "page_*" options are ignored.', 'FILE' ],
+			page_date:           [ false, 'The date the object was published.', 'STRING' ],
+			page_date_gmt:       [ false, 'The date the object was published, as GMT.', 'STRING' ],
+			page_guid:           [ false, 'The globally unique identifier for the object.', 'STRING' ],
+			page_id:             [ false, 'Unique identifier for the object.', 'STRING' ],
+			page_link:           [ false, 'URL to the object.', 'STRING' ],
+			page_modified:       [ false, 'The date the object was last modified.', 'STRING' ],
+			page_modified_gmt:   [ false, 'The date the object was last modified, as GMT.', 'STRING' ],
+			page_password:       [ false, 'A password to protect access to the post.', 'STRING' ],
+			page_slug:           [ false, 'An alphanumeric identifier for the object unique to its type.', 'STRING' ],
+			page_status:         [ false, 'A named status for the object.', 'STRING' ],
+			page_type:           [ false, 'Type of Post for the object.', 'STRING' ],
+			page_parent:         [ false, 'The ID for the parent of the object.', 'STRING' ],
+			page_title:          [ false, 'The title for the object.', 'STRING' ],
+			page_content:        [ false, 'The content for the object.', 'STRING' ],
+			page_content_file:   [ false, 'Content of FILE will be used as content of page, use "stdin" to load from STDIN.', 'FILE' ],
+			page_author:         [ false, 'The ID for the author of the object.', 'STRING' ],
+			page_excerpt:        [ false, 'The excerpt for the object.', 'STRING' ],
+			page_featured_image: [ false, 'ID of the featured image for the object.', 'STRING' ],
+			page_comment_status: [ false, 'Whether or not comments are open on the object.', 'STRING' ],
+			page_ping_status:    [ false, 'Whether or not the object can be pinged.', 'STRING' ],
+			page_menu_order:     [ false, 'The order of the object in relation to other object of its type.', 'STRING' ],
+			page_template:       [ false, 'The theme file to use to display the object.', 'STRING' ],
+
+			/*
+			 * Media schema
+			 *
+			 * Helpers: 'media_json', 'media_file', 'media_file_name', 'media_file_type'
+			 */
+			media_json:           [ false, 'Content of FILE will be used as the entire request, other "media_*" options are ignored, except for "media_file" and "media_file_name".', 'FILE' ],
+			media_file:           [ false, 'FILE will be used as the media to be created.', 'FILE' ],
+			media_file_name:      [ false, 'File name of the attachment. If using this, also set "media_file_type".', 'STRING' ],
+			media_file_type:      [ false, 'Content-Type of the attachment. If using this, also set "media_file_name".', 'STRING' ],
+			media_date:           [ false, 'The date the object was published.', 'STRING' ],
+			media_date_gmt:       [ false, 'The date the object was published, as GMT.', 'STRING' ],
+			media_guid:           [ false, 'The globally unique identifier for the object.', 'STRING' ],
+			media_id:             [ false, 'Unique identifier for the object.', 'STRING' ],
+			media_link:           [ false, 'URL to the object.', 'STRING' ],
+			media_modified:       [ false, 'The date the object was last modified.', 'STRING' ],
+			media_modified_gmt:   [ false, 'The date the object was last modified, as GMT.', 'STRING' ],
+			media_password:       [ false, 'A password to protect access to the post.', 'STRING' ],
+			media_slug:           [ false, 'An alphanumeric identifier for the object unique to its type.', 'STRING' ],
+			media_status:         [ false, 'A named status for the object.', 'STRING' ],
+			media_type:           [ false, 'Type of Post for the object.', 'STRING' ],
+			media_title:          [ false, 'The title for the object.', 'STRING' ],
+			media_author:         [ false, 'The ID for the author of the object.', 'STRING' ],
+			media_comment_status: [ false, 'Whether or not comments are open on the object.', 'STRING' ],
+			media_ping_status:    [ false, 'Whether or not the object can be pinged.', 'STRING' ],
+			media_alt_text:       [ false, 'Alternative text to display when attachment is not displayed.', 'STRING' ],
+			media_caption:        [ false, 'The caption for the attachment.', 'STRING' ],
+			media_description:    [ false, 'The description for the attachment.', 'STRING' ],
+			media_media_type:     [ false, 'Type of attachment.', 'STRING' ],
+			media_media_details:  [ false, 'Details about the attachment file, specific to its type.', 'STRING' ],
+			media_post:           [ false, 'The ID for the associated post of the attachment.', 'STRING' ],
+			media_source_url:     [ false, 'URL to the original attachment file.', 'STRING' ],
+		};
+
+	/* Load all options from Posts module. */
+	for ( key in cliPosts.options ) {
+		if ( cliPosts.options.hasOwnProperty( key ) ) {
+			options[ key ] = cliPosts.options[ key ];
+		}
+	}
+
+	return options;
+}
+
+function buildCommands() {
+	var commands = {
+			authenticate: 'Authenticate with site, will issue OAuth tokens',
+
+			/* Page */
+			page_list:    'List all Pages',
+			page_create:  'Create a Page, use "page_*" options',
+			page_get:     'Retrieve a Page, use "page_id" option',
+			page_update:  'Update a Page, use "page_*" options',
+			page_delete:  'Delete a Page, use "page_id" option',
+
+			/* Media */
+			media_list:   'List all Medias',
+			media_create: 'Create a Media, use "media_*" options',
+			media_get:    'Retrieve a Media, use "media_id" option',
+			media_update: 'Update a Media, use "media_*" options',
+			media_delete: 'Delete a Media, use "media_id" option',
+		};
+
+	/* Load all commands from Posts module. */
+	for ( key in cliPosts.commands ) {
+		if ( cliPosts.commands.hasOwnProperty( key ) ) {
+			commands[ key ] = cliPosts.commands[ key ].label;
+		}
+	}
+
+	return commands;
+}
 
 cli.setUsage( 'wp-api-cli [OPTIONS] <COMMAND>' );
 
 cli.option_width = 38;
 
-cli.parse({
-	site:  [ 's', '(Required) Set base URL to use', 'STRING' ],
-	debug: [ 'd', 'Turns on debugging mode, will output interactions with server' ],
-
-	/* Support HTTPS with self signed certificate. */
-	insecure: [ 'k', 'Allow connections to SSL sites without certs' ],
-
-	/* HTTP Basic-Auth */
-	user: [ 'u', 'Set username to use for HTTP Basic Authentication', 'STRING' ],
-	pass: [ 'p', 'Set password to use for HTTP Basic Authentication', 'STRING' ],
-
-	/* OAuth */
-	oauth_key:    [ false, 'OAuth Consumer Key', 'STRING' ],
-	oauth_secret: [ false, 'OAuth Consumer Secret', 'STRING' ],
-	oauth_file:   [ 'o', 'OAuth authorization file created by "authenticate" command', 'FILE', 'oauth.json' ],
-
-	/*
-	 * Post schema
-	 *
-	 * Helpers: 'post_json', 'post_content_file'.
-	 */
-	post_json:           [ false, 'Content of FILE will be used as the entire request, other "post_*" options are ignored.', 'FILE' ],
-	post_date:           [ false, 'The date the object was published.', 'STRING' ],
-	post_date_gmt:       [ false, 'The date the object was published, as GMT.', 'STRING' ],
-	post_guid:           [ false, 'The globally unique identifier for the object.', 'STRING' ],
-	post_id:             [ false, 'Unique identifier for the object.', 'STRING' ],
-	post_link:           [ false, 'URL to the object.', 'STRING' ],
-	post_modified:       [ false, 'The date the object was last modified.', 'STRING' ],
-	post_modified_gmt:   [ false, 'The date the object was last modified, as GMT.', 'STRING' ],
-	post_password:       [ false, 'A password to protect access to the post.', 'STRING' ],
-	post_slug:           [ false, 'An alphanumeric identifier for the object unique to its type.', 'STRING' ],
-	post_status:         [ false, 'A named status for the object.', 'STRING' ],
-	post_type:           [ false, 'Type of Post for the object.', 'STRING' ],
-	post_title:          [ false, 'The title for the object.', 'STRING' ],
-	post_content:        [ false, 'The content for the object.', 'STRING' ],
-	post_content_file:   [ false, 'Content of FILE will be used as content of post, use "stdin" to load from STDIN.', 'FILE' ],
-	post_author:         [ false, 'The ID for the author of the object.', 'STRING' ],
-	post_excerpt:        [ false, 'The excerpt for the object.', 'STRING' ],
-	post_featured_image: [ false, 'ID of the featured image for the object.', 'STRING' ],
-	post_comment_status: [ false, 'Whether or not comments are open on the object.', 'STRING' ],
-	post_ping_status:    [ false, 'Whether or not the object can be pinged.', 'STRING' ],
-	post_format:         [ false, 'The format for the object.', 'STRING' ],
-	post_sticky:         [ false, 'Whether or not the object should be treated as sticky. Accepts true, false.', 'STRING' ],
-
-	/*
-	 * Meta for a Post schema
-	 *
-	 * Helpers: 'meta_json'
-	 */
-	meta_json:  [ false, 'Content of FILE will be used as the entire request, other "meta_*" options are ignored.', 'FILE' ],
-	meta_id:    [ false, 'Unique identifier for the object.', 'STRING' ],
-	meta_key:   [ false, 'The key for the custom field.', 'STRING' ],
-	meta_value: [ false, 'The value of the custom field.', 'STRING' ],
-
-	/*
-	 * Page schema
-	 *
-	 * Helpers: 'page_json', 'page_content_file'.
-	 */
-	page_json:           [ false, 'Content of FILE will be used as the entire request, other "page_*" options are ignored.', 'FILE' ],
-	page_date:           [ false, 'The date the object was published.', 'STRING' ],
-	page_date_gmt:       [ false, 'The date the object was published, as GMT.', 'STRING' ],
-	page_guid:           [ false, 'The globally unique identifier for the object.', 'STRING' ],
-	page_id:             [ false, 'Unique identifier for the object.', 'STRING' ],
-	page_link:           [ false, 'URL to the object.', 'STRING' ],
-	page_modified:       [ false, 'The date the object was last modified.', 'STRING' ],
-	page_modified_gmt:   [ false, 'The date the object was last modified, as GMT.', 'STRING' ],
-	page_password:       [ false, 'A password to protect access to the post.', 'STRING' ],
-	page_slug:           [ false, 'An alphanumeric identifier for the object unique to its type.', 'STRING' ],
-	page_status:         [ false, 'A named status for the object.', 'STRING' ],
-	page_type:           [ false, 'Type of Post for the object.', 'STRING' ],
-	page_parent:         [ false, 'The ID for the parent of the object.', 'STRING' ],
-	page_title:          [ false, 'The title for the object.', 'STRING' ],
-	page_content:        [ false, 'The content for the object.', 'STRING' ],
-	page_content_file:   [ false, 'Content of FILE will be used as content of page, use "stdin" to load from STDIN.', 'FILE' ],
-	page_author:         [ false, 'The ID for the author of the object.', 'STRING' ],
-	page_excerpt:        [ false, 'The excerpt for the object.', 'STRING' ],
-	page_featured_image: [ false, 'ID of the featured image for the object.', 'STRING' ],
-	page_comment_status: [ false, 'Whether or not comments are open on the object.', 'STRING' ],
-	page_ping_status:    [ false, 'Whether or not the object can be pinged.', 'STRING' ],
-	page_menu_order:     [ false, 'The order of the object in relation to other object of its type.', 'STRING' ],
-	page_template:       [ false, 'The theme file to use to display the object.', 'STRING' ],
-
-	/*
-	 * Media schema
-	 *
-	 * Helpers: 'media_json', 'media_file', 'media_file_name', 'media_file_type'
-	 */
-	media_json:           [ false, 'Content of FILE will be used as the entire request, other "media_*" options are ignored, except for "media_file" and "media_file_name".', 'FILE' ],
-	media_file:           [ false, 'FILE will be used as the media to be created.', 'FILE' ],
-	media_file_name:      [ false, 'File name of the attachment. If using this, also set "media_file_type".', 'STRING' ],
-	media_file_type:      [ false, 'Content-Type of the attachment. If using this, also set "media_file_name".', 'STRING' ],
-	media_date:           [ false, 'The date the object was published.', 'STRING' ],
-	media_date_gmt:       [ false, 'The date the object was published, as GMT.', 'STRING' ],
-	media_guid:           [ false, 'The globally unique identifier for the object.', 'STRING' ],
-	media_id:             [ false, 'Unique identifier for the object.', 'STRING' ],
-	media_link:           [ false, 'URL to the object.', 'STRING' ],
-	media_modified:       [ false, 'The date the object was last modified.', 'STRING' ],
-	media_modified_gmt:   [ false, 'The date the object was last modified, as GMT.', 'STRING' ],
-	media_password:       [ false, 'A password to protect access to the post.', 'STRING' ],
-	media_slug:           [ false, 'An alphanumeric identifier for the object unique to its type.', 'STRING' ],
-	media_status:         [ false, 'A named status for the object.', 'STRING' ],
-	media_type:           [ false, 'Type of Post for the object.', 'STRING' ],
-	media_title:          [ false, 'The title for the object.', 'STRING' ],
-	media_author:         [ false, 'The ID for the author of the object.', 'STRING' ],
-	media_comment_status: [ false, 'Whether or not comments are open on the object.', 'STRING' ],
-	media_ping_status:    [ false, 'Whether or not the object can be pinged.', 'STRING' ],
-	media_alt_text:       [ false, 'Alternative text to display when attachment is not displayed.', 'STRING' ],
-	media_caption:        [ false, 'The caption for the attachment.', 'STRING' ],
-	media_description:    [ false, 'The description for the attachment.', 'STRING' ],
-	media_media_type:     [ false, 'Type of attachment.', 'STRING' ],
-	media_media_details:  [ false, 'Details about the attachment file, specific to its type.', 'STRING' ],
-	media_post:           [ false, 'The ID for the associated post of the attachment.', 'STRING' ],
-	media_source_url:     [ false, 'URL to the original attachment file.', 'STRING' ],
-}, {
-	authenticate: 'Authenticate with site, will issue OAuth tokens',
-
-	/* Post */
-	post_list:    'List all Posts',
-	post_create:  'Create a Post, use "post_*" options',
-	post_get:     'Retrieve a Post, use "post_id" option',
-	post_update:  'Update a Post, use "post_*" options',
-	post_delete:  'Delete a Post, use "post_id" option',
-
-	/* Meta for a Post */
-	meta_list:    'List all Meta for a Post, use "post_id" option',
-	meta_create:  'Create a Meta for a Post, use "post_id" and "meta_*" options',
-	meta_get:     'Retrieve a Meta for a Post, use "post_id" and "meta_id" options',
-	meta_update:  'Update a Meta for a Post, use "post_id" and "meta_*" options',
-	meta_delete:  'Delete a Meta for a Post, use "post_id" and "meta_id" options',
-
-	/* Page */
-	page_list:    'List all Pages',
-	page_create:  'Create a Page, use "page_*" options',
-	page_get:     'Retrieve a Page, use "page_id" option',
-	page_update:  'Update a Page, use "page_*" options',
-	page_delete:  'Delete a Page, use "page_id" option',
-
-	/* Media */
-	media_list:   'List all Medias',
-	media_create: 'Create a Media, use "media_*" options',
-	media_get:    'Retrieve a Media, use "media_id" option',
-	media_update: 'Update a Media, use "media_*" options',
-	media_delete: 'Delete a Media, use "media_id" option',
-});
+cli.parse( options, commands );
 
 cli.main( function ( args, options ) {
 	var	config,
@@ -216,90 +195,22 @@ function validateAndSanitize( options ) {
 }
 
 function processCommand( args, options, wpApi ) {
+	var key;
+
+	/* Handle Posts module commands */
+	for ( key in cliPosts.commands ) {
+		if ( cliPosts.commands.hasOwnProperty( key ) ) {
+			if ( cli.command === key ) {
+				cliPosts.commands[ key ].handler( cli, args, options, wpApi );
+				return;
+			}
+		}
+	}
+
 	switch ( cli.command ) {
 		case 'authenticate':
 			authenticate( args, options, wpApi );
 			break;
-
-		/*
-		 * Post
-		 */
-
-		case 'post_list':
-			wpApi.listPosts( function ( error, data ) {
-				if ( error ) {
-					cli.fatal( error );
-				}
-				console.log( data );
-			});
-			break;
-
-		case 'post_get':
-			wpApi.getPost( options.post_id, function ( error, thePost ) {
-				if ( error ) {
-					cli.fatal( error );
-				}
-				console.log( thePost );
-			});
-			break;
-
-		case 'post_create':
-			createPost( args, options, wpApi );
-			break;
-
-		case 'post_update':
-			updatePost( args, options, wpApi );
-			break;
-
-		case 'post_delete':
-			wpApi.deletePost( options.post_id, function ( error ) {
-				if ( error ) {
-					cli.fatal( error );
-				}
-				cli.ok('Post deleted.');
-			});
-			break;
-
-
-		/*
-		 * Meta for a Post
-		 */
-
-		case 'meta_list':
-			wpApi.listMeta( options.post_id, function ( error, data ) {
-				if ( error ) {
-					cli.fatal( error );
-				}
-				console.log( data );
-			});
-			break;
-
-		case 'meta_get':
-			wpApi.getMeta( options.post_id, options.meta_id, function ( error, thePost ) {
-				if ( error ) {
-					cli.fatal( error );
-				}
-				console.log( thePost );
-			});
-			break;
-
-		case 'meta_create':
-			createMeta( args, options, wpApi );
-			break;
-
-		case 'meta_update':
-			updateMeta( args, options, wpApi );
-			break;
-
-		case 'meta_delete':
-			wpApi.deleteMeta( options.post_id, options.meta_id, function ( error ) {
-				if ( error ) {
-					cli.fatal( error );
-				}
-				cli.ok('Meta deleted.');
-			});
-			break;
-
 
 		/*
 		 * Page
@@ -437,214 +348,6 @@ function authenticate( args, options, wpApi ) {
 			});
 		});
 	});
-}
-
-
-/*
- * Post
- */
-
-function createPost( args, options, wpApi, callback ) {
-	resolvePost( args, options, function ( error, thePost ) {
-		if ( error ) {
-			callback( error );
-			return;
-		}
-
-		wpApi.createPost( thePost, function ( error, createdPost ) {
-			if ( error ) {
-				cli.fatal( error );
-			}
-			cli.ok( 'Post created.' );
-			console.log( createdPost );
-		});
-	});
-}
-
-function updatePost( args, options, wpApi, callback ) {
-	resolvePost( args, options, function ( error, thePost ) {
-		if ( error ) {
-			callback( error );
-			return;
-		}
-
-		wpApi.updatePost( thePost, function ( error, createdPost ) {
-			if ( error ) {
-				cli.fatal( error );
-			}
-			cli.ok( 'Post updated.' );
-			console.log( createdPost );
-		});
-	});
-}
-
-function resolvePost( args, options, callback ) {
-	if ( options.post_json !== null ) {
-		fs.readFile( options.post_json, 'utf8', function ( error, fileContent ) {
-			if ( error ) {
-				callback( error );
-				return;
-			}
-			callback( false, fileContent );
-		});
-	} else {
-		resolvePostContent( args, options, function ( error, postContent ) {
-			var	thePost = {};
-
-			if ( error ) {
-				callback( error );
-				return;
-			}
-
-			if ( postContent !== null ) {
-				thePost.content = postContent;
-			}
-			if ( options.post_date !== null ) {
-				thePost.date = options.post_date;
-			}
-			if ( options.post_date_gmt !== null ) {
-				thePost.date_gmt = options.post_date_gmt;
-			}
-			if ( options.post_guid !== null ) {
-				thePost.guid = options.post_guid;
-			}
-			if ( options.post_id !== null ) {
-				thePost.id = options.post_id;
-			}
-			if ( options.post_link !== null ) {
-				thePost.link = options.post_link;
-			}
-			if ( options.post_modified !== null ) {
-				thePost.modified = options.post_modified;
-			}
-			if ( options.post_modified_gmt !== null ) {
-				thePost.modified_gmt = options.post_modified_gmt;
-			}
-			if ( options.post_password !== null ) {
-				thePost.password = options.post_password;
-			}
-			if ( options.post_slug !== null ) {
-				thePost.slug = options.post_slug;
-			}
-			if ( options.post_status !== null ) {
-				thePost.status = options.post_status;
-			}
-			if ( options.post_type !== null ) {
-				thePost.type = options.post_type;
-			}
-			if ( options.post_title !== null ) {
-				thePost.title = options.post_title;
-			}
-			if ( options.post_author !== null ) {
-				thePost.author = options.post_author;
-			}
-			if ( options.post_excerpt !== null ) {
-				thePost.excerpt = options.post_excerpt;
-			}
-			if ( options.post_featured_image !== null ) {
-				thePost.featured_image = options.post_featured_image;
-			}
-			if ( options.post_comment_status !== null ) {
-				thePost.comment_status = options.post_comment_status;
-			}
-			if ( options.post_ping_status !== null ) {
-				thePost.ping_status = options.post_ping_status;
-			}
-			if ( options.post_format !== null ) {
-				thePost.format = options.post_format;
-			}
-			if ( options.post_sticky !== null ) {
-				thePost.sticky = options.post_sticky;
-			}
-
-			callback( false, thePost );
-		});
-	}
-}
-
-function resolvePostContent( args, options, callback ) {
-	if ( options.post_content_file !== null ) {
-		if ( options.post_content_file === 'stdin' ) {
-			cli.info( 'Loading post content from STDIN.' );
-			cli.withStdin( function ( stdin ) {
-				callback( false, stdin );
-			});
-		} else {
-			cli.info( 'Loading post content from file "' + options.post_content_file + '".' );
-			fs.readFile( options.post_content_file, 'utf8', function ( error, fileContent ) {
-				if ( error ) {
-					callback( 'Error while loading post content from file "' + options.post_content_file + '": ' + error );
-				}
-				callback( false, fileContent );
-			});
-		}
-	} else {
-		callback( false, options.post_content );
-	}
-}
-
-/*
- * Meta for a Post
- */
-
-function createMeta( args, options, wpApi, callback ) {
-	resolveMeta( args, options, function ( error, theMeta ) {
-		if ( error ) {
-			callback( error );
-			return;
-		}
-
-		wpApi.createMeta( options.post_id, theMeta, function ( error, createdMeta ) {
-			if ( error ) {
-				cli.fatal( error );
-			}
-			cli.ok( 'Meta created.' );
-			console.log( createdMeta );
-		});
-	});
-}
-
-function updateMeta( args, options, wpApi, callback ) {
-	resolveMeta( args, options, function ( error, theMeta ) {
-		if ( error ) {
-			callback( error );
-			return;
-		}
-
-		wpApi.updateMeta( options.post_id, theMeta, function ( error, createdMeta ) {
-			if ( error ) {
-				cli.fatal( error );
-			}
-			cli.ok( 'Meta updated.' );
-			console.log( createdMeta );
-		});
-	});
-}
-
-function resolveMeta( args, options, callback ) {
-	if ( options.meta_json !== null ) {
-		fs.readFile( options.meta_json, 'utf8', function ( error, fileContent ) {
-			if ( error ) {
-				callback( error );
-				return;
-			}
-			callback( false, fileContent );
-		});
-	} else {
-		var	theMeta = {};
-
-		if ( options.meta_id !== null ) {
-			theMeta.id = options.meta_id;
-		}
-		if ( options.meta_key !== null ) {
-			theMeta.key = options.meta_key;
-		}
-		if ( options.meta_value !== null ) {
-			theMeta.value = options.meta_value;
-		}
-
-		callback( false, theMeta );
-	}
 }
 
 /*
