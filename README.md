@@ -52,13 +52,15 @@ The project is structured as follows:
 	- `lib/modules/insecure.js` allows connection to insecure sites (e.g. self-signed certificates).
 	- `lib/modules/media.js` handles all commands relating to Media.
 	- `lib/modules/pages.js` handles all commands relating to Pages.
-	- `lib/modules/posts.js` handles all commands relating to Posts and Meta for Posts.
+	- `lib/modules/posts.js` handles all commands relating to Posts, Meta for Posts and Revisions for Posts.
 
 If you want to create a new set of commands, drop a file in `lib/modules` and load it in `wp-api-cli.js`.
 *TODO - Create a auto-loading mechanism.*
 
 Commands
 --------
+
+Here we list all commands available. If you are trying to delete something and receive an error that the object can't be trashed, you may force the delete by using `--force` option.
 
 ### Help
 
@@ -167,7 +169,7 @@ wp-api-cli -s https://example.com \
 
 (!) Not working. See [WP-API/WP-API: Can't read a specific Meta for a Post](https://github.com/WP-API/WP-API/issues/1494).
 
-```
+```bash
 wp-api-cli -s https://example.com \
 	--post_id 2 \
 	--meta_id 5 \
@@ -176,7 +178,7 @@ wp-api-cli -s https://example.com \
 
 ### Update a Meta for a Post
 
-```
+```bash
 wp-api-cli -s https://example.com \
 	--post_id 2 \
 	--meta_id 5 \
@@ -186,13 +188,45 @@ wp-api-cli -s https://example.com \
 
 ### Delete a Meta for a Post
 
-(!) Not working. See [WP-API/WP-API: Can't delete Meta for a Post](https://github.com/WP-API/WP-API/issues/1495).
+(!) Not working. See "[WP-API/WP-API: Can't delete Meta for a Post](https://github.com/WP-API/WP-API/issues/1495)".
 
-```
+```bash
 wp-api-cli -s https://example.com \
 	--post_id 2 \
 	--meta_id 5 \
 	meta_delete
+```
+
+### List Revisions for a Post
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	revision_list
+```
+
+### Fetch a Revision for a Post
+
+(!) Not working. See "[WP-API/WP-API: Can't read specific Revision for a Post](https://github.com/WP-API/WP-API/issues/1498)".
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	--revision_id 5 \
+	revision_get
+```
+
+### Create a Revision for a Post
+
+Just update a post (see `post_update` command), WordPress will create a Revision for it.
+
+### Delete a Revision for a Post
+
+```bash
+wp-api-cli -s https://example.com \
+	--post_id 2 \
+	--revision_id 5 \
+	revision_delete
 ```
 
 ### List all Pages
@@ -255,7 +289,6 @@ wp-api-cli -s https://example.com \
 	--page_id 2 \
 	page_delete
 ```
-
 
 ### List all Medias
 
@@ -341,5 +374,6 @@ Related Issues and Pull Requests
 - [WP-API/WP-API: Can't delete Media](https://github.com/WP-API/WP-API/issues/1493)
 - [WP-API/WP-API: Can't read a specific Meta for a Post](https://github.com/WP-API/WP-API/issues/1494)
 - [WP-API/WP-API: Can't delete Meta for a Post](https://github.com/WP-API/WP-API/issues/1495)
+- [WP-API/WP-API: Can't read specific Revision for a Post](https://github.com/WP-API/WP-API/issues/1498)
 - [WP-API/WP-API: Fix file upload for attachments](https://github.com/WP-API/WP-API/pull/1492)
 - [WP-API/OAuth1: Fix signature check for sub-folder WP installs](https://github.com/WP-API/OAuth1/pull/78)
