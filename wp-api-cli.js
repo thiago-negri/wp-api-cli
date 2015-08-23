@@ -7,12 +7,23 @@ var	cli      = require( 'cli'                 ),
 	cliPages = require( './lib/modules/pages' ),
 	cliMedia = require( './lib/modules/media' ),
 
+	modules  = loadModules(),
 	options  = buildOptions(),
 	commands = buildCommands();
 
+function loadModules() {
+	var	modules;
+	modules = [
+		cliAuth,
+		cliPosts,
+		cliPages,
+		cliMedia,
+	];
+	return modules;
+}
+
 function buildOptions() {
-	var	key,
-		options = {
+	var	options = {
 			site:  [ 's', '(Required) Set base URL to use', 'STRING' ],
 			debug: [ 'd', 'Turns on debugging mode, will output interactions with server' ],
 
@@ -20,67 +31,31 @@ function buildOptions() {
 			insecure: [ 'k', 'Allow connections to SSL sites without certs' ],
 		};
 
-	/* Load all options from Auth module. */
-	for ( key in cliAuth.options ) {
-		if ( cliAuth.options.hasOwnProperty( key ) ) {
-			options[ key ] = cliAuth.options[ key ];
+	/* Load options from modules. */
+	modules.forEach( function ( mod ) {
+		var key;
+		for ( key in mod.options ) {
+			if ( mod.options.hasOwnProperty( key ) ) {
+				options[ key ] = mod.options[ key ];
+			}
 		}
-	}
-
-	/* Load all options from Posts module. */
-	for ( key in cliPosts.options ) {
-		if ( cliPosts.options.hasOwnProperty( key ) ) {
-			options[ key ] = cliPosts.options[ key ];
-		}
-	}
-
-	/* Load all options from Pages module. */
-	for ( key in cliPages.options ) {
-		if ( cliPages.options.hasOwnProperty( key ) ) {
-			options[ key ] = cliPages.options[ key ];
-		}
-	}
-
-	/* Load all options from Media module. */
-	for ( key in cliMedia.options ) {
-		if ( cliMedia.options.hasOwnProperty( key ) ) {
-			options[ key ] = cliMedia.options[ key ];
-		}
-	}
+	});
 
 	return options;
 }
 
 function buildCommands() {
-	var commands = {};
+	var	commands = {};
 
-	/* Load all commands from OAuth module. */
-	for ( key in cliAuth.commands ) {
-		if ( cliAuth.commands.hasOwnProperty( key ) ) {
-			commands[ key ] = cliAuth.commands[ key ].label;
+	/* Load commands from modules. */
+	modules.forEach( function ( mod ) {
+		var key;
+		for ( key in mod.commands ) {
+			if ( mod.commands.hasOwnProperty( key ) ) {
+				commands[ key ] = mod.commands[ key ].label;
+			}
 		}
-	}
-
-	/* Load all commands from Posts module. */
-	for ( key in cliPosts.commands ) {
-		if ( cliPosts.commands.hasOwnProperty( key ) ) {
-			commands[ key ] = cliPosts.commands[ key ].label;
-		}
-	}
-
-	/* Load all commands from Pages module. */
-	for ( key in cliPages.commands ) {
-		if ( cliPages.commands.hasOwnProperty( key ) ) {
-			commands[ key ] = cliPages.commands[ key ].label;
-		}
-	}
-
-	/* Load all commands from Media module. */
-	for ( key in cliMedia.commands ) {
-		if ( cliMedia.commands.hasOwnProperty( key ) ) {
-			commands[ key ] = cliMedia.commands[ key ].label;
-		}
-	}
+	});
 
 	return commands;
 }
@@ -108,14 +83,41 @@ cli.main( function ( args, options ) {
 	};
 	wpApi = new WpApi( config );
 
-	/* Initialize Auth module */
-	cliAuth.init( cli, args, options, wpApi, function ( error ) {
-		if ( error ) {
-			cli.fatal( error );
-		}
+	initModules( cli, args, options, wpApi, function () {
 		processCommand( args, options, wpApi );
 	});
 });
+
+/**
+ * Sequences the initialization of all modules.
+ *
+ * Halts if any module fails to initialize.
+ */
+function initModules( cli, args, options, api, callback ) {
+	var	go = function ( i ) {
+			return function ( cli, args, options, api, cb ) {
+				if ( i >= modules.length ) { /* Done initializing all modules, fire the final callback. */
+					cb();
+				} else { /* Still have modules to initialize. */
+					if ( modules[i].init ) { /* The current module supports initialization? */
+						/* Initialize the module, the callback will handle errors and advance our module-initialization-index. */
+						modules[i].init( cli, args, options, api, function ( error ) {
+							if ( error ) {
+								cli.fatal( error );
+							}
+							/* Module sucessfuly initialized, go to next module to initialize. */
+							go( i + 1 )( cli, args, options, api, callback );
+						});
+					} else {
+						/* The module does not need to be initialized, go to next module to initialize. */
+						go( i + 1 )( cli, args, options, api, callback );
+					}
+				}
+			};
+		};
+	/* Start module initialization from the very first one. */
+	go( 0 )( cli, args, options, api, callback );
+}
 
 /**
  * Validate and sanitize user input.
@@ -130,44 +132,15 @@ function validateAndSanitize( options ) {
 }
 
 function processCommand( args, options, wpApi ) {
-	var key;
-
-	/* Handle Auth module commands */
-	for ( key in cliAuth.commands ) {
-		if ( cliAuth.commands.hasOwnProperty( key ) ) {
-			if ( cli.command === key ) {
-				cliAuth.commands[ key ].handler( cli, args, options, wpApi );
-				return;
-			}
-		}
-	}
-
-	/* Handle Posts module commands */
-	for ( key in cliPosts.commands ) {
-		if ( cliPosts.commands.hasOwnProperty( key ) ) {
-			if ( cli.command === key ) {
-				cliPosts.commands[ key ].handler( cli, args, options, wpApi );
-				return;
-			}
-		}
-	}
-
-	/* Handle Pages module commands */
-	for ( key in cliPages.commands ) {
-		if ( cliPages.commands.hasOwnProperty( key ) ) {
-			if ( cli.command === key ) {
-				cliPages.commands[ key ].handler( cli, args, options, wpApi );
-				return;
-			}
-		}
-	}
-
-	/* Handle Media module commands */
-	for ( key in cliMedia.commands ) {
-		if ( cliMedia.commands.hasOwnProperty( key ) ) {
-			if ( cli.command === key ) {
-				cliMedia.commands[ key ].handler( cli, args, options, wpApi );
-				return;
+	var	i, arr, len, mod, key;
+	for (i = 0, arr = modules, len = arr.length; i < len; i += 1) {
+		mod = arr[i];
+		for ( key in mod.commands ) {
+			if ( mod.commands.hasOwnProperty( key ) ) {
+				if ( cli.command === key ) {
+					mod.commands[ key ].handler( cli, args, options, wpApi );
+					return;
+				}
 			}
 		}
 	}
