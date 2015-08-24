@@ -9,18 +9,18 @@ Features
 ### DONE
 
 1. Authentication (OAuth + HTTP Basic)
-2. Posts
-3. Posts Meta
-4. Posts Revisions
-5. Media
-6. Pages
-7. Comments
+1. Posts
+1. Posts Meta
+1. Posts Revisions
+1. Media
+1. Pages
+1. Comments
+1. Taxonomies
 
 ### TODO
 
-1. Taxonomies
-2. Terms
-3. Users
+1. Terms
+1. Users
 
 Installing
 ----------
@@ -73,6 +73,7 @@ The project is structured as follows:
 	- `lib/modules/media.js` handles all commands relating to Media.
 	- `lib/modules/pages.js` handles all commands relating to Pages.
 	- `lib/modules/posts.js` handles all commands relating to Posts, Meta for Posts and Revisions for Posts.
+	- `lib/modules/taxonomies.js` handles all commands relating to Taxonomies.
 
 If you want to create a new set of commands, drop a file in `lib/modules` and load it in `wp-api-cli.js`.
 *TODO - Create a auto-loading mechanism.*
@@ -437,6 +438,20 @@ wp-api-cli -s https://example.com \
 wp-api-cli -s https://example.com \
 	--comment_id 5 \
 	comment_delete
+```
+
+### List all Taxonomies
+
+```bash
+wp-api-cli -s https://example.com taxonomy_list
+```
+
+### Fetch a Taxonomy
+
+```bash
+wp-api-cli -s https://example.com \
+	--taxonomy_slug="category" \
+	taxonomy_get
 ```
 
 Useful Links

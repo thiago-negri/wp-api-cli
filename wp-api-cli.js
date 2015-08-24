@@ -1,18 +1,19 @@
 #!/usr/bin/env node
 
-var	cli         = require( 'cli'                     ),
-	WpApi       = require( './lib/wp-api'            ),
-	cliInsecure = require( './lib/modules/insecure'  ),
-	cliForce    = require( './lib/modules/force'     ),
-	cliAuth     = require( './lib/modules/auth'      ),
-	cliPosts    = require( './lib/modules/posts'     ),
-	cliPages    = require( './lib/modules/pages'     ),
-	cliMedia    = require( './lib/modules/media'     ),
-	cliComments = require( './lib/modules/comments'  ),
+var	cli           = require( 'cli'                      ),
+	WpApi         = require( './lib/wp-api'             ),
+	cliInsecure   = require( './lib/modules/insecure'   ),
+	cliForce      = require( './lib/modules/force'      ),
+	cliAuth       = require( './lib/modules/auth'       ),
+	cliPosts      = require( './lib/modules/posts'      ),
+	cliPages      = require( './lib/modules/pages'      ),
+	cliMedia      = require( './lib/modules/media'      ),
+	cliComments   = require( './lib/modules/comments'   ),
+	cliTaxonomies = require( './lib/modules/taxonomies' ),
 
-	modules     = loadModules(),
-	options     = buildOptions(),
-	commands    = buildCommands();
+	modules       = loadModules(),
+	options       = buildOptions(),
+	commands      = buildCommands();
 
 function loadModules() {
 	var	modules;
@@ -24,6 +25,7 @@ function loadModules() {
 		cliPages,
 		cliMedia,
 		cliComments,
+		cliTaxonomies,
 	];
 	return modules;
 }
