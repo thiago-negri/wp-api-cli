@@ -3,6 +3,25 @@ CLI for WordPress.org REST API v2
 
 CLI to help test-drive the WordPress.org REST API.
 
+Features
+--------
+
+### DONE
+
+1. Authentication (OAuth + HTTP Basic)
+2. Posts
+3. Posts Meta
+4. Posts Revisions
+5. Media
+6. Pages
+7. Comments
+
+### TODO
+
+1. Taxonomies
+2. Terms
+3. Users
+
 Installing
 ----------
 
