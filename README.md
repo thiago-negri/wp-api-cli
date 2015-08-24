@@ -9,18 +9,43 @@ Features
 ### DONE
 
 1. Authentication (OAuth + HTTP Basic)
+1. Describe (`GET /`)
 1. Posts
+    - List (`GET /wp/v2/posts`)
+    - Create (`POST /wp/v2/posts`)
+    - Read (`GET /wp/v2/posts/{id}`)
+    - Update (`PUT /wp/v2/posts/{id}`)
+    - Delete (`DELETE /wp/v2/posts/{id}`)
 1. Posts Meta
+    - List (`GET /wp/v2/posts/{parent_id}/meta`)
+    - Create (`POST /wp/v2/posts/{parent_id}/meta`)
+    - Read (`GET /wp/v2/posts/{parent_id}/meta/{id}`)
+    - Update (`PUT /wp/v2/posts/{parent_id}/meta/{id}`)
+    - Delete (`DELETE /wp/v2/posts/{parent_id}/meta/{id}`)
 1. Posts Revisions
-1. Media
-1. Pages
-1. Comments
-1. Taxonomies
+    - List (`GET /wp/v2/posts/{parent_id}/revisions`)
+    - Read (`GET /wp/v2/posts/{parent_id}/revisions/{id}`)
+    - Delete (`DELETE /wp/v2/posts/{parent_id}/revisions/{id}`)
+1. Media (`/wp/v2/media`)
+1. Pages (`/wp/v2/pages`)
+1. Comments (`/wp/v2/comments`)
+1. Taxonomies (`/wp/v2/taxonomies`)
 
 ### TODO
 
-1. Terms
-1. Users
+1. Posts
+    - List Page
+    - List Filter
+1. Posts Terms Category (`/wp/v2/posts/{post_id}/terms/category`)
+1. Posts Terms Tag (`/wp/v2/posts/{post_id}/terms/tag`)
+1. Pages Meta (`/wp/v2/pages/{parent_id}/meta`)
+1. Pages Revisions (`/wp/v2/pages/{parent_id}/revisions`)
+1. Terms Category (`/wp/v2/terms/category`)
+1. Terms Tag (`/wp/v2/terms/tag`)
+1. Users (`/wp/v2/users`)
+1. Users Me (`/wp/v2/users/me`)
+1. Types (`/wp/v2/types`)
+1. Statuses (`/wp/v2/statuses`)
 
 Installing
 ----------
