@@ -356,6 +356,69 @@ wp-api-cli -s https://example.com \
 	media_delete
 ```
 
+### List all Comments
+
+```bash
+wp-api-cli -s https://example.com comment_list
+```
+
+### List all Comments of a Post
+
+```bash
+wp-api-cli -s https://example.com \
+	--comment_post 2 \
+	comment_list
+```
+
+### Fetch a Comment
+
+```bash
+wp-api-cli -s https://example.com \
+	--comment_id 1 \
+	comment_get
+```
+
+### Create a Comment
+
+#### From file
+
+To create a new Comment from a file, use `comment_json` argument to point to the file.
+The file content should be a JSON with the [schema expected from WP-API endpoint](http://v2.wp-api.org/#comments).
+
+```bash
+wp-api-cli -s https://example.com \
+	--comment_json comment.json
+	comment_create
+```
+
+#### From command line
+
+You may create a new Comment from the command line, by using the `comment_*` arguments.
+
+```bash
+wp-api-cli -s https://example.com \
+	--comment_post 2 \
+	--comment_content "Cool text, bro!" \
+	comment_create
+```
+
+### Update a Comment
+
+```bash
+wp-api-cli -s https://example.com \
+	--comment_id 5 \
+	--comment_content "Cool text, friend!" \
+	comment_update
+```
+
+### Delete a Comment
+
+```bash
+wp-api-cli -s https://example.com \
+	--comment_id 5 \
+	comment_delete
+```
+
 Useful Links
 ------------
 

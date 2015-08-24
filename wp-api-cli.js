@@ -8,6 +8,7 @@ var	cli         = require( 'cli'                     ),
 	cliPosts    = require( './lib/modules/posts'     ),
 	cliPages    = require( './lib/modules/pages'     ),
 	cliMedia    = require( './lib/modules/media'     ),
+	cliComments = require( './lib/modules/comments'  ),
 
 	modules     = loadModules(),
 	options     = buildOptions(),
@@ -22,6 +23,7 @@ function loadModules() {
 		cliPosts,
 		cliPages,
 		cliMedia,
+		cliComments,
 	];
 	return modules;
 }
