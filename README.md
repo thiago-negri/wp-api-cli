@@ -68,6 +68,7 @@ The project is structured as follows:
 3. Files in `lib/modules` are the modules that provide options and commands to be used at the command line.
     - `lib/modules/auth.js` handles authentication.
 	- `lib/modules/comments.js` handles all commands relating to Comments.
+	- `lib/modules/describe.js` let you fetch a description of the API.
 	- `lib/modules/force.js` handles forcing an operation (delete instead of trashing).
 	- `lib/modules/insecure.js` allows connection to insecure sites (e.g. self-signed certificates).
 	- `lib/modules/media.js` handles all commands relating to Media.
@@ -89,6 +90,14 @@ See all available arguments and commands by reading the help.
 
 ```bash
 wp-api-cli --help
+```
+
+### Describe the API
+
+It is easier to see if you output it to a file.
+
+```bash
+wp-api-cli -s https://example.com describe > api-description.txt
 ```
 
 ### List all Posts
