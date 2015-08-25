@@ -40,7 +40,57 @@ Want to see arguments accepted by a command or the routes it maps to?
 Easy, just ask for it:
 
 ```bash
-wp-api-cli -s https://localhost/trunk info posts
+$ wp-api-cli -s https://example.com info posts
+
+INFO: Using OAuth authentication.
+INFO:
+INFO: Route: /wp/v2/posts
+INFO:   Path arguments (required):
+INFO:   Methods GET:
+INFO:     --page
+INFO:     --per_page
+INFO:     --filter
+INFO:   Methods POST:
+INFO:     --date
+INFO:     --date_gmt
+INFO:     --modified
+INFO:     --modified_gmt
+INFO:     --password
+INFO:     --slug
+INFO:     --status
+INFO:     --title
+INFO:     --content
+INFO:     --author
+INFO:     --excerpt
+INFO:     --featured_image
+INFO:     --comment_status
+INFO:     --ping_status
+INFO:     --format
+INFO:     --sticky
+INFO:
+INFO: Route: /wp/v2/posts/(?P<id>[\d]+)
+INFO:   Path arguments (required):
+INFO:     --id
+INFO:   Methods GET:
+INFO:   Methods POST, PUT, PATCH:
+INFO:     --date
+INFO:     --date_gmt
+INFO:     --modified
+INFO:     --modified_gmt
+INFO:     --password
+INFO:     --slug
+INFO:     --status
+INFO:     --title
+INFO:     --content
+INFO:     --author
+INFO:     --excerpt
+INFO:     --featured_image
+INFO:     --comment_status
+INFO:     --ping_status
+INFO:     --format
+INFO:     --sticky
+INFO:   Methods DELETE:
+INFO:     --force
 ```
 
 (!) This will only work with commands fetched from the API description.
