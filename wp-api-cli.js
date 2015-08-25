@@ -11,10 +11,11 @@ var	cli           = require( 'cli'                      ),
 	cliMedia      = require( './lib/modules/media'      ),
 	cliComments   = require( './lib/modules/comments'   ),
 	cliTaxonomies = require( './lib/modules/taxonomies' ),
+	routes        = require( './lib/modules/routes'     ),
 
-	modules       = loadModules(),
-	options       = buildOptions(),
-	commands      = buildCommands();
+	modules,
+	options,
+	commands;
 
 function loadModules() {
 	var	modules;
@@ -23,11 +24,14 @@ function loadModules() {
 		cliForce,
 		cliDescribe,
 		cliAuth,
+		/*
 		cliPosts,
 		cliPages,
 		cliMedia,
 		cliComments,
 		cliTaxonomies,
+		*/
+		routes,
 	];
 	return modules;
 }
@@ -70,29 +74,6 @@ function buildCommands() {
 
 	return commands;
 }
-
-cli.setUsage( 'wp-api-cli [OPTIONS] <COMMAND>' );
-
-cli.option_width = 38;
-
-cli.parse( options, commands );
-
-cli.main( function ( args, options ) {
-	var	config,
-		wpApi;
-
-	validateAndSanitize( options );
-
-	config = {
-		site:  options.site,
-		debug: options.debug,
-	};
-	wpApi = new WpApi( config );
-
-	initModules( cli, args, options, wpApi, function () {
-		processCommand( args, options, wpApi );
-	});
-});
 
 /**
  * Sequences the initialization of all modules.
@@ -151,3 +132,35 @@ function processCommand( args, options, wpApi ) {
 		}
 	}
 }
+
+routes.load( function ( error ) {
+	if ( error ) {
+		console.log( 'Load Error: ' + error );
+		return;
+	}
+
+	modules  = loadModules();
+	options  = buildOptions();
+	commands = buildCommands();
+
+	cli.setUsage( 'wp-api-cli [OPTIONS] <COMMAND>' );
+	cli.option_width = 38;
+	cli.parse( options, commands );
+
+	cli.main( function ( args, options ) {
+		var	config,
+			wpApi;
+
+		validateAndSanitize( options );
+
+		config = {
+			site:  options.site,
+			debug: options.debug,
+		};
+		wpApi = new WpApi( config );
+
+		initModules( cli, args, options, wpApi, function () {
+			processCommand( args, options, wpApi );
+		});
+	});
+});
