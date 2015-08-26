@@ -6,6 +6,7 @@ var	cli           = require( 'cli'                      ),
 	cliSite       = require( './lib/modules/site'       ),
 	cliInsecure   = require( './lib/modules/insecure'   ),
 	cliDescribe   = require( './lib/modules/describe'   ),
+	cliUpdate     = require( './lib/modules/update'     ),
 	cliAuth       = require( './lib/modules/auth'       ),
 	cliRoutes     = require( './lib/modules/routes'     ),
 
@@ -20,6 +21,7 @@ function loadModules() {
 		cliSite,
 		cliInsecure,
 		cliDescribe,
+		cliUpdate,
 		cliAuth,
 		cliRoutes,
 	];
