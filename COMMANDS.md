@@ -45,7 +45,6 @@ $ wp-api-cli -s https://example.com info posts
 INFO: Using OAuth authentication.
 INFO:
 INFO: Route: /wp/v2/posts
-INFO:   Path arguments (required):
 INFO:   Arguments for GET:
 INFO:     --context
 INFO:     --page
