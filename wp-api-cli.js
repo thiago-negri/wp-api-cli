@@ -136,16 +136,15 @@ cliRoutes.load( function ( error ) {
 	cli.parse( options, commands );
 
 	cli.main( function ( args, options ) {
-		var	config,
-			wpApi;
+		var	wpApi;
 
 		validateAndSanitize( options );
 
-		config = {
-			site:  options.site,
-			debug: options.debug,
-		};
-		wpApi = new WpApi( config );
+		wpApi = new WpApi();
+		wpApi.setSite( options.site );
+		if ( options.debug ) {
+			wpApi.setDebug( true );
+		}
 
 		initModules( cli, args, options, wpApi, function () {
 			processCommand( args, options, wpApi );
