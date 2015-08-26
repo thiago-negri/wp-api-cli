@@ -26,13 +26,16 @@ Installing
 
     ```bash
     wp-api-cli --site=http://example.com \
-    	--oauth_key=CONSUMER_KEY \
-    	--oauth_secret=CONSUMER_SECRET \
-    	authenticate
+        --oauth_key=CONSUMER_KEY         \
+        --oauth_secret=CONSUMER_SECRET   \
+        --oauth_file=oauth.json          \
+        authenticate
     ```
 
 5. It will ask for an authorization token. Follow the steps on the browser, copy the authorization token and paste it in the console.
-6. It will create a file with the OAuth tokens (`oauth.json`) for further use -- this is a sensitive file, make sure to protected it!
+6. It will create a file with the OAuth tokens (`oauth.json`) for further use -- this is a sensitive file, make sure to protect it!
+7. When you execute a command, the CLI will look for the file `oauth.json` to grab the OAuth tokens, you may set a different file to
+    use with the option `--oauth_file`.
 
 ### Authenticating with HTTP Basic Auth
 
