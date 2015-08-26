@@ -77,7 +77,7 @@ This will create a file `routes.json` that will be used to dynamically set the o
 wp-api-cli --help
 ```
 
-See `COMMANDS.md` to example of available commands.
+See [COMMANDS.md](COMMANDS.md) for examples of available commands.
 
 Useful Links
 ------------
