@@ -47,11 +47,14 @@ The project is structured as follows:
 1. File `wp-api-cli.js` is the entry point, it will load all modules in `lib`.
 2. File `lib/wp-api.js` is the class that communicates with the REST APIs.
 3. Files in `lib/modules` are the modules that provide options and commands to be used at the command line.
-    - `lib/modules/auth.js` handles authentication.
+	- `lib/modules/auth.js` handles authentication.
+	- `lib/modules/debug.js` let you see debug messages.
 	- `lib/modules/describe.js` let you fetch a description of the API.
-	- `lib/modules/force.js` handles forcing an operation (delete instead of trashing).
 	- `lib/modules/insecure.js` allows connection to insecure sites (e.g. self-signed certificates).
 	- `lib/modules/routes.js` handles all commands and options based on actual API description (plus some helpers).
+		It reads the API description from a file and builds the options and commands dynamically.
+	- `lib/modules/site.js` let you set which site the CLI will connect to.
+	- `lib/modules/update.js` fetches the API description and writes it to a file for further use by `routes.js`.
 
 If you want to create a new set of commands, drop a file in `lib/modules` and load it in `wp-api-cli.js`.
 *TODO - Create a auto-loading mechanism.*
