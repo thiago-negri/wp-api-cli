@@ -2,6 +2,8 @@
 
 var	cli           = require( 'cli'                      ),
 	WpApi         = require( './lib/wp-api'             ),
+	cliDebug      = require( './lib/modules/debug'      ),
+	cliSite       = require( './lib/modules/site'       ),
 	cliInsecure   = require( './lib/modules/insecure'   ),
 	cliForce      = require( './lib/modules/force'      ),
 	cliDescribe   = require( './lib/modules/describe'   ),
@@ -15,6 +17,8 @@ var	cli           = require( 'cli'                      ),
 function loadModules() {
 	var	modules;
 	modules = [
+		cliDebug,
+		cliSite,
 		cliInsecure,
 		cliForce,
 		cliDescribe,
@@ -25,10 +29,7 @@ function loadModules() {
 }
 
 function buildOptions() {
-	var	options = {
-			site:  [ 's', '(Required) Set base URL to use', 'STRING' ],
-			debug: [ 'd', 'Turns on debugging mode, will output interactions with server' ],
-		};
+	var	options = {};
 
 	/* Load options from modules. */
 	modules.forEach( function ( mod ) {
