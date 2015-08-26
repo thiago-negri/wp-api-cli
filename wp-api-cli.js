@@ -6,12 +6,7 @@ var	cli           = require( 'cli'                      ),
 	cliForce      = require( './lib/modules/force'      ),
 	cliDescribe   = require( './lib/modules/describe'   ),
 	cliAuth       = require( './lib/modules/auth'       ),
-	cliPosts      = require( './lib/modules/posts'      ),
-	cliPages      = require( './lib/modules/pages'      ),
-	cliMedia      = require( './lib/modules/media'      ),
-	cliComments   = require( './lib/modules/comments'   ),
-	cliTaxonomies = require( './lib/modules/taxonomies' ),
-	routes        = require( './lib/modules/routes'     ),
+	cliRoutes     = require( './lib/modules/routes'     ),
 
 	modules,
 	options,
@@ -24,14 +19,7 @@ function loadModules() {
 		cliForce,
 		cliDescribe,
 		cliAuth,
-		/*
-		cliPosts,
-		cliPages,
-		cliMedia,
-		cliComments,
-		cliTaxonomies,
-		*/
-		routes,
+		cliRoutes,
 	];
 	return modules;
 }
@@ -133,7 +121,7 @@ function processCommand( args, options, wpApi ) {
 	}
 }
 
-routes.load( function ( error ) {
+cliRoutes.load( function ( error ) {
 	if ( error ) {
 		console.log( 'Load Error: ' + error );
 		return;
