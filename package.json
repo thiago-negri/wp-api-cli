@@ -14,6 +14,7 @@
   "license": "GPL-2.0",
   "dependencies": {
     "cli": "^0.9.0",
+    "md5": "^2.0.0",
     "oauth-lite": "^0.1.1",
     "open": "0.0.5",
     "querystring": "^0.2.0",
