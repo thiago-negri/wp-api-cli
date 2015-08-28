@@ -49,7 +49,7 @@ The project is structured as follows:
 
 1. File `wp-api-cli.js` is the entry point, it will load all modules in `lib`.
 2. File `lib/wp-api.js` is the class that communicates with the REST APIs.
-3. Files in `lib/modules` are the modules that provide options and commands to be used at the command line.
+3. File `lib/modules.js` load all modules that provide options and commands to be used at the command line.
 	- `lib/modules/auth.js` handles authentication.
 	- `lib/modules/debug.js` let you see debug messages.
 	- `lib/modules/describe.js` let you fetch a description of the API.

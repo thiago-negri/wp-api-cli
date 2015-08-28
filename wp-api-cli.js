@@ -1,32 +1,11 @@
 #!/usr/bin/env node
 
-var	cli           = require( 'cli'                      ),
-	WpApi         = require( './lib/wp-api'             ),
-	cliDebug      = require( './lib/modules/debug'      ),
-	cliSite       = require( './lib/modules/site'       ),
-	cliInsecure   = require( './lib/modules/insecure'   ),
-	cliDescribe   = require( './lib/modules/describe'   ),
-	cliUpdate     = require( './lib/modules/update'     ),
-	cliAuth       = require( './lib/modules/auth'       ),
-	cliRoutes     = require( './lib/modules/routes'     ),
+var	cli     = require( 'cli'           ),
+	WpApi   = require( './lib/wp-api'  ),
+	modules = require( './lib/modules' ),
 
-	modules,
 	options,
 	commands;
-
-function loadModules() {
-	var	modules;
-	modules = [
-		cliDebug,
-		cliSite,
-		cliInsecure,
-		cliDescribe,
-		cliUpdate,
-		cliAuth,
-		cliRoutes,
-	];
-	return modules;
-}
 
 function buildOptions() {
 	var	options = {};
@@ -128,7 +107,6 @@ cliRoutes.load( function ( error ) {
 		return;
 	}
 
-	modules  = loadModules();
 	options  = buildOptions();
 	commands = buildCommands();
 
