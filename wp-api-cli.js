@@ -57,7 +57,7 @@ function initModules( cli, args, options, api, callback ) {
 					/* Initialize the module, the callback will handle errors and advance our module-initialization-index. */
 					modules[i].init( cli, args, options, api, function ( error ) {
 						if ( error ) {
-							cli.fatal( error );
+							return cli.fatal( error );
 						}
 						/* Module sucessfuly initialized, go to next module to initialize. */
 						go( i + 1 );
