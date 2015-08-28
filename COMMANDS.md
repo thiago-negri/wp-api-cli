@@ -23,13 +23,25 @@ These options are not in the API, they only exist in the CLI to help you.
 - `--content_file` let you set a file to load the `--content` option from.
 - `--attachment` let you set a file to send as an attachment of the request, needed to create Media. See also `--attachment_type` and `--attachment_name`.
 
+Update CLI definitions
+----------------------
+
+The first command you should run is `update` to make sure you have the latests API description from your site.
+
+```bash
+wp-api-cli update --site https://example.com
+```
+
+After updating the CLI definitions, it will default to use the site from the API description, but you can change it
+by passing `--site` or `-s` at each command.
+
 Describe the API
 ----------------
 
 Outputs a description of the API. It is easier to see if you output it to a file.
 
 ```bash
-wp-api-cli -s https://example.com describe > api-description.txt
+wp-api-cli describe > api-description.txt
 ```
 
 Get more info about a command
@@ -40,8 +52,11 @@ Want to see arguments accepted by a command or the routes it maps to?
 Easy, just ask for it:
 
 ```bash
-$ wp-api-cli -s https://example.com info posts
+wp-api-cli info posts
+```
 
+Example output:
+```
 INFO: Using OAuth authentication.
 INFO:
 INFO: Route: /wp/v2/posts
@@ -102,34 +117,34 @@ Posts (`posts`)
 ### List all Posts
 
 ```bash
-wp-api-cli -s https://example.com posts
+wp-api-cli posts
 ```
 
 ### Create a Post
 
 ```bash
-wp-api-cli -s https://example.com -X POST posts \
-	--title "Hello, WP-API"                     \
+wp-api-cli -X POST posts             \
+	--title "Hello, WP-API"          \
 	--content_file hello-wp-api.html
 ```
 
 ### Fetch a Post
 
 ```bash
-wp-api-cli -s https://example.com posts --id 2
+wp-api-cli posts --id 2
 ```
 
 ### Update a Post
 
 ```bash
-wp-api-cli -s https://example.com posts -X PUT --id 2 \
+wp-api-cli posts -X PUT --id 2   \
 	--title "Hello, dear WP-API"
 ```
 
 ### Delete a Post
 
 ```bash
-wp-api-cli -s https://example.com posts -X DELETE --id 2
+wp-api-cli posts -X DELETE --id 2
 ```
 
 Meta for a Post (`posts_meta`)
@@ -138,15 +153,15 @@ Meta for a Post (`posts_meta`)
 ### List all Meta for a Post
 
 ```bash
-wp-api-cli -s https://example.com posts_meta --parent_id 2
+wp-api-cli posts_meta --parent_id 2
 ```
 
 ### Create a Meta for a Post
 
 ```bash
-wp-api-cli -s https://example.com posts_meta -X POST \
-    --parent_id 2                                    \
-	--key ListeningTo                                \
+wp-api-cli posts_meta -X POST \
+    --parent_id 2             \
+	--key ListeningTo         \
 	--value "My Music"
 ```
 
@@ -155,17 +170,17 @@ wp-api-cli -s https://example.com posts_meta -X POST \
 (!) Not working. See [WP-API/WP-API: Can't read a specific Meta for a Post](https://github.com/WP-API/WP-API/issues/1494).
 
 ```bash
-wp-api-cli -s https://example.com posts_meta \
-	--parent_id 2                            \
+wp-api-cli posts_meta \
+	--parent_id 2     \
 	--id 5
 ```
 
 ### Update a Meta for a Post
 
 ```bash
-wp-api-cli -s https://example.com posts_meta -X PUT \
-	--parent_id 2                                   \
-	--id 5                                          \
+wp-api-cli posts_meta -X PUT   \
+	--parent_id 2              \
+	--id 5                     \
 	--value "My Awesome Value"
 ```
 
@@ -174,8 +189,8 @@ wp-api-cli -s https://example.com posts_meta -X PUT \
 (!) Not working. See "[WP-API/WP-API: Can't delete Meta for a Post](https://github.com/WP-API/WP-API/issues/1495)".
 
 ```bash
-wp-api-cli -s https://example.com posts_meta -X DELETE \
-	--parent_id 2                                      \
+wp-api-cli posts_meta -X DELETE \
+	--parent_id 2               \
 	--id 5
 ```
 
@@ -185,7 +200,7 @@ Revisions for a Post (`posts_revisions`)
 ### List Revisions for a Post
 
 ```bash
-wp-api-cli -s https://example.com posts_revisions \
+wp-api-cli posts_revisions \
 	--parent_id 2
 ```
 
@@ -194,8 +209,8 @@ wp-api-cli -s https://example.com posts_revisions \
 (!) Not working. See "[WP-API/WP-API: Can't read specific Revision for a Post](https://github.com/WP-API/WP-API/issues/1498)".
 
 ```bash
-wp-api-cli -s https://example.com posts_revisions \
-	--parent_id 2                                 \
+wp-api-cli posts_revisions \
+	--parent_id 2          \
 	--id 5
 ```
 
@@ -206,8 +221,8 @@ Just update a post (see `posts` command), WordPress will create a Revision for i
 ### Delete a Revision for a Post
 
 ```bash
-wp-api-cli -s https://example.com posts_revisions -X DELETE \
-	--parent_id 2                                           \
+wp-api-cli posts_revisions -X DELETE \
+	--parent_id 2                    \
 	--id 5
 ```
 
@@ -217,7 +232,7 @@ Media (`media`)
 ### List all Medias
 
 ```bash
-wp-api-cli -s https://example.com media
+wp-api-cli media
 ```
 
 ### Create a Media
@@ -231,23 +246,22 @@ The file attachment may be set by options:
 3. `attachment_type`: Optional. Set the Content-Type of the attachment. If set, you **must** set `attachment_name` too.
 
 ```bash
-wp-api-cli -s https://example.com media -X POST \
-	--alt_text "A picture of myself"            \
+wp-api-cli media -X POST             \
+	--alt_text "A picture of myself" \
 	--attachment TheMedia.png
 ```
 
 ### Fetch a Media
 
 ```bash
-wp-api-cli -s https://example.com media \
-	--id 2
+wp-api-cli media --id 2
 ```
 
 ### Update a Media
 
 ```bash
-wp-api-cli -s https://example.com media -X PUT \
-	--id 2                                     \
+wp-api-cli media -X PUT   \
+	--id 2                \
 	--caption "That's me"
 ```
 
@@ -256,8 +270,8 @@ wp-api-cli -s https://example.com media -X PUT \
 (!) This is not working. See "[WP-API/WP-API: Can't delete Media](https://github.com/WP-API/WP-API/issues/1493)".
 
 ```bash
-wp-api-cli -s https://example.com media -X DELETE \
-	--id 2                                        \
+wp-api-cli media -X DELETE \
+	--id 2                 \
 	--force true
 ```
 
@@ -267,12 +281,11 @@ Taxonomies (`taxonomies`)
 ### List all Taxonomies
 
 ```bash
-wp-api-cli -s https://example.com taxonomies
+wp-api-cli taxonomies
 ```
 
 ### Fetch a Taxonomy
 
 ```bash
-wp-api-cli -s https://example.com taxonomies \
-	--taxonomy category
+wp-api-cli taxonomies --taxonomy category
 ```

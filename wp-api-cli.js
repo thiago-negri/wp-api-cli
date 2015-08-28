@@ -72,18 +72,6 @@ function initModules( cli, args, options, api, callback ) {
 	go( 0 );
 }
 
-/**
- * Validate and sanitize user input.
- */
-function validateAndSanitize( options ) {
-	if ( ! options.site ) {
-		cli.fatal( 'Missing base URL. Please, set a base URL by using `-s` or `--site`.' );
-	}
-	if ( options.site[-1] !== '/' ) {
-		options.site = options.site + '/';
-	}
-}
-
 function processCommand( args, options, wpApi ) {
 	var	i, arr, len, mod, key;
 	for (i = 0, arr = modules, len = arr.length; i < len; i += 1) {
@@ -101,32 +89,28 @@ function processCommand( args, options, wpApi ) {
 	}
 }
 
-cliRoutes.load( function ( error ) {
-	if ( error ) {
-		console.log( 'Load Error: ' + error );
-		return;
-	}
+function main() {
+	var	wpApi = new WpApi();
 
-	options  = buildOptions();
-	commands = buildCommands();
-
-	cli.setUsage( 'wp-api-cli [OPTIONS] <COMMAND>' );
-	cli.option_width = 38;
-	cli.parse( options, commands );
-
-	cli.main( function ( args, options ) {
-		var	wpApi;
-
-		validateAndSanitize( options );
-
-		wpApi = new WpApi();
-		wpApi.setSite( options.site );
-		if ( options.debug ) {
-			wpApi.setDebug( true );
+	cliRoutes.load( wpApi, function ( error ) {
+		if ( error ) {
+			console.log( 'Load Error: ' + error );
+			return;
 		}
 
-		initModules( cli, args, options, wpApi, function () {
-			processCommand( args, options, wpApi );
+		options  = buildOptions();
+		commands = buildCommands();
+
+		cli.setUsage( 'wp-api-cli [OPTIONS] <COMMAND>' );
+		cli.option_width = 38;
+		cli.parse( options, commands );
+
+		cli.main( function ( args, options ) {
+			initModules( cli, args, options, wpApi, function () {
+				processCommand( args, options, wpApi );
+			});
 		});
 	});
-});
+}
+
+main();

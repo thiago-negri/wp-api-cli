@@ -71,7 +71,7 @@ After installing the CLI, you need to update its definition:
 wp-api-cli --site=https://example.com update
 ```
 
-This will create a file `routes.json` that will be used to dynamically set the options and commands available to use. Ask for help to see everything available:
+This will create a file `api.json` that will be used to dynamically set the options and commands available to use. Ask for help to see everything available:
 
 ```bash
 wp-api-cli --help
