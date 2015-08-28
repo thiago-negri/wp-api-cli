@@ -56,15 +56,16 @@ wp-api-cli info posts
 ```
 
 Example output:
+
 ```
 INFO: Using OAuth authentication.
 INFO:
 INFO: Route: /wp/v2/posts
 INFO:   Arguments for GET:
-INFO:     --context
-INFO:     --page
-INFO:     --per_page
-INFO:     --filter
+INFO:     --context.............: Defines which properties to project (Accepts view, embed, edit)
+INFO:     --page................: Number of page to load
+INFO:     --per_page............: Quantity of posts to fetch per page
+INFO:     --filter..............: Filter to apply to the query
 INFO:   Arguments for POST:
 INFO:     --date................: The date the object was published.
 INFO:     --date_gmt............: The date the object was published, as GMT.

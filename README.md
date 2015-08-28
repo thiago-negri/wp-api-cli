@@ -94,11 +94,20 @@ Useful Links
 Related Issues and Pull Requests
 --------------------------------
 
+### Issues
+
 - [WP-API/WP-API: Can't retrieve unpublished posts](https://github.com/WP-API/WP-API/issues/1491)
 - [WP-API/WP-API: Can't delete Media](https://github.com/WP-API/WP-API/issues/1493)
 - [WP-API/WP-API: Can't read a specific Meta for a Post](https://github.com/WP-API/WP-API/issues/1494)
 - [WP-API/WP-API: Can't delete Meta for a Post](https://github.com/WP-API/WP-API/issues/1495)
 - [WP-API/WP-API: Can't read specific Revision for a Post](https://github.com/WP-API/WP-API/issues/1498)
+
+### Fixes
+
 - [WP-API/WP-API: Fix file upload for attachments](https://github.com/WP-API/WP-API/pull/1492)
 - [WP-API/OAuth1: Fix signature check for sub-folder WP installs](https://github.com/WP-API/OAuth1/pull/78)
 - [WP-API/WP-API: Fix MD5 check on file uploads](https://github.com/WP-API/WP-API/pull/1508)
+
+### Features
+
+- [WP-API/WP-API: Add help properties to endpoint arguments](https://github.com/WP-API/WP-API/pull/1511)
