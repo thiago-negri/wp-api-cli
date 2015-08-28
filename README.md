@@ -40,7 +40,7 @@ Installing
 ### Authenticating with HTTP Basic Auth
 
 1. Install [WP-API/Basic-Auth from Git](https://github.com/WP-API/Basic-Auth) to support HTTP Basic Authentication, activate it.
-2. Use options `--user` and `--pass` with every request you make.
+2. Use options `--http_user` and `--http_pass` with every request you make.
 
 Developers
 ----------
