@@ -60,8 +60,7 @@ The project is structured as follows:
 	- `lib/modules/site.js` let you set which site the CLI will connect to.
 	- `lib/modules/update.js` fetches the API description and writes it to a file for further use by `routes.js`.
 
-If you want to create a new set of commands, drop a file in `lib/modules` and load it in `modules.js`.
-*TODO - Create a auto-loading mechanism.*
+If you want to create a new set of commands, drop a file in `lib/modules` and load it in `modules.js`. Full explanation in [MODULES.md](MODULES.md). *TODO - Create a auto-loading mechanism.*
 
 Commands
 --------
