@@ -20,8 +20,17 @@ Helpers
 
 These options are not in the API, they only exist in the CLI to help you.
 
-- `--content_file` let you set a file to load the `--content` option from.
 - `--attachment` let you set a file to send as an attachment of the request, needed to create Media. See also `--attachment_type` and `--attachment_name`.
+
+Prefixes
+--------
+
+All options allow the use of special prefixes to change how it's handled by the CLI.
+
+### File Prefix
+
+To set the content of an option as the content of a file, just prefix the file name with `file:`.
+For example, `--foo file:bar.txt` will set the option "foo" to be the content of file "bar.txt".
 
 Update CLI definitions
 ----------------------
@@ -126,7 +135,7 @@ wp-api-cli posts
 ```bash
 wp-api-cli -X POST posts             \
 	--title "Hello, WP-API"          \
-	--content_file hello-wp-api.html
+	--content file:hello-wp-api.html
 ```
 
 ### Fetch a Post
