@@ -34,13 +34,16 @@ For example, `--foo file:bar.txt` will set the option "foo" to be the content of
 
 ### Dict Prefix
 
-To set a query param as a dictionary (named array), use prefix `dict:`.
-For example:
+To set an option as a dictionary, use prefix `dict:`.
+
+For example, a dictionary is handled as a named array in query parameters:
 
 ```
 	$ wp-api-cli posts --filter dict:s=foo
 	> GET https://example.com/wp-json/wp/v2/posts?filter[s]=foo
 ```
+
+When sent as body, it will be an embedded JSON object.
 
 ### Text Prefix
 

@@ -54,7 +54,8 @@ The project is structured as follows:
 	- `lib/modules/auth.js` handles authentication.
 	- `lib/modules/debug.js` let you see debug messages.
 	- `lib/modules/describe.js` let you fetch a description of the API.
-	- `lib/modules/file-loader.js` handles loading options from file.
+	- `lib/modules/dict-loader.js` handles transforming options into objects (`dict:` prefix).
+	- `lib/modules/file-loader.js` handles loading options from file (`file:` prefix).
 	- `lib/modules/insecure.js` allows connection to insecure sites (e.g. self-signed certificates).
 	- `lib/modules/routes.js` handles all commands and options based on actual API description (plus some helpers).
 		It reads the API description from a file and builds the options and commands dynamically.
