@@ -268,6 +268,21 @@ wp-api-cli posts_revisions -X DELETE \
 	--id 5
 ```
 
+Categories of a Post (`posts_terms_category`)
+-------------------------
+
+### List Categories of a Post
+
+```bash
+wp-api-cli posts_terms_category --post_id 1
+```
+
+### Fetch Category of a Post
+
+```bash
+wp-api-cli posts_terms_category --post_id 1 --term_id 1
+```
+
 Media (`media`)
 ---------------
 
