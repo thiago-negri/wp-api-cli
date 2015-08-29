@@ -59,6 +59,7 @@ The project is structured as follows:
 	- `lib/modules/routes.js` handles all commands and options based on actual API description (plus some helpers).
 		It reads the API description from a file and builds the options and commands dynamically.
 	- `lib/modules/site.js` let you set which site the CLI will connect to.
+	- `lib/modules/text-loader.js` handles `text:` prefix.
 	- `lib/modules/update.js` fetches the API description and writes it to a file for further use by `routes.js`.
 4. Files in `lib/utils` are utility functions to make coding easier.
 

@@ -42,6 +42,11 @@ For example:
 	> GET https://example.com/wp-json/wp/v2/posts?filter[s]=foo
 ```
 
+### Text Prefix
+
+To let you use a special prefix as the actual content of an option, you may prefix the option with `text:`.
+For example `-foo text:file:bar.txt` will set the option "foo" to "file:bar.txt".
+
 Update CLI definitions
 ----------------------
 
