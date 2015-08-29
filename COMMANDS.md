@@ -32,6 +32,16 @@ All options allow the use of special prefixes to change how it's handled by the 
 To set the content of an option as the content of a file, just prefix the file name with `file:`.
 For example, `--foo file:bar.txt` will set the option "foo" to be the content of file "bar.txt".
 
+### Dict Prefix
+
+To set a query param as a dictionary (named array), use prefix `dict:`.
+For example:
+
+```
+	$ wp-api-cli posts --filter dict:s=foo
+	> GET https://example.com/wp-json/wp/v2/posts?filter[s]=foo
+```
+
 Update CLI definitions
 ----------------------
 
