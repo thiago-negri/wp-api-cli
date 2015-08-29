@@ -30,17 +30,21 @@ All options allow the use of special prefixes to change how it's handled by the 
 ### File Prefix
 
 To set the content of an option as the content of a file, just prefix the file name with `file:`.
-For example, `--foo file:bar.txt` will set the option "foo" to be the content of file "bar.txt".
+For example, to set the option "foo" to be the content of file "bar.txt":
+
+```bash
+wp-api-cli command --foo file:bar.txt
+```
 
 ### Dict Prefix
 
 To set an option as a dictionary, use prefix `dict:`.
 
-For example, a dictionary is handled as a named array in query parameters:
+A dictionary is handled as a named array in query parameters. For example:
 
-```
-	$ wp-api-cli posts --filter dict:s=foo
-	> GET https://example.com/wp-json/wp/v2/posts?filter[s]=foo
+```bash
+wp-api-cli posts --filter dict:s=foo
+# > GET https://example.com/wp-json/wp/v2/posts?filter[s]=foo
 ```
 
 When sent as body, it will be an embedded JSON object.
@@ -48,12 +52,16 @@ When sent as body, it will be an embedded JSON object.
 ### Text Prefix
 
 To let you use a special prefix as the actual content of an option, you may prefix the option with `text:`.
-For example `-foo text:file:bar.txt` will set the option "foo" to "file:bar.txt".
+For example, to set the option "foo" to "file:bar.txt":
+
+```bash
+wp-api-cli --foo text:file:bar.txt
+```
 
 Update CLI definitions
 ----------------------
 
-The first command you should run is `update` to make sure you have the latests API description from your site.
+The first command you should run is `update` to make sure you have the latest API description from your site.
 
 ```bash
 wp-api-cli update --site https://example.com
@@ -65,7 +73,7 @@ by passing `--site` or `-s` at each command.
 Describe the API
 ----------------
 
-Outputs a description of the API. It is easier to see if you output it to a file.
+Outputs a description of the API. As it is a big JSON, it is easier to see if you output it to a file.
 
 ```bash
 wp-api-cli describe > api-description.txt
@@ -146,6 +154,12 @@ Posts (`posts`)
 
 ```bash
 wp-api-cli posts
+```
+
+### Search Posts
+
+```bash
+wp-api-cli posts --filter dict:s=Hello
 ```
 
 ### Create a Post
