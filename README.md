@@ -14,7 +14,7 @@ Installing
 ### Authenticating with OAuth
 
 1. Install [WP-API/OAuth1 from Git](https://github.com/WP-API/OAuth1) to support OAuth authentication, activate it.
-    - If your WordPress install is inside a folder, please check [pull request 78](https://github.com/WP-API/OAuth1/pull/78).
+    - There are some fixed that I made concerning signature checking, consider downloading [the branch 'tnegri' of my fork](https://github.com/thiago-negri/OAuth1/tree/tnegri) if the fixes are not already merged.
 2. Install [WP-CLI](http://wp-cli.org/) to generate OAuth keys.
 3. Go to your WordPress installation folder and create a new consumer key and secret for this CLI:
 
@@ -57,31 +57,32 @@ This will create a file `api.json` that will be used to dynamically set the opti
 wp-api-cli --help
 ```
 
-See [COMMANDS.md](COMMANDS.md) for examples of available commands.
+See [docs/COMMANDS.md](docs/COMMANDS.md) for available commands.
 
 Developers
 ----------
 
 The project is structured as follows:
 
-1. File `index.js` is the entry point, it will execute main defined in `wp-api-cli.js`.
-1. File `lib/wp-api-cli.js` wires everything up.
-2. File `lib/wp-api.js` is the class that communicates with the REST APIs.
-3. File `lib/modules.js` load all modules that provide options and commands to be used at the command line.
-	- `lib/modules/auth.js` handles authentication.
-	- `lib/modules/debug.js` let you see debug messages.
-	- `lib/modules/describe.js` let you fetch a description of the API.
-	- `lib/modules/dict-loader.js` handles transforming options into objects (`dict:` prefix).
-	- `lib/modules/file-loader.js` handles loading options from file (`file:` prefix).
-	- `lib/modules/insecure.js` allows connection to insecure sites (e.g. self-signed certificates).
-	- `lib/modules/routes.js` handles all commands and options based on actual API description (plus some helpers).
+1. File [`index.js`](index.js) is the entry point, it will execute main defined in [`lib/wp-api-cli.js`](lib/wp-api-cli.js).
+1. File [`lib/wp-api-cli.js`](lib/wp-api-cli.js) wires everything up.
+2. File [`lib/wp-api.js`](lib/wp-api.js) is the class that communicates with the REST APIs.
+3. File [`lib/modules.js`](lib/modules.js) load all modules that provide options and commands to be used at the command line.
+	- [`lib/modules/auth.js`](lib/modules/auth.js) handles authentication.
+	- [`lib/modules/bool-loader.js`](lib/modules/bool-loader.js) handle boolean values in dynamic options.
+	- [`lib/modules/debug.js`](lib/modules/debug.js) let you see debug messages.
+	- [`lib/modules/describe.js`](lib/modules/describe.js) let you fetch a description of the API.
+	- [`lib/modules/dict-loader.js`](lib/modules/dict-loader.js) handles transforming options into objects (`dict:` prefix).
+	- [`lib/modules/file-loader.js`](lib/modules/file-loader.js) handles loading options from file (`file:` prefix).
+	- [`lib/modules/insecure.js`](lib/modules/insecure.js) allows connection to insecure sites (e.g. self-signed certificates).
+	- [`lib/modules/routes.js`](lib/modules/routes.js) handles all commands and options based on actual API description (plus some helpers).
 		It reads the API description from a file and builds the options and commands dynamically.
-	- `lib/modules/site.js` let you set which site the CLI will connect to.
-	- `lib/modules/text-loader.js` handles `text:` prefix.
-	- `lib/modules/update.js` fetches the API description and writes it to a file for further use by `routes.js`.
-4. Files in `lib/utils` are utility functions to make coding easier.
+	- [`lib/modules/site.js`](lib/modules/site.js) let you set which site the CLI will connect to.
+	- [`lib/modules/text-loader.js`](lib/modules/text-loader.js) handles `text:` prefix.
+	- [`lib/modules/update.js`](lib/modules/update.js) fetches the API description and writes it to a file for further use by [`lib/modules/routes.js`](lib/modules/routes.js).
+4. Files in [`lib/utils`](lib/utils) are utility functions to make coding easier.
 
-If you want to create a new set of commands, drop a file in `lib/modules` and load it in `modules.js`. Full explanation in [MODULES.md](MODULES.md). *TODO - Create a auto-loading mechanism.*
+If you want to create a new set of commands, drop a file in `lib/modules` and load it in `modules.js`. Full explanation in [docs/MODULES.md](docs/MODULES.md).
 
 Useful Links
 ------------
@@ -104,14 +105,16 @@ Related Issues and Pull Requests
 ### Fixes
 
 - [WP-API/WP-API: Fix file upload for attachments](https://github.com/WP-API/WP-API/pull/1492)
-- [WP-API/OAuth1: Fix signature check for sub-folder WP installs](https://github.com/WP-API/OAuth1/pull/78)
 - [WP-API/WP-API: Fix MD5 check on file uploads](https://github.com/WP-API/WP-API/pull/1508)
 - [WP-API/WP-API: Add missing 'force' arg to posts-terms DELETE](https://github.com/WP-API/WP-API/pull/1512)
 - [WP-API/WP-API: Add missing 'force' argument to Users DELETE](https://github.com/WP-API/WP-API/pull/1515)
 - [WP-API/WP-API: Add missing 'force' arg to Meta DELETE](https://github.com/WP-API/WP-API/pull/1517)
 - [WP-API/WP-API: Fix typo in message](https://github.com/WP-API/WP-API/pull/1516)
+- [WP-API/OAuth1: Fix signature check for sub-folder WP installs](https://github.com/WP-API/OAuth1/pull/78)
+- [WP-API/OAuth1: Fix signature for params with special chars](https://github.com/WP-API/OAuth1/pull/79)
 - [niallsmart/node-oauth-like: Fix signature with queryString](https://github.com/niallsmart/node-oauth-lite/pull/1)
 
 ### Features
 
 - [WP-API/WP-API: Add help properties to endpoint arguments](https://github.com/WP-API/WP-API/pull/1511)
+- [WP-API/OAuth1: Add filter to signal error for WP-API v2](https://github.com/WP-API/OAuth1/pull/80)

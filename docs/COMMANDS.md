@@ -1,12 +1,100 @@
-`posts`
-=======
+Commands
+========
 
-Info
-----
+See all available arguments and commands by reading the help.
+
+```bash
+wp-api-cli --help
+```
+
+Basic options
+-------------
+
+- `--insecure` or `-k` lets you connect to insecure sites (e.g. with self-signed certificates).
+- `--debug` or `-d` will print each HTTP request issued to the server.
+- `--site` or `-s` will set the site to connect to.
+- `--method` or `-X` defines the HTTP verb to use in the request, defaults to `GET`.
+
+Helpers
+-------
+
+These options are not in the API, they only exist in the CLI to help you.
+
+- `--attachment` let you set a file to send as an attachment of the request, needed to create Media. See also `--attachment_type` and `--attachment_name`.
+
+Prefixes
+--------
+
+All options allow the use of special prefixes to change how it's handled by the CLI.
+
+### File Prefix
+
+To set the content of an option as the content of a file, just prefix the file name with `file:`.
+For example, to set the option "foo" to be the content of file "bar.txt":
+
+```bash
+wp-api-cli command --foo file:bar.txt
+```
+
+### Dict Prefix
+
+To set an option as a dictionary, use prefix `dict:`.
+
+A dictionary is handled as a named array in query parameters. For example:
+
+```bash
+wp-api-cli posts --filter dict:s=foo
+# > GET https://example.com/wp-json/wp/v2/posts?filter[s]=foo
+```
+
+When sent as body, it will be an embedded JSON object.
+
+### Text Prefix
+
+To let you use a special prefix as the actual content of an option, you may prefix the option with `text:`.
+For example, to set the option "foo" to "file:bar.txt":
+
+```bash
+wp-api-cli --foo text:file:bar.txt
+```
+
+Update CLI definitions
+----------------------
+
+The first command you should run is `update` to make sure you have the latest API description from your site.
+
+```bash
+wp-api-cli update --site https://example.com
+```
+
+After updating the CLI definitions, it will default to use the site from the API description, but you can change it
+by passing `--site` or `-s` at each command.
+
+Describe the API
+----------------
+
+Outputs a description of the API. As it is a big JSON, it is easier to see if you output it to a file.
+
+```bash
+wp-api-cli describe > api-description.txt
+```
+
+Get more info about a command
+-----------------------------
+
+Want to see arguments accepted by a command or the routes it maps to?
+
+Easy, just ask for it:
+
+```bash
+wp-api-cli info posts
+```
+
+Example output:
 
 ```
-$ wp-api-cli info posts
-
+INFO: Using OAuth authentication.
+INFO:
 INFO: Route: /wp/v2/posts
 INFO:   Arguments for GET:
 INFO:     --context.............: Defines which properties to project (Accepts view, embed, edit)
@@ -57,14 +145,9 @@ INFO:   Arguments for DELETE:
 INFO:     --force
 ```
 
-List all Posts
---------------
+(!) This will only work with commands fetched from the API description.
 
-```
-wp-api-cli posts
-```
+Commands
+--------
 
-Create a Post
--------------
-
-**TODO Continue...**
+The standard WP-API endpoints are documented in separate files. Take a look at [standard-endpoints](standard-endpoints/) folder, each command has a file there.
