@@ -42,6 +42,23 @@ Installing
 1. Install [WP-API/Basic-Auth from Git](https://github.com/WP-API/Basic-Auth) to support HTTP Basic Authentication, activate it.
 2. Use options `--http_user` and `--http_pass` with every request you make.
 
+Commands
+--------
+
+After installing the CLI, you need to update its definition:
+
+```bash
+wp-api-cli --site=https://example.com update
+```
+
+This will create a file `api.json` that will be used to dynamically set the options and commands available to use. Ask for help to see everything available:
+
+```bash
+wp-api-cli --help
+```
+
+See [COMMANDS.md](COMMANDS.md) for examples of available commands.
+
 Developers
 ----------
 
@@ -65,23 +82,6 @@ The project is structured as follows:
 4. Files in `lib/utils` are utility functions to make coding easier.
 
 If you want to create a new set of commands, drop a file in `lib/modules` and load it in `modules.js`. Full explanation in [MODULES.md](MODULES.md). *TODO - Create a auto-loading mechanism.*
-
-Commands
---------
-
-After installing the CLI, you need to update its definition:
-
-```bash
-wp-api-cli --site=https://example.com update
-```
-
-This will create a file `api.json` that will be used to dynamically set the options and commands available to use. Ask for help to see everything available:
-
-```bash
-wp-api-cli --help
-```
-
-See [COMMANDS.md](COMMANDS.md) for examples of available commands.
 
 Useful Links
 ------------
