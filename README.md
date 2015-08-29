@@ -99,17 +99,18 @@ Related Issues and Pull Requests
 
 ### Issues
 
-- [WP-API/WP-API: Can't retrieve unpublished posts](https://github.com/WP-API/WP-API/issues/1491)
-- [WP-API/WP-API: Can't delete Media](https://github.com/WP-API/WP-API/issues/1493)
-- [WP-API/WP-API: Can't read a specific Meta for a Post](https://github.com/WP-API/WP-API/issues/1494)
-- [WP-API/WP-API: Can't delete Meta for a Post](https://github.com/WP-API/WP-API/issues/1495)
-- [WP-API/WP-API: Can't read specific Revision for a Post](https://github.com/WP-API/WP-API/issues/1498)
+- [WP-API/WP-API: API description for user creation](https://github.com/WP-API/WP-API/issues/1514)
 
 ### Fixes
 
 - [WP-API/WP-API: Fix file upload for attachments](https://github.com/WP-API/WP-API/pull/1492)
 - [WP-API/OAuth1: Fix signature check for sub-folder WP installs](https://github.com/WP-API/OAuth1/pull/78)
 - [WP-API/WP-API: Fix MD5 check on file uploads](https://github.com/WP-API/WP-API/pull/1508)
+- [WP-API/WP-API: Add missing 'force' arg to posts-terms DELETE](https://github.com/WP-API/WP-API/pull/1512)
+- [WP-API/WP-API: Add missing 'force' argument to Users DELETE](https://github.com/WP-API/WP-API/pull/1515)
+- [WP-API/WP-API: Add missing 'force' arg to Meta DELETE](https://github.com/WP-API/WP-API/pull/1517)
+- [WP-API/WP-API: Fix typo in message](https://github.com/WP-API/WP-API/pull/1516)
+- [niallsmart/node-oauth-like: Fix signature with queryString](https://github.com/niallsmart/node-oauth-lite/pull/1)
 
 ### Features
 
