@@ -55,8 +55,7 @@ After installing the CLI, you need to update its definition:
 wp-api-cli --site=https://example.com update
 ```
 
-This creates the file `api.json`, it is used to dynamically set the options and commands available for use.
-Ask for help to see everything available in your site:
+After updating, ask for help to see everything available in your site:
 
 ```bash
 wp-api-cli --help
