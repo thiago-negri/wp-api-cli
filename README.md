@@ -68,6 +68,7 @@ This project is structured as follows:
 1. [`lib/wp-api-cli.js`](lib/wp-api-cli.js) wires everything up.
 1. [`lib/wp-api.js`](lib/wp-api.js) contains the class that communicates with the REST APIs.
 1. [`lib/modules.js`](lib/modules.js) loads all modules. A module is an object that provides the functionalities of the CLI.
+	- [`lib/modules/attachment.js`](lib/modules/attachment.js) handles attaching files to requests, used to upload media.
 	- [`lib/modules/auth.js`](lib/modules/auth.js) handles authentication.
 	- [`lib/modules/bool-loader.js`](lib/modules/bool-loader.js) handles boolean values in dynamic options.
 	- [`lib/modules/debug.js`](lib/modules/debug.js) let you see debug messages.
