@@ -34,7 +34,12 @@ Property:
 
 ```javascript
 	options: {
-		'full_name': [ 'short_name', 'description', 'type', 'defaultValue' ]
+		'full_name': {
+			alias: 'short_name',
+			label: 'description',
+			type: 'type',
+			defaultValue: 'defaultValue'
+		}
 	}
 ```
 
