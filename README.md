@@ -33,8 +33,13 @@ Installing
     ```
 
 5. It will ask for an authorization token. Follow the steps on the browser, copy the authorization token and paste it on console.
-6. It will write the OAuth tokens to a file (by default `oauth.json`) for further use -- this is a sensitive file, make sure to protect it!
-7. When you execute a command, the CLI will look for the file `oauth.json` to grab the OAuth tokens, you may set a different file to use with the option `--oauth_file`.
+6. It will write the OAuth tokens to a file for further use -- this is a sensitive file, make sure to protect it!
+7. When you execute a command, the CLI will look for the file to grab the OAuth tokens, you may set a different file to use with the option `--oauth_file`.
+8. If you want to remove the OAuth tokens from the file system:
+
+	```bash
+	wp-api-cli logout
+	```
 
 ### Authenticating with HTTP Basic Auth
 
