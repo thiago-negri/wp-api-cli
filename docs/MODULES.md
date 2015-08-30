@@ -117,8 +117,17 @@ Create the file `lib/modules/greet.js`:
 		},
 
 		options: {
-			'salutation' : [ 'x', 'Salutation to use.',  'STRING' ],
-			'name'       : [ 'n', 'Name to be greeted.', 'STRING', 'World' ],
+			'salutation': {
+				alias: 'x',
+				label: 'Salutation to use.',
+				type : 'STRING',
+			},
+			'name': {
+				alias: 'n',
+				label: 'Name to be greeted.',
+				type :'STRING',
+				defaultValue: 'World',
+			},
 		},
 
 		commands: {
