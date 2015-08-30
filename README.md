@@ -76,6 +76,7 @@ This project is structured as follows:
 	- [`lib/modules/dict-loader.js`](lib/modules/dict-loader.js) handles transforming options into objects (`dict:` prefix).
 	- [`lib/modules/file-loader.js`](lib/modules/file-loader.js) handles loading options from file (`file:` prefix).
 	- [`lib/modules/insecure.js`](lib/modules/insecure.js) allows connection to insecure sites, e.g. with self signed certificates.
+	- [`lib/modules/method.js`](lib/modules/method.js) sets which HTTP verb to use in request.
 	- [`lib/modules/routes.js`](lib/modules/routes.js) handles all dynamic commands and options based on actual API description (plus some helpers).
 	- [`lib/modules/site.js`](lib/modules/site.js) lets you set which site the CLI connects to.
 	- [`lib/modules/text-loader.js`](lib/modules/text-loader.js) handles `text:` prefix.
