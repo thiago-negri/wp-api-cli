@@ -123,3 +123,8 @@ Related Issues and Pull Requests
 
 - [WP-API/WP-API: Add help properties to endpoint arguments](https://github.com/WP-API/WP-API/pull/1511)
 - [WP-API/OAuth1: Add filter to signal error for WP-API v2](https://github.com/WP-API/OAuth1/pull/80)
+
+Project Overview
+----------------
+
+![Overview image of project files](overview.png)
