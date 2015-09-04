@@ -129,4 +129,4 @@ Related Issues and Pull Requests
 Project Overview
 ----------------
 
-![Overview image of project files](overview.png)
+![Overview image of project files](overview.svg)
