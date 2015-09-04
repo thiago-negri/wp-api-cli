@@ -1,6 +1,8 @@
 CLI for WordPress.org REST API v2
 =================================
 
+![Build status of master branch](https://travis-ci.org/thiago-negri/wp-api-cli.svg?branch=master)
+
 CLI to help test-drive the WordPress.org REST API.
 
 Installing
