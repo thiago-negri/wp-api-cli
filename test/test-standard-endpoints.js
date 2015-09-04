@@ -163,3 +163,41 @@ module.exports[ 'posts_meta' ] = {
 	}),
 
 };
+
+/**
+ * Test CLI command 'posts_revisions'.
+ *
+ * Endpoints:
+ * - /wp/v2/posts/(?P<parent_id>[\\d]+)/revisions
+ * - /wp/v2/posts/(?P<parent_id>[\\d]+)/revisions/(?P<id>[\\d]+)
+ */
+module.exports[ 'posts_revisions' ] = {
+
+	setUp: setUp(),
+
+	'list': testRequest( 'posts_revisions --parent_id 1', {
+		method: 'GET',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/1/revisions',
+	}),
+
+	'list with context': testRequest( 'posts_revisions --parent_id 1 --context embed', {
+		method: 'GET',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/1/revisions?context=embed',
+	}),
+
+	'read': testRequest( 'posts_revisions --parent_id 1 --id 3', {
+		method: 'GET',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/1/revisions/3',
+	}),
+
+	'read with context': testRequest( 'posts_revisions --parent_id 1 --id 3 --context embed', {
+		method: 'GET',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/1/revisions/3?context=embed',
+	}),
+
+	'trash': testRequest( 'posts_revisions -X DELETE --parent_id 3 --id 5', {
+		method: 'DELETE',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/3/revisions/5',
+	}),
+
+};
