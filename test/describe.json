@@ -1,0 +1,5563 @@
+{
+  "name": "Trunk",
+  "description": "Just another WordPress site",
+  "url": "https://localhost/trunk",
+  "namespaces": [
+    "wp/v2"
+  ],
+  "authentication": {
+    "oauth1": {
+      "request": "https://localhost/trunk/oauth1/request",
+      "authorize": "https://localhost/trunk/oauth1/authorize",
+      "access": "https://localhost/trunk/oauth1/access",
+      "version": "0.1"
+    }
+  },
+  "routes": {
+    "/": {
+      "namespace": "",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/"
+      }
+    },
+    "/wp/v2": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "namespace": {
+              "required": false,
+              "default": "wp/v2"
+            },
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2"
+      }
+    },
+    "/wp/v2/posts": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view",
+              "description": "Defines which properties to project",
+              "accepts": [
+                "view",
+                "embed",
+                "edit"
+              ]
+            },
+            "page": {
+              "required": false,
+              "default": 1,
+              "description": "Number of page to load"
+            },
+            "per_page": {
+              "required": false,
+              "default": 10,
+              "description": "Quantity of posts to fetch per page"
+            },
+            "filter": {
+              "required": false,
+              "description": "Filter to apply to the query"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "date": {
+              "required": false
+            },
+            "date_gmt": {
+              "required": false
+            },
+            "modified": {
+              "required": false
+            },
+            "modified_gmt": {
+              "required": false
+            },
+            "password": {
+              "required": false
+            },
+            "slug": {
+              "required": false
+            },
+            "status": {
+              "required": false
+            },
+            "title": {
+              "required": false
+            },
+            "content": {
+              "required": false
+            },
+            "author": {
+              "required": false
+            },
+            "excerpt": {
+              "required": false
+            },
+            "featured_image": {
+              "required": false
+            },
+            "comment_status": {
+              "required": false
+            },
+            "ping_status": {
+              "required": false
+            },
+            "format": {
+              "required": false
+            },
+            "sticky": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "post",
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "edit"
+            ]
+          },
+          "guid": {
+            "description": "The globally unique identifier for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true,
+            "properties": {
+              "raw": {
+                "description": "GUID for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "GUID for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "modified": {
+            "description": "The date the object was last modified.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "modified_gmt": {
+            "description": "The date the object was last modified, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "password": {
+            "description": "A password to protect access to the post.",
+            "type": "string",
+            "context": [
+              "edit"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "status": {
+            "description": "A named status for the object.",
+            "type": "string",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ],
+            "context": [
+              "edit"
+            ]
+          },
+          "type": {
+            "description": "Type of Post for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "title": {
+            "description": "The title for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Title for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Title for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "content": {
+            "description": "The content for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Content for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Content for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "author": {
+            "description": "The ID for the author of the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "excerpt": {
+            "description": "The excerpt for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Excerpt for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Excerpt for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "featured_image": {
+            "description": "ID of the featured image for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "comment_status": {
+            "description": "Whether or not comments are open on the object.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "ping_status": {
+            "description": "Whether or not the object can be pinged.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "format": {
+            "description": "The format for the object.",
+            "type": "string",
+            "enum": {
+              "standard": "standard",
+              "aside": "aside",
+              "chat": "chat",
+              "gallery": "gallery",
+              "link": "link",
+              "image": "image",
+              "quote": "quote",
+              "status": "status",
+              "video": "video",
+              "audio": "audio"
+            },
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "sticky": {
+            "description": "Whether or not the object should be treated as sticky.",
+            "type": "boolean",
+            "context": [
+              "view",
+              "edit"
+            ]
+          }
+        }
+      },
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/posts"
+      }
+    },
+    "/wp/v2/posts/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "date": {
+              "required": false
+            },
+            "date_gmt": {
+              "required": false
+            },
+            "modified": {
+              "required": false
+            },
+            "modified_gmt": {
+              "required": false
+            },
+            "password": {
+              "required": false
+            },
+            "slug": {
+              "required": false
+            },
+            "status": {
+              "required": false
+            },
+            "title": {
+              "required": false
+            },
+            "content": {
+              "required": false
+            },
+            "author": {
+              "required": false
+            },
+            "excerpt": {
+              "required": false
+            },
+            "featured_image": {
+              "required": false
+            },
+            "comment_status": {
+              "required": false
+            },
+            "ping_status": {
+              "required": false
+            },
+            "format": {
+              "required": false
+            },
+            "sticky": {
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "force": {
+              "required": false,
+              "default": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "post",
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "edit"
+            ]
+          },
+          "guid": {
+            "description": "The globally unique identifier for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true,
+            "properties": {
+              "raw": {
+                "description": "GUID for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "GUID for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "modified": {
+            "description": "The date the object was last modified.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "modified_gmt": {
+            "description": "The date the object was last modified, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "password": {
+            "description": "A password to protect access to the post.",
+            "type": "string",
+            "context": [
+              "edit"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "status": {
+            "description": "A named status for the object.",
+            "type": "string",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ],
+            "context": [
+              "edit"
+            ]
+          },
+          "type": {
+            "description": "Type of Post for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "title": {
+            "description": "The title for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Title for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Title for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "content": {
+            "description": "The content for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Content for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Content for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "author": {
+            "description": "The ID for the author of the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "excerpt": {
+            "description": "The excerpt for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Excerpt for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Excerpt for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "featured_image": {
+            "description": "ID of the featured image for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "comment_status": {
+            "description": "Whether or not comments are open on the object.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "ping_status": {
+            "description": "Whether or not the object can be pinged.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "format": {
+            "description": "The format for the object.",
+            "type": "string",
+            "enum": {
+              "standard": "standard",
+              "aside": "aside",
+              "chat": "chat",
+              "gallery": "gallery",
+              "link": "link",
+              "image": "image",
+              "quote": "quote",
+              "status": "status",
+              "video": "video",
+              "audio": "audio"
+            },
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "sticky": {
+            "description": "Whether or not the object should be treated as sticky.",
+            "type": "boolean",
+            "context": [
+              "view",
+              "edit"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/(?P<parent_id>[\\d]+)/meta": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "key": {
+              "required": true
+            },
+            "value": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "meta",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "int",
+            "context": [
+              "edit"
+            ],
+            "readonly": true
+          },
+          "key": {
+            "description": "The key for the custom field.",
+            "type": "string",
+            "context": [
+              "edit"
+            ],
+            "required": true
+          },
+          "value": {
+            "description": "The value of the custom field.",
+            "type": "string",
+            "context": [
+              "edit"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/(?P<parent_id>[\\d]+)/meta/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "key": {
+              "required": false
+            },
+            "value": {
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "force": {
+              "required": false,
+              "default": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "meta",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "int",
+            "context": [
+              "edit"
+            ],
+            "readonly": true
+          },
+          "key": {
+            "description": "The key for the custom field.",
+            "type": "string",
+            "context": [
+              "edit"
+            ],
+            "required": true
+          },
+          "value": {
+            "description": "The value of the custom field.",
+            "type": "string",
+            "context": [
+              "edit"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/(?P<parent_id>[\\d]+)/revisions": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "posts-revision",
+        "type": "object",
+        "properties": {
+          "author": {
+            "description": "The ID for the author of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "guid": {
+            "description": "GUID for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "modified": {
+            "description": "The date the object was last modified.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "modified_gmt": {
+            "description": "The date the object was last modified, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "title": {
+            "description": "Title for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "content": {
+            "description": "Content for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "excerpt": {
+            "description": "Excerpt for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/(?P<parent_id>[\\d]+)/revisions/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "posts-revision",
+        "type": "object",
+        "properties": {
+          "author": {
+            "description": "The ID for the author of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "guid": {
+            "description": "GUID for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "modified": {
+            "description": "The date the object was last modified.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "modified_gmt": {
+            "description": "The date the object was last modified, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "title": {
+            "description": "Title for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "content": {
+            "description": "Content for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "excerpt": {
+            "description": "Excerpt for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/(?P<post_id>[\\d]+)/terms/category": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "order": {
+              "required": false,
+              "default": "asc",
+              "description": "Order sort attribute ascending or descending."
+            },
+            "orderby": {
+              "required": false,
+              "default": "name",
+              "description": "Sort collection by object attribute."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "term",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "count": {
+            "description": "Number of published posts for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ],
+            "readonly": true
+          },
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "required": true
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ]
+          },
+          "taxonomy": {
+            "description": "Type attribution for the object.",
+            "type": "string",
+            "enum": [
+              "category",
+              "post_tag",
+              "nav_menu",
+              "link_category",
+              "post_format"
+            ],
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/(?P<post_id>[\\d]+)/terms/category/(?P<term_id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "force": {
+              "required": false,
+              "default": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "term",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "count": {
+            "description": "Number of published posts for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ],
+            "readonly": true
+          },
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "required": true
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ]
+          },
+          "taxonomy": {
+            "description": "Type attribution for the object.",
+            "type": "string",
+            "enum": [
+              "category",
+              "post_tag",
+              "nav_menu",
+              "link_category",
+              "post_format"
+            ],
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/(?P<post_id>[\\d]+)/terms/tag": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "order": {
+              "required": false,
+              "default": "asc",
+              "description": "Order sort attribute ascending or descending."
+            },
+            "orderby": {
+              "required": false,
+              "default": "name",
+              "description": "Sort collection by object attribute."
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "term",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "count": {
+            "description": "Number of published posts for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ],
+            "readonly": true
+          },
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "required": true
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ]
+          },
+          "taxonomy": {
+            "description": "Type attribution for the object.",
+            "type": "string",
+            "enum": [
+              "category",
+              "post_tag",
+              "nav_menu",
+              "link_category",
+              "post_format"
+            ],
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/(?P<post_id>[\\d]+)/terms/tag/(?P<term_id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "force": {
+              "required": false,
+              "default": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "term",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "count": {
+            "description": "Number of published posts for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ],
+            "readonly": true
+          },
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "required": true
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ]
+          },
+          "taxonomy": {
+            "description": "Type attribution for the object.",
+            "type": "string",
+            "enum": [
+              "category",
+              "post_tag",
+              "nav_menu",
+              "link_category",
+              "post_format"
+            ],
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          }
+        }
+      }
+    },
+    "/wp/v2/pages": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view",
+              "description": "Defines which properties to project",
+              "accepts": [
+                "view",
+                "embed",
+                "edit"
+              ]
+            },
+            "page": {
+              "required": false,
+              "default": 1,
+              "description": "Number of page to load"
+            },
+            "per_page": {
+              "required": false,
+              "default": 10,
+              "description": "Quantity of posts to fetch per page"
+            },
+            "filter": {
+              "required": false,
+              "description": "Filter to apply to the query"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "date": {
+              "required": false
+            },
+            "date_gmt": {
+              "required": false
+            },
+            "modified": {
+              "required": false
+            },
+            "modified_gmt": {
+              "required": false
+            },
+            "password": {
+              "required": false
+            },
+            "slug": {
+              "required": false
+            },
+            "status": {
+              "required": false
+            },
+            "parent": {
+              "required": false
+            },
+            "title": {
+              "required": false
+            },
+            "content": {
+              "required": false
+            },
+            "author": {
+              "required": false
+            },
+            "excerpt": {
+              "required": false
+            },
+            "featured_image": {
+              "required": false
+            },
+            "comment_status": {
+              "required": false
+            },
+            "ping_status": {
+              "required": false
+            },
+            "menu_order": {
+              "required": false
+            },
+            "template": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "page",
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "edit"
+            ]
+          },
+          "guid": {
+            "description": "The globally unique identifier for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true,
+            "properties": {
+              "raw": {
+                "description": "GUID for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "GUID for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "modified": {
+            "description": "The date the object was last modified.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "modified_gmt": {
+            "description": "The date the object was last modified, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "password": {
+            "description": "A password to protect access to the post.",
+            "type": "string",
+            "context": [
+              "edit"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "status": {
+            "description": "A named status for the object.",
+            "type": "string",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ],
+            "context": [
+              "edit"
+            ]
+          },
+          "type": {
+            "description": "Type of Post for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "title": {
+            "description": "The title for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Title for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Title for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "content": {
+            "description": "The content for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Content for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Content for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "author": {
+            "description": "The ID for the author of the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "excerpt": {
+            "description": "The excerpt for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Excerpt for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Excerpt for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "featured_image": {
+            "description": "ID of the featured image for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "comment_status": {
+            "description": "Whether or not comments are open on the object.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "ping_status": {
+            "description": "Whether or not the object can be pinged.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "menu_order": {
+            "description": "The order of the object in relation to other object of its type.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "template": {
+            "description": "The theme file to use to display the object.",
+            "type": "string",
+            "enum": [],
+            "context": [
+              "view",
+              "edit"
+            ]
+          }
+        }
+      },
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/pages"
+      }
+    },
+    "/wp/v2/pages/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "date": {
+              "required": false
+            },
+            "date_gmt": {
+              "required": false
+            },
+            "modified": {
+              "required": false
+            },
+            "modified_gmt": {
+              "required": false
+            },
+            "password": {
+              "required": false
+            },
+            "slug": {
+              "required": false
+            },
+            "status": {
+              "required": false
+            },
+            "parent": {
+              "required": false
+            },
+            "title": {
+              "required": false
+            },
+            "content": {
+              "required": false
+            },
+            "author": {
+              "required": false
+            },
+            "excerpt": {
+              "required": false
+            },
+            "featured_image": {
+              "required": false
+            },
+            "comment_status": {
+              "required": false
+            },
+            "ping_status": {
+              "required": false
+            },
+            "menu_order": {
+              "required": false
+            },
+            "template": {
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "force": {
+              "required": false,
+              "default": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "page",
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "edit"
+            ]
+          },
+          "guid": {
+            "description": "The globally unique identifier for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true,
+            "properties": {
+              "raw": {
+                "description": "GUID for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "GUID for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "modified": {
+            "description": "The date the object was last modified.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "modified_gmt": {
+            "description": "The date the object was last modified, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "password": {
+            "description": "A password to protect access to the post.",
+            "type": "string",
+            "context": [
+              "edit"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "status": {
+            "description": "A named status for the object.",
+            "type": "string",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ],
+            "context": [
+              "edit"
+            ]
+          },
+          "type": {
+            "description": "Type of Post for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "title": {
+            "description": "The title for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Title for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Title for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "content": {
+            "description": "The content for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Content for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Content for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "author": {
+            "description": "The ID for the author of the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "excerpt": {
+            "description": "The excerpt for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Excerpt for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Excerpt for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "featured_image": {
+            "description": "ID of the featured image for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "comment_status": {
+            "description": "Whether or not comments are open on the object.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "ping_status": {
+            "description": "Whether or not the object can be pinged.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "menu_order": {
+            "description": "The order of the object in relation to other object of its type.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "template": {
+            "description": "The theme file to use to display the object.",
+            "type": "string",
+            "enum": [],
+            "context": [
+              "view",
+              "edit"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/pages/(?P<parent_id>[\\d]+)/meta": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "key": {
+              "required": true
+            },
+            "value": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "meta",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "int",
+            "context": [
+              "edit"
+            ],
+            "readonly": true
+          },
+          "key": {
+            "description": "The key for the custom field.",
+            "type": "string",
+            "context": [
+              "edit"
+            ],
+            "required": true
+          },
+          "value": {
+            "description": "The value of the custom field.",
+            "type": "string",
+            "context": [
+              "edit"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/pages/(?P<parent_id>[\\d]+)/meta/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "key": {
+              "required": false
+            },
+            "value": {
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "force": {
+              "required": false,
+              "default": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "meta",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "int",
+            "context": [
+              "edit"
+            ],
+            "readonly": true
+          },
+          "key": {
+            "description": "The key for the custom field.",
+            "type": "string",
+            "context": [
+              "edit"
+            ],
+            "required": true
+          },
+          "value": {
+            "description": "The value of the custom field.",
+            "type": "string",
+            "context": [
+              "edit"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/pages/(?P<parent_id>[\\d]+)/revisions": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "pages-revision",
+        "type": "object",
+        "properties": {
+          "author": {
+            "description": "The ID for the author of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "guid": {
+            "description": "GUID for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "modified": {
+            "description": "The date the object was last modified.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "modified_gmt": {
+            "description": "The date the object was last modified, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "title": {
+            "description": "Title for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "content": {
+            "description": "Content for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "excerpt": {
+            "description": "Excerpt for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/pages/(?P<parent_id>[\\d]+)/revisions/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "pages-revision",
+        "type": "object",
+        "properties": {
+          "author": {
+            "description": "The ID for the author of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "guid": {
+            "description": "GUID for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "modified": {
+            "description": "The date the object was last modified.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "modified_gmt": {
+            "description": "The date the object was last modified, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view"
+            ]
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "title": {
+            "description": "Title for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "content": {
+            "description": "Content for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "excerpt": {
+            "description": "Excerpt for the object, as it exists in the database.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/media": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view",
+              "description": "Defines which properties to project",
+              "accepts": [
+                "view",
+                "embed",
+                "edit"
+              ]
+            },
+            "page": {
+              "required": false,
+              "default": 1,
+              "description": "Number of page to load"
+            },
+            "per_page": {
+              "required": false,
+              "default": 10,
+              "description": "Quantity of posts to fetch per page"
+            },
+            "filter": {
+              "required": false,
+              "description": "Filter to apply to the query"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "date": {
+              "required": false
+            },
+            "date_gmt": {
+              "required": false
+            },
+            "modified": {
+              "required": false
+            },
+            "modified_gmt": {
+              "required": false
+            },
+            "password": {
+              "required": false
+            },
+            "slug": {
+              "required": false
+            },
+            "status": {
+              "required": false
+            },
+            "title": {
+              "required": false
+            },
+            "author": {
+              "required": false
+            },
+            "comment_status": {
+              "required": false
+            },
+            "ping_status": {
+              "required": false
+            },
+            "alt_text": {
+              "required": false
+            },
+            "caption": {
+              "required": false
+            },
+            "description": {
+              "required": false
+            },
+            "post": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "attachment",
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "edit"
+            ]
+          },
+          "guid": {
+            "description": "The globally unique identifier for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true,
+            "properties": {
+              "raw": {
+                "description": "GUID for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "GUID for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "modified": {
+            "description": "The date the object was last modified.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "modified_gmt": {
+            "description": "The date the object was last modified, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "password": {
+            "description": "A password to protect access to the post.",
+            "type": "string",
+            "context": [
+              "edit"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "status": {
+            "description": "A named status for the object.",
+            "type": "string",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ],
+            "context": [
+              "edit"
+            ]
+          },
+          "type": {
+            "description": "Type of Post for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "title": {
+            "description": "The title for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Title for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Title for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "author": {
+            "description": "The ID for the author of the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "comment_status": {
+            "description": "Whether or not comments are open on the object.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "ping_status": {
+            "description": "Whether or not the object can be pinged.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "alt_text": {
+            "description": "Alternative text to display when attachment is not displayed.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "caption": {
+            "description": "The caption for the attachment.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "description": {
+            "description": "The description for the attachment.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "media_type": {
+            "description": "Type of attachment.",
+            "type": "string",
+            "enum": [
+              "image",
+              "file"
+            ],
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "media_details": {
+            "description": "Details about the attachment file, specific to its type.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "post": {
+            "description": "The ID for the associated post of the attachment.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "source_url": {
+            "description": "URL to the original attachment file.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          }
+        }
+      },
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/media"
+      }
+    },
+    "/wp/v2/media/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "date": {
+              "required": false
+            },
+            "date_gmt": {
+              "required": false
+            },
+            "modified": {
+              "required": false
+            },
+            "modified_gmt": {
+              "required": false
+            },
+            "password": {
+              "required": false
+            },
+            "slug": {
+              "required": false
+            },
+            "status": {
+              "required": false
+            },
+            "title": {
+              "required": false
+            },
+            "author": {
+              "required": false
+            },
+            "comment_status": {
+              "required": false
+            },
+            "ping_status": {
+              "required": false
+            },
+            "alt_text": {
+              "required": false
+            },
+            "caption": {
+              "required": false
+            },
+            "description": {
+              "required": false
+            },
+            "post": {
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "force": {
+              "required": false,
+              "default": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "attachment",
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "edit"
+            ]
+          },
+          "guid": {
+            "description": "The globally unique identifier for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true,
+            "properties": {
+              "raw": {
+                "description": "GUID for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "GUID for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "modified": {
+            "description": "The date the object was last modified.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "modified_gmt": {
+            "description": "The date the object was last modified, as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "password": {
+            "description": "A password to protect access to the post.",
+            "type": "string",
+            "context": [
+              "edit"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "status": {
+            "description": "A named status for the object.",
+            "type": "string",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ],
+            "context": [
+              "edit"
+            ]
+          },
+          "type": {
+            "description": "Type of Post for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "title": {
+            "description": "The title for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Title for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Title for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "author": {
+            "description": "The ID for the author of the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "comment_status": {
+            "description": "Whether or not comments are open on the object.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "ping_status": {
+            "description": "Whether or not the object can be pinged.",
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ],
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "alt_text": {
+            "description": "Alternative text to display when attachment is not displayed.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "caption": {
+            "description": "The caption for the attachment.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "description": {
+            "description": "The description for the attachment.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "media_type": {
+            "description": "Type of attachment.",
+            "type": "string",
+            "enum": [
+              "image",
+              "file"
+            ],
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "media_details": {
+            "description": "Details about the attachment file, specific to its type.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "post": {
+            "description": "The ID for the associated post of the attachment.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "source_url": {
+            "description": "URL to the original attachment file.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          }
+        }
+      }
+    },
+    "/wp/v2/types": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "post_type": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "type",
+        "type": "object",
+        "properties": {
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "hierarchical": {
+            "description": "Whether or not the type should have children.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "labels": {
+            "description": "Human-readable labels for the type for various contexts.",
+            "type": "object",
+            "context": [
+              "view"
+            ]
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      },
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/types"
+      }
+    },
+    "/wp/v2/types/(?P<type>[\\w-]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "type",
+        "type": "object",
+        "properties": {
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "hierarchical": {
+            "description": "Whether or not the type should have children.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "labels": {
+            "description": "Human-readable labels for the type for various contexts.",
+            "type": "object",
+            "context": [
+              "view"
+            ]
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/statuses": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "status",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The title for the status.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "private": {
+            "description": "Whether posts with this status should be private.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "protected": {
+            "description": "Whether posts with this status should be protected.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "public": {
+            "description": "Whether posts of this status should be shown in the front end of the site.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "queryable": {
+            "description": "Whether posts with this status should be publicly-queryable.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "show_in_list": {
+            "description": "Whether to include posts in the edit listing for their post type.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the status.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      },
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/statuses"
+      }
+    },
+    "/wp/v2/statuses/(?P<status>[\\w-]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "status",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The title for the status.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "private": {
+            "description": "Whether posts with this status should be private.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "protected": {
+            "description": "Whether posts with this status should be protected.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "public": {
+            "description": "Whether posts of this status should be shown in the front end of the site.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "queryable": {
+            "description": "Whether posts with this status should be publicly-queryable.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "show_in_list": {
+            "description": "Whether to include posts in the edit listing for their post type.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the status.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/taxonomies": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "post_type": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "taxonomy",
+        "type": "object",
+        "properties": {
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "hierarchical": {
+            "description": "Whether or not the type should have children.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "labels": {
+            "description": "Human-readable labels for the type for various contexts.",
+            "type": "object",
+            "context": [
+              "view"
+            ]
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "show_cloud": {
+            "description": "Whether or not the term cloud should be displayed.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "types": {
+            "description": "Types associated with taxonomy.",
+            "type": "array",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      },
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/taxonomies"
+      }
+    },
+    "/wp/v2/taxonomies/(?P<taxonomy>[\\w-]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "taxonomy",
+        "type": "object",
+        "properties": {
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "hierarchical": {
+            "description": "Whether or not the type should have children.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "labels": {
+            "description": "Human-readable labels for the type for various contexts.",
+            "type": "object",
+            "context": [
+              "view"
+            ]
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "show_cloud": {
+            "description": "Whether or not the term cloud should be displayed.",
+            "type": "boolean",
+            "context": [
+              "view"
+            ]
+          },
+          "types": {
+            "description": "Types associated with taxonomy.",
+            "type": "array",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/terms/category": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "page": {
+              "required": false,
+              "default": 1,
+              "description": "Current page of the collection."
+            },
+            "per_page": {
+              "required": false,
+              "default": 10,
+              "description": "Maximum number of items to be returned in result set."
+            },
+            "search": {
+              "required": false,
+              "description": "Limit results to those matching a string."
+            },
+            "order": {
+              "required": false,
+              "default": "asc",
+              "description": "Order sort attribute ascending or descending."
+            },
+            "orderby": {
+              "required": false,
+              "default": "name",
+              "description": "Sort collection by object attribute."
+            },
+            "parent": {
+              "required": false,
+              "description": "Limit result set to terms assigned to a specific parent term."
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "description": {
+              "required": false
+            },
+            "name": {
+              "required": true
+            },
+            "slug": {
+              "required": false
+            },
+            "parent": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "term",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "count": {
+            "description": "Number of published posts for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ],
+            "readonly": true
+          },
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "required": true
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ]
+          },
+          "taxonomy": {
+            "description": "Type attribution for the object.",
+            "type": "string",
+            "enum": [
+              "category",
+              "post_tag",
+              "nav_menu",
+              "link_category",
+              "post_format"
+            ],
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      },
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/terms/category"
+      }
+    },
+    "/wp/v2/terms/category/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "description": {
+              "required": false
+            },
+            "name": {
+              "required": false
+            },
+            "slug": {
+              "required": false
+            },
+            "parent": {
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "term",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "count": {
+            "description": "Number of published posts for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ],
+            "readonly": true
+          },
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "required": true
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ]
+          },
+          "taxonomy": {
+            "description": "Type attribution for the object.",
+            "type": "string",
+            "enum": [
+              "category",
+              "post_tag",
+              "nav_menu",
+              "link_category",
+              "post_format"
+            ],
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ]
+          }
+        }
+      }
+    },
+    "/wp/v2/terms/tag": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "page": {
+              "required": false,
+              "default": 1,
+              "description": "Current page of the collection."
+            },
+            "per_page": {
+              "required": false,
+              "default": 10,
+              "description": "Maximum number of items to be returned in result set."
+            },
+            "search": {
+              "required": false,
+              "description": "Limit results to those matching a string."
+            },
+            "order": {
+              "required": false,
+              "default": "asc",
+              "description": "Order sort attribute ascending or descending."
+            },
+            "orderby": {
+              "required": false,
+              "default": "name",
+              "description": "Sort collection by object attribute."
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "description": {
+              "required": false
+            },
+            "name": {
+              "required": true
+            },
+            "slug": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "term",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "count": {
+            "description": "Number of published posts for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ],
+            "readonly": true
+          },
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "required": true
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ]
+          },
+          "taxonomy": {
+            "description": "Type attribution for the object.",
+            "type": "string",
+            "enum": [
+              "category",
+              "post_tag",
+              "nav_menu",
+              "link_category",
+              "post_format"
+            ],
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          }
+        }
+      },
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/terms/tag"
+      }
+    },
+    "/wp/v2/terms/tag/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": []
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "description": {
+              "required": false
+            },
+            "name": {
+              "required": false
+            },
+            "slug": {
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": []
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "term",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "count": {
+            "description": "Number of published posts for the object.",
+            "type": "integer",
+            "context": [
+              "view"
+            ],
+            "readonly": true
+          },
+          "description": {
+            "description": "A human-readable description of the object.",
+            "type": "string",
+            "context": [
+              "view"
+            ]
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "name": {
+            "description": "The title for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ],
+            "required": true
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "embed"
+            ]
+          },
+          "taxonomy": {
+            "description": "Type attribution for the object.",
+            "type": "string",
+            "enum": [
+              "category",
+              "post_tag",
+              "nav_menu",
+              "link_category",
+              "post_format"
+            ],
+            "context": [
+              "view",
+              "embed"
+            ],
+            "readonly": true
+          }
+        }
+      }
+    },
+    "/wp/v2/users": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "page": {
+              "required": false,
+              "default": 1,
+              "description": "Current page of the collection."
+            },
+            "per_page": {
+              "required": false,
+              "default": 10,
+              "description": "Maximum number of items to be returned in result set."
+            },
+            "search": {
+              "required": false,
+              "description": "Limit results to those matching a string."
+            },
+            "context": {
+              "required": false,
+              "default": "view",
+              "description": "Change the response format based on request context."
+            },
+            "order": {
+              "required": false,
+              "default": "asc",
+              "description": "Order sort attribute ascending or descending."
+            },
+            "orderby": {
+              "required": false,
+              "default": "name",
+              "description": "Sort collection by object attribute."
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "capabilities": {
+              "required": false
+            },
+            "description": {
+              "required": false
+            },
+            "email": {
+              "required": true
+            },
+            "first_name": {
+              "required": false
+            },
+            "last_name": {
+              "required": false
+            },
+            "name": {
+              "required": false
+            },
+            "nickname": {
+              "required": false
+            },
+            "role": {
+              "required": false
+            },
+            "slug": {
+              "required": false
+            },
+            "username": {
+              "required": true
+            },
+            "password": {
+              "required": true
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "user",
+        "type": "object",
+        "properties": {
+          "avatar_urls": {
+            "description": "Avatar URLs for the object.",
+            "type": "object",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ],
+            "readonly": true,
+            "properties": {
+              "24": {
+                "description": "Avatar URL with image size of 24 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              },
+              "48": {
+                "description": "Avatar URL with image size of 48 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              },
+              "96": {
+                "description": "Avatar URL with image size of 96 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "capabilities": {
+            "description": "All capabilities assigned to the user.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "description": {
+            "description": "Description of the object.",
+            "type": "string",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ]
+          },
+          "email": {
+            "description": "The email address for the object.",
+            "type": "string",
+            "format": "email",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "required": true
+          },
+          "extra_capabilities": {
+            "description": "Any extra capabilities assigned to the user.",
+            "type": "object",
+            "context": [
+              "edit"
+            ],
+            "readonly": true
+          },
+          "first_name": {
+            "description": "First name for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "last_name": {
+            "description": "Last name for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "link": {
+            "description": "Author URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "name": {
+            "description": "Display name for the object.",
+            "type": "string",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ]
+          },
+          "nickname": {
+            "description": "The nickname for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "registered_date": {
+            "description": "Registration date for the user.",
+            "type": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "roles": {
+            "description": "Roles assigned to the user.",
+            "type": "array",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "role": {
+            "description": "Role assigned to the user.",
+            "type": "string",
+            "enum": [
+              "administrator",
+              "editor",
+              "author",
+              "contributor",
+              "subscriber"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "url": {
+            "description": "URL of the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "username": {
+            "description": "Login name for the user.",
+            "type": "string",
+            "context": [
+              "edit"
+            ],
+            "required": true
+          }
+        }
+      },
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/users"
+      }
+    },
+    "/wp/v2/users/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "embed"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "capabilities": {
+              "required": false
+            },
+            "description": {
+              "required": false
+            },
+            "email": {
+              "required": false
+            },
+            "first_name": {
+              "required": false
+            },
+            "last_name": {
+              "required": false
+            },
+            "name": {
+              "required": false
+            },
+            "nickname": {
+              "required": false
+            },
+            "role": {
+              "required": false
+            },
+            "slug": {
+              "required": false
+            },
+            "username": {
+              "required": false
+            },
+            "password": {
+              "required": false
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "force": {
+              "required": false,
+              "default": false
+            },
+            "reassign": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "user",
+        "type": "object",
+        "properties": {
+          "avatar_urls": {
+            "description": "Avatar URLs for the object.",
+            "type": "object",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ],
+            "readonly": true,
+            "properties": {
+              "24": {
+                "description": "Avatar URL with image size of 24 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              },
+              "48": {
+                "description": "Avatar URL with image size of 48 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              },
+              "96": {
+                "description": "Avatar URL with image size of 96 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "capabilities": {
+            "description": "All capabilities assigned to the user.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "description": {
+            "description": "Description of the object.",
+            "type": "string",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ]
+          },
+          "email": {
+            "description": "The email address for the object.",
+            "type": "string",
+            "format": "email",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "required": true
+          },
+          "extra_capabilities": {
+            "description": "Any extra capabilities assigned to the user.",
+            "type": "object",
+            "context": [
+              "edit"
+            ],
+            "readonly": true
+          },
+          "first_name": {
+            "description": "First name for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "last_name": {
+            "description": "Last name for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "link": {
+            "description": "Author URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "name": {
+            "description": "Display name for the object.",
+            "type": "string",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ]
+          },
+          "nickname": {
+            "description": "The nickname for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "registered_date": {
+            "description": "Registration date for the user.",
+            "type": "date-time",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "roles": {
+            "description": "Roles assigned to the user.",
+            "type": "array",
+            "context": [
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "role": {
+            "description": "Role assigned to the user.",
+            "type": "string",
+            "enum": [
+              "administrator",
+              "editor",
+              "author",
+              "contributor",
+              "subscriber"
+            ]
+          },
+          "slug": {
+            "description": "An alphanumeric identifier for the object unique to its type.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "url": {
+            "description": "URL of the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "embed",
+              "view",
+              "edit"
+            ],
+            "readonly": true
+          },
+          "username": {
+            "description": "Login name for the user.",
+            "type": "string",
+            "context": [
+              "edit"
+            ],
+            "required": true
+          }
+        }
+      }
+    },
+    "/wp/v2/users/me": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/users/me"
+      }
+    },
+    "/wp/v2/comments": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "page": {
+              "required": false,
+              "default": 1,
+              "description": "Current page of the collection."
+            },
+            "per_page": {
+              "required": false,
+              "default": 10,
+              "description": "Maximum number of items to be returned in result set."
+            },
+            "search": {
+              "required": false,
+              "description": "Limit results to those matching a string."
+            },
+            "author_email": {
+              "required": false,
+              "description": "Limit result set to that from a specific author email."
+            },
+            "karma": {
+              "required": false,
+              "description": "Limit result set to that of a particular comment karma."
+            },
+            "parent": {
+              "required": false,
+              "description": "Limit result set to that of a specific comment parent id."
+            },
+            "post": {
+              "required": false,
+              "description": "Limit result set to comments assigned to a specific post id."
+            },
+            "post_author": {
+              "required": false,
+              "description": "Limit result set to comments associated with posts of a specific post author id."
+            },
+            "post_slug": {
+              "required": false,
+              "description": "Limit result set to comments associated with posts of a specific post slug."
+            },
+            "post_parent": {
+              "required": false,
+              "description": "Limit result set to comments associated with posts of a specific post parent id."
+            },
+            "post_status": {
+              "required": false,
+              "description": "Limit result set to comments associated with posts of a specific post status."
+            },
+            "post_type": {
+              "required": false,
+              "description": "Limit result set to comments associated with posts of a specific post type."
+            },
+            "status": {
+              "required": false,
+              "default": "approve",
+              "description": "Limit result set to comments assigned a specific status."
+            },
+            "type": {
+              "required": false,
+              "default": "comment",
+              "description": "Limit result set to comments assigned a specific type."
+            },
+            "user": {
+              "required": false,
+              "description": "Limit result set to comments assigned to a specific user id."
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "args": {
+            "author": {
+              "required": false
+            },
+            "author_email": {
+              "required": false
+            },
+            "author_name": {
+              "required": false,
+              "default": ""
+            },
+            "author_url": {
+              "required": false
+            },
+            "content": {
+              "required": false,
+              "default": ""
+            },
+            "date": {
+              "required": false
+            },
+            "date_gmt": {
+              "required": false
+            },
+            "karma": {
+              "required": false
+            },
+            "parent": {
+              "required": false,
+              "default": 0
+            },
+            "post": {
+              "required": false
+            },
+            "status": {
+              "required": false
+            },
+            "type": {
+              "required": false,
+              "default": ""
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "comment",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "author": {
+            "description": "The ID of the user object, if author was a user.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "author_avatar_urls": {
+            "description": "Avatar URLs for the object author.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true,
+            "properties": {
+              "24": {
+                "description": "Avatar URL with image size of 24 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              },
+              "48": {
+                "description": "Avatar URL with image size of 48 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              },
+              "96": {
+                "description": "Avatar URL with image size of 96 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "author_email": {
+            "description": "Email address for the object author.",
+            "type": "string",
+            "format": "email",
+            "context": [
+              "edit"
+            ]
+          },
+          "author_ip": {
+            "description": "IP address for the object author.",
+            "type": "string",
+            "context": [
+              "edit"
+            ],
+            "readonly": true
+          },
+          "author_name": {
+            "description": "Display name for the object author.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "author_url": {
+            "description": "URL for the object author.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "author_user_agent": {
+            "description": "User agent for the object author.",
+            "type": "string",
+            "context": [
+              "edit"
+            ],
+            "readonly": true
+          },
+          "content": {
+            "description": "The content for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Content for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Content for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "edit"
+            ]
+          },
+          "karma": {
+            "description": "Karma for the object.",
+            "type": "integer",
+            "context": [
+              "edit"
+            ]
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "post": {
+            "description": "The ID of the associated post object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "status": {
+            "description": "State of the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "type": {
+            "description": "Type of Comment for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          }
+        }
+      },
+      "_links": {
+        "self": "https://localhost/trunk/wp-json/wp/v2/comments"
+      }
+    },
+    "/wp/v2/comments/(?P<id>[\\d]+)": {
+      "namespace": "wp/v2",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "endpoints": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "args": {
+            "context": {
+              "required": false,
+              "default": "view"
+            }
+          }
+        },
+        {
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "args": {
+            "author": {
+              "required": false
+            },
+            "author_email": {
+              "required": false
+            },
+            "author_name": {
+              "required": false,
+              "default": ""
+            },
+            "author_url": {
+              "required": false
+            },
+            "content": {
+              "required": false,
+              "default": ""
+            },
+            "date": {
+              "required": false
+            },
+            "date_gmt": {
+              "required": false
+            },
+            "karma": {
+              "required": false
+            },
+            "parent": {
+              "required": false,
+              "default": 0
+            },
+            "post": {
+              "required": false
+            },
+            "status": {
+              "required": false
+            },
+            "type": {
+              "required": false,
+              "default": ""
+            }
+          }
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "args": {
+            "force": {
+              "required": false
+            }
+          }
+        }
+      ],
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "comment",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique identifier for the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "author": {
+            "description": "The ID of the user object, if author was a user.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "author_avatar_urls": {
+            "description": "Avatar URLs for the object author.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true,
+            "properties": {
+              "24": {
+                "description": "Avatar URL with image size of 24 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              },
+              "48": {
+                "description": "Avatar URL with image size of 48 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              },
+              "96": {
+                "description": "Avatar URL with image size of 96 pixels.",
+                "type": "uri",
+                "context": [
+                  "embed",
+                  "view",
+                  "edit"
+                ]
+              }
+            }
+          },
+          "author_email": {
+            "description": "Email address for the object author.",
+            "type": "string",
+            "format": "email",
+            "context": [
+              "edit"
+            ]
+          },
+          "author_ip": {
+            "description": "IP address for the object author.",
+            "type": "string",
+            "context": [
+              "edit"
+            ],
+            "readonly": true
+          },
+          "author_name": {
+            "description": "Display name for the object author.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "author_url": {
+            "description": "URL for the object author.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "author_user_agent": {
+            "description": "User agent for the object author.",
+            "type": "string",
+            "context": [
+              "edit"
+            ],
+            "readonly": true
+          },
+          "content": {
+            "description": "The content for the object.",
+            "type": "object",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "properties": {
+              "raw": {
+                "description": "Content for the object, as it exists in the database.",
+                "type": "string",
+                "context": [
+                  "edit"
+                ]
+              },
+              "rendered": {
+                "description": "Content for the object, transformed for display.",
+                "type": "string",
+                "context": [
+                  "view",
+                  "edit",
+                  "embed"
+                ]
+              }
+            }
+          },
+          "date": {
+            "description": "The date the object was published.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "date_gmt": {
+            "description": "The date the object was published as GMT.",
+            "type": "string",
+            "format": "date-time",
+            "context": [
+              "edit"
+            ]
+          },
+          "karma": {
+            "description": "Karma for the object.",
+            "type": "integer",
+            "context": [
+              "edit"
+            ]
+          },
+          "link": {
+            "description": "URL to the object.",
+            "type": "string",
+            "format": "uri",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ],
+            "readonly": true
+          },
+          "parent": {
+            "description": "The ID for the parent of the object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          },
+          "post": {
+            "description": "The ID of the associated post object.",
+            "type": "integer",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "status": {
+            "description": "State of the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit"
+            ]
+          },
+          "type": {
+            "description": "Type of Comment for the object.",
+            "type": "string",
+            "context": [
+              "view",
+              "edit",
+              "embed"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "_links": {
+    "help": [
+      {
+        "href": "http://v2.wp-api.org/"
+      }
+    ]
+  }
+}

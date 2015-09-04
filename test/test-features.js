@@ -180,7 +180,7 @@ module.exports[ 'features' ] = {
 		cli.main( 'wp-api-cli path_a', this.context, this.wpApi );
 	},
 
-	'secure connection': function ( test ) {
+	'insecure connection': function ( test ) {
 		test.expect( 1 );
 
 		this.requestConfigCallback = function () {
