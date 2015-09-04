@@ -4,4 +4,7 @@ var	nodeunit = require( 'nodeunit' ),
 	reporter = nodeunit.reporters[ 'default' ];
 
 process.chdir( __dirname );
-reporter.run( [ 'test-standard-endpoints.js' ] );
+reporter.run([
+	'test-features.js',
+	'test-standard-endpoints.js',
+]);
