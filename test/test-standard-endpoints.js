@@ -14,8 +14,8 @@ function setUp() {
 		var	self = this;
 
 		this.context = {
-			oauthFile: __dirname + '/oauth.json',
-			apiDescriptionFile: __dirname + '/test-api.json',
+			oauthFile: __dirname + '/standard-oauth.json',
+			apiDescriptionFile: __dirname + '/standard-api.json',
 		};
 
 		this.request = function ( config, callback ) {
