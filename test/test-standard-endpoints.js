@@ -201,3 +201,47 @@ module.exports[ 'posts_revisions' ] = {
 	}),
 
 };
+
+/**
+ * Test CLI command 'posts_terms_category'.
+ *
+ * Endpoints:
+ * - /wp/v2/posts/(?P<post_id>[\\d]+)/terms/category
+ * - /wp/v2/posts/(?P<post_id>[\\d]+)/terms/category/(?P<term_id>[\\d]+)
+ */
+module.exports[ 'posts_terms_category' ] = {
+
+	setUp: setUp(),
+
+	'list': testRequest( 'posts_terms_category --post_id 1', {
+		method: 'GET',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/1/terms/category',
+	}),
+
+	'ordered list': testRequest( 'posts_terms_category --post_id 2 --order desc --orderby name', {
+		method: 'GET',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/2/terms/category?order=desc&orderby=name',
+	}),
+
+	'read': testRequest( 'posts_terms_category --post_id 3 --term_id 4', {
+		method: 'GET',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/3/terms/category/4',
+	}),
+
+	'create': testRequest( 'posts_terms_category --post_id 5 --term_id 6 -X POST', {
+		method: 'POST',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/5/terms/category/6',
+		body: {},
+	}),
+
+	'trash': testRequest( 'posts_terms_category --post_id 7 --term_id 8 -X DELETE', {
+		method: 'DELETE',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/7/terms/category/8',
+	}),
+
+	'delete': testRequest( 'posts_terms_category --post_id 7 --term_id 8 -X DELETE --force true', {
+		method: 'DELETE',
+		url: 'http://localhost/trunk/wp-json/wp/v2/posts/7/terms/category/8?force=true',
+	}),
+
+};
