@@ -27,3 +27,4 @@ build/Release
 node_modules
 oauth.json
 api.json
+coverage
