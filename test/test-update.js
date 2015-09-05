@@ -47,9 +47,7 @@ module.exports[ 'update' ] = function ( test ) {
 
 		cli.main( 'wp-api-cli update --site https://example.com', self.context, self.wpApi, function () {
 			fs.readFile( self.context.apiDescriptionFile, 'utf8', function ( error, content ) {
-				console.log('a' + error);
-				test.ifError( error, 'fuck' );
-				console.log('b');
+				test.ifError( error );
 				test.deepEqual( JSON.parse( content ), fakeDescription );
 				fs.unlink( self.context.apiDescriptionFile, function () {
 					test.done();
