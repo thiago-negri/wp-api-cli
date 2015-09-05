@@ -1,3 +1,4 @@
+
 CLI for WordPress.org REST API v2
 =================================
 
@@ -130,4 +131,4 @@ Related Issues and Pull Requests
 Project Overview
 ----------------
 
-![Overview image of project files](overview.svg)
+![Overview image of project files](overview.png)
