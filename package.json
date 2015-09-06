@@ -1,6 +1,6 @@
 {
   "name": "wp-api-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI for WordPress.org REST API v2",
   "main": "index.js",
   "preferGlobal": true,
