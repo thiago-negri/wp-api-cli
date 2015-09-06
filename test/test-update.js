@@ -26,8 +26,8 @@ module.exports[ 'update' ] = function ( test ) {
 			if ( url === 'https://example.com/wp-json/?context=help' ) {
 				return callback( null, { statusCode: 200 }, fakeDescription );
 			}
-			test.ok( false, 'unexpected get request: ' + config );
-			return callback( 'unexpected get request: ' + config );
+			test.ok( false, 'unexpected get request: ' + url );
+			return callback( 'unexpected get request: ' + url );
 		};
 
 		self.request.head = function ( url, callback ) {
@@ -39,7 +39,7 @@ module.exports[ 'update' ] = function ( test ) {
 					},
 				}, '' );
 			}
-			test.ok( false, 'unexpected get request: ' + config );
+			test.ok( false, 'unexpected get request: ' + url );
 			return callback( 'unexpected head request: ' + url );
 		};
 
