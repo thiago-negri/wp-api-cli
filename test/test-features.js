@@ -14,7 +14,7 @@ function setUp() {
 		var	self = this;
 
 		this.context = {
-			oauthFile: __dirname + '/test-oauth.json',
+			oauthFile: __dirname + '/test-oauth-this-does-not-exists.json',
 			apiDescriptionFile: __dirname + '/test-api.json',
 		};
 
@@ -40,6 +40,10 @@ function testRequest( args, expectedRequest, flattenFile ) {
 		test.expect( 1 );
 
 		this.requestConfigCallback = function ( actual ) {
+			/* OAuth signature is based on a random nonce, it changes with every test */
+			if ( actual.headers && actual.headers.Authorization && actual.headers.Authorization.indexOf( 'OAuth' ) === 0 ) {
+				actual.headers.Authorization = 'OAuth ...';
+			}
 			if ( flattenFile ) {
 				if ( actual.formData.file.value ) {
 					actual.formData.file.value = '(FileHandler)' + actual.formData.file.value.path;
@@ -191,5 +195,23 @@ module.exports[ 'features' ] = {
 		process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
 		cli.main( 'wp-api-cli path_a -k', this.context, this.wpApi );
 	},
+
+	'oauth load': testRequest( 'path_a --oauth_file test-oauth.json', {
+		method: 'GET',
+		url: 'https://example.com/wp-json/path_a',
+		headers: {
+			Authorization: 'OAuth ...',
+		},
+	}),
+
+	'basic auth': testRequest( 'path_a --http_user foo --http_pass bar', {
+		method: 'GET',
+		url: 'https://example.com/wp-json/path_a',
+		auth: {
+			user: 'foo',
+			pass: 'bar',
+			sendImmediately: true,
+		},
+	}),
 
 };
