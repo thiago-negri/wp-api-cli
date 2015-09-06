@@ -2,6 +2,7 @@
   "name": "wp-api-cli",
   "version": "0.1.1",
   "description": "CLI for WordPress.org REST API v2",
+  "keywords": ["cli", "command line", "wordpress", "api", "rest", "console"],
   "main": "index.js",
   "preferGlobal": true,
   "scripts": {
@@ -12,6 +13,14 @@
   },
   "author": "Thiago Borghezan Negri <evohunz@gmail.com>",
   "license": "GPL-2.0",
+  "bugs": {
+    "mail": "evohunz@gmail.com",
+    "url": "http://github.com/thiago-negri/wp-api-cli/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/thiago-negri/wp-api-cli.git"
+  },
   "dependencies": {
     "cli": "^0.9.0",
     "md5": "^2.0.0",
