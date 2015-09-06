@@ -9,7 +9,7 @@ Load
 Property:
 
 ```javascript
-	load: function ( wpApi, callback ) {
+	load: function ( context, wpApi, callback ) {
 	}
 ```
 
@@ -21,7 +21,7 @@ Init
 Property:
 
 ```javascript
-	init: function ( cli, args, options, wpApi, callback ) {
+	init: function ( context, cli, args, options, wpApi, callback ) {
 	}
 ```
 
@@ -61,7 +61,7 @@ Property:
 	commands: {
 		'command_name': {
 			label: 'description',
-			handler: function ( cli, args, options, api ) {
+			handler: function ( context, cli, args, options, api ) {
 			}
 		}
 	}
@@ -87,7 +87,7 @@ Create the file `lib/modules/greet.js`:
 
 	module.exports = {
 
-		load: function ( api, callback ) {
+		load: function ( context, api, callback ) {
 			fs.readFile( 'salutation.default', 'utf8', function ( error, content ) {
 				if ( error ) {
 					if ( error.code === 'ENOENT' ) {
@@ -100,7 +100,7 @@ Create the file `lib/modules/greet.js`:
 			});
 		},
 
-		init: function ( cli, args, options, wpApi, callback ) {
+		init: function ( context, cli, args, options, wpApi, callback ) {
 			if ( options.salutation ) {
 				salutation = options.salutation;
 				return fs.writeFile( 'salutation.default', salutation, function ( error ) {
@@ -133,7 +133,7 @@ Create the file `lib/modules/greet.js`:
 		commands: {
 			'greet': {
 				label   : 'Greet someone.',
-				handler : function ( cli, args, options, api ) {
+				handler : function ( context, cli, args, options, api ) {
 					var	greetings;
 					greetings = salutation + ', ' + options.name;
 					cli.ok( greetings );
