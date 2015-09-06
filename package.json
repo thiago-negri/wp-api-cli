@@ -1,8 +1,15 @@
 {
   "name": "wp-api-cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CLI for WordPress.org REST API v2",
-  "keywords": ["cli", "command line", "wordpress", "api", "rest", "console"],
+  "keywords": [
+    "cli",
+    "command line",
+    "wordpress",
+    "api",
+    "rest",
+    "console"
+  ],
   "main": "index.js",
   "preferGlobal": true,
   "scripts": {
