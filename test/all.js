@@ -5,6 +5,7 @@ var	nodeunit = require( 'nodeunit' ),
 
 process.chdir( __dirname );
 reporter.run([
+	'test-auth.js',
 	'test-update.js',
 	'test-features.js',
 	'test-standard-endpoints.js',
