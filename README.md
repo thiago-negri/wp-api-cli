@@ -14,7 +14,7 @@ Installing
 2. Install [WP-API plugin from Git](https://github.com/WP-API/WP-API) and activate it.
 	- There are some fixes that I made concerning file uploads and missing metadata, consider using [the branch 'tnegri' of my fork](https://github.com/thiago-negri/WP-API/tree/tnegri) if the fixes are not already merged.
 3. Install [Node.js](https://nodejs.org/).
-4. Download this repository, and install it on your system: `npm install`.
+4. Install the latest published version of this CLI on your system: `npm install --global wp-api-cli`.
 
 ### Authenticating with OAuth 1.0
 
@@ -65,33 +65,33 @@ After updating, ask for help to see everything available in your site:
 wp-api-cli --help
 ```
 
-See [docs/COMMANDS.md](docs/COMMANDS.md) for a full documentation on commands.
+See [COMMANDS.md](https://github.com/thiago-negri/wp-api-cli/docs/COMMANDS.md) for a full documentation on commands.
 
 Developers
 ----------
 
 This project is structured as follows:
 
-1. [`index.js`](index.js) is the entry point, it executes the main function defined in [`lib/wp-api-cli.js`](lib/wp-api-cli.js).
-1. [`lib/wp-api-cli.js`](lib/wp-api-cli.js) wires everything up.
-1. [`lib/wp-api.js`](lib/wp-api.js) contains the class that communicates with the REST APIs.
-1. [`lib/modules.js`](lib/modules.js) loads all modules. A module is an object that provides the functionalities of the CLI.
-	- [`lib/modules/attachment.js`](lib/modules/attachment.js) handles attaching files to requests, used to upload media.
-	- [`lib/modules/auth.js`](lib/modules/auth.js) handles authentication.
-	- [`lib/modules/bool-loader.js`](lib/modules/bool-loader.js) handles boolean values in dynamic options.
-	- [`lib/modules/debug.js`](lib/modules/debug.js) let you see debug messages.
-	- [`lib/modules/describe.js`](lib/modules/describe.js) let you fetch a description of the API.
-	- [`lib/modules/dict-loader.js`](lib/modules/dict-loader.js) handles transforming options into objects (`dict:` prefix).
-	- [`lib/modules/file-loader.js`](lib/modules/file-loader.js) handles loading options from file (`file:` prefix).
-	- [`lib/modules/insecure.js`](lib/modules/insecure.js) allows connection to insecure sites, e.g. with self signed certificates.
-	- [`lib/modules/method.js`](lib/modules/method.js) sets which HTTP verb to use in request.
-	- [`lib/modules/routes.js`](lib/modules/routes.js) handles all dynamic commands and options based on actual API description (plus some helpers).
-	- [`lib/modules/site.js`](lib/modules/site.js) lets you set which site the CLI connects to.
-	- [`lib/modules/text-loader.js`](lib/modules/text-loader.js) handles `text:` prefix.
-	- [`lib/modules/update.js`](lib/modules/update.js) fetches API description and writes it to a file for further use by [`lib/modules/routes.js`](lib/modules/routes.js).
-1. Files in [`lib/utils`](lib/utils) are utility functions to make coding easier.
+1. [`index.js`](https://github.com/thiago-negri/wp-api-cli/index.js) is the entry point, it executes the main function defined in [`lib/wp-api-cli.js`](lib/wp-api-cli.js).
+1. [`lib/wp-api-cli.js`](https://github.com/thiago-negri/wp-api-cli/lib/wp-api-cli.js) wires everything up.
+1. [`lib/wp-api.js`](https://github.com/thiago-negri/wp-api-cli/lib/wp-api.js) contains the class that communicates with the REST APIs.
+1. [`lib/modules.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules.js) loads all modules. A module is an object that provides the functionalities of the CLI.
+	- [`lib/modules/attachment.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/attachment.js) handles attaching files to requests, used to upload media.
+	- [`lib/modules/auth.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/auth.js) handles authentication.
+	- [`lib/modules/bool-loader.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/bool-loader.js) handles boolean values in dynamic options.
+	- [`lib/modules/debug.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/debug.js) let you see debug messages.
+	- [`lib/modules/describe.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/describe.js) let you fetch a description of the API.
+	- [`lib/modules/dict-loader.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/dict-loader.js) handles transforming options into objects (`dict:` prefix).
+	- [`lib/modules/file-loader.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/file-loader.js) handles loading options from file (`file:` prefix).
+	- [`lib/modules/insecure.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/insecure.js) allows connection to insecure sites, e.g. with self signed certificates.
+	- [`lib/modules/method.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/method.js) sets which HTTP verb to use in request.
+	- [`lib/modules/routes.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/routes.js) handles all dynamic commands and options based on actual API description (plus some helpers).
+	- [`lib/modules/site.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/site.js) lets you set which site the CLI connects to.
+	- [`lib/modules/text-loader.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/text-loader.js) handles `text:` prefix.
+	- [`lib/modules/update.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/update.js) fetches API description and writes it to a file for further use by [`lib/modules/routes.js`](https://github.com/thiago-negri/wp-api-cli/lib/modules/routes.js).
+1. Files in [`lib/utils`](https://github.com/thiago-negri/wp-api-cli/lib/utils) are utility functions to make coding easier.
 
-If you want to create a new set of commands, drop a file in `lib/modules` and load it in `modules.js`. Full explanation in [docs/MODULES.md](docs/MODULES.md).
+If you want to create a new set of commands, drop a file in `lib/modules` and load it in `modules.js`. Full explanation in [MODULES.md](https://github.com/thiago-negri/wp-api-cli/docs/MODULES.md).
 
 Useful Links
 ------------
@@ -131,4 +131,4 @@ Related Issues and Pull Requests
 Project Overview
 ----------------
 
-![Overview image of project files](overview.png)
+![Overview image of project files](https://github.com/thiago-negri/wp-api-cli/overview.png)
