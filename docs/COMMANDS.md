@@ -11,7 +11,6 @@ Basic options
 -------------
 
 - `--insecure` or `-k` lets you connect to insecure sites (e.g. with self-signed certificates).
-- `--debug` or `-d` will print each HTTP request issued to the server.
 - `--site` or `-s` will set the site to connect to.
 - `--method` or `-X` defines the HTTP verb to use in the request, defaults to `GET`.
 

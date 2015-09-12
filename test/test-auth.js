@@ -20,27 +20,28 @@ module.exports[ 'authenticate' ] = {
 
 		test.expect( 4 );
 
-		self.request = {};
-
-		self.request.get = function ( url, callback ) {
-			if ( url === 'https://example.com/wp-json/' ) {
-				return callback( null, { statusCode: 200 }, fakeDescription );
+		self.request = function ( options, callback ) {
+			var	url = options.url,
+				method = options.method;
+			if ( method === 'GET' ) {
+				if ( url === 'https://example.com/wp-json/' ) {
+					return callback( null, { statusCode: 200 }, fakeDescription );
+				}
+				test.ok( false, 'unexpected get request: ' + url );
+				return callback( 'unexpected get request: ' + url );
 			}
-			test.ok( false, 'unexpected get request: ' + url );
-			return callback( 'unexpected get request: ' + url );
-		};
-
-		self.request.head = function ( url, callback ) {
-			if ( url === 'https://example.com' ) {
-				return callback( null, {
-					statusCode: 200,
-					headers: {
-						link: '<https://example.com/wp-json/>; rel="https://github.com/WP-API/WP-API"',
-					},
-				}, '' );
+			if ( method === 'HEAD' ) {
+				if ( url === 'https://example.com' ) {
+					return callback( null, {
+						statusCode: 200,
+						headers: {
+							link: '<https://example.com/wp-json/>; rel="https://github.com/WP-API/WP-API"',
+						},
+					}, '' );
+				}
+				test.ok( false, 'unexpected head request: ' + url );
+				return callback( 'unexpected head request: ' + url );
 			}
-			test.ok( false, 'unexpected head request: ' + url );
-			return callback( 'unexpected head request: ' + url );
 		};
 
 		self.oauth = {};
@@ -87,27 +88,28 @@ module.exports[ 'authenticate' ] = {
 
 		test.expect( 4 );
 
-		self.request = {};
-
-		self.request.get = function ( url, callback ) {
-			if ( url === 'https://example.com/wp-json/' ) {
-				return callback( null, { statusCode: 200 }, fakeDescription );
+		self.request = function ( options, callback ) {
+			var	url = options.url,
+				method = options.method;
+			if ( method === 'GET' ) {
+				if ( url === 'https://example.com/wp-json/' ) {
+					return callback( null, { statusCode: 200 }, fakeDescription );
+				}
+				test.ok( false, 'unexpected get request: ' + url );
+				return callback( 'unexpected get request: ' + url );
 			}
-			test.ok( false, 'unexpected get request: ' + url );
-			return callback( 'unexpected get request: ' + url );
-		};
-
-		self.request.head = function ( url, callback ) {
-			if ( url === 'https://example.com' ) {
-				return callback( null, {
-					statusCode: 200,
-					headers: {
-						link: '<https://example.com/wp-json/>; rel="https://github.com/WP-API/WP-API"',
-					},
-				}, '' );
+			if ( method === 'HEAD' ) {
+				if ( url === 'https://example.com' ) {
+					return callback( null, {
+						statusCode: 200,
+						headers: {
+							link: '<https://example.com/wp-json/>; rel="https://github.com/WP-API/WP-API"',
+						},
+					}, '' );
+				}
+				test.ok( false, 'unexpected head request: ' + url );
+				return callback( 'unexpected head request: ' + url );
 			}
-			test.ok( false, 'unexpected head request: ' + url );
-			return callback( 'unexpected head request: ' + url );
 		};
 
 		self.oauth = {};

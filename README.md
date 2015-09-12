@@ -79,7 +79,6 @@ This project is structured as follows:
 	- [`lib/modules/attachment.js`](lib/modules/attachment.js) handles attaching files to requests, used to upload media.
 	- [`lib/modules/auth.js`](lib/modules/auth.js) handles authentication.
 	- [`lib/modules/bool-loader.js`](lib/modules/bool-loader.js) handles boolean values in dynamic options.
-	- [`lib/modules/debug.js`](lib/modules/debug.js) let you see debug messages.
 	- [`lib/modules/describe.js`](lib/modules/describe.js) let you fetch a description of the API.
 	- [`lib/modules/dict-loader.js`](lib/modules/dict-loader.js) handles transforming options into objects (`dict:` prefix).
 	- [`lib/modules/file-loader.js`](lib/modules/file-loader.js) handles loading options from file (`file:` prefix).
