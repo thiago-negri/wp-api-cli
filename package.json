@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "cli": "^0.10.0",
+    "http": "0.0.0",
     "md5": "^2.0.0",
     "nodeunit": "^0.9.1",
     "oauth-lite": "^0.1.1",
