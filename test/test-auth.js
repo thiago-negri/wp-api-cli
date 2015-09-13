@@ -18,43 +18,43 @@ module.exports[ 'authenticate' ] = {
 				},
 			};
 
-		test.expect( 4 );
+		test.expect( 8 );
 
 		self.request = function ( options, callback ) {
 			var	url = options.url,
 				method = options.method;
 			if ( method === 'GET' ) {
-				if ( url === 'https://example.com/wp-json/' ) {
-					return callback( null, { statusCode: 200 }, fakeDescription );
-				}
-				test.ok( false, 'unexpected get request: ' + url );
-				return callback( 'unexpected get request: ' + url );
+				test.equal( url, 'https://example.com/wp-json/' );
+				return callback( null, { statusCode: 200 }, fakeDescription );
 			}
 			if ( method === 'HEAD' ) {
-				if ( url === 'https://example.com' ) {
-					return callback( null, {
-						statusCode: 200,
-						headers: {
-							link: '<https://example.com/wp-json/>; rel="https://github.com/WP-API/WP-API"',
-						},
-					}, '' );
-				}
-				test.ok( false, 'unexpected head request: ' + url );
-				return callback( 'unexpected head request: ' + url );
+				test.equal( url, 'https://example.com' );
+				return callback( null, {
+					statusCode: 200,
+					headers: {
+						link: '<https://example.com/wp-json/>; rel="https://github.com/WP-API/WP-API"',
+					},
+				}, '' );
 			}
+			if ( method === 'POST' ) {
+				test.equal( url, 'https://example.com/oauth1/request' );
+				test.equal( options.headers.Authorization, 'OAuthFakeAuthorizationHeader' );
+				return callback( null, { statusCode: 200 }, 'oauth_token=OAuthFakeToken' );
+			}
+			test.ok( false, 'Unexpected request.' );
 		};
 
-		self.oauth = {};
-
-		self.oauth.fetchRequestToken = function ( oauthConfig, url, form, callback ) {
-			test.equal( url, 'https://example.com/oauth1/request' );
-			test.equal( form, null );
-			test.deepEqual( oauthConfig, {
-				oauth_consumer_key: 'foo',
-				oauth_consumer_secret: 'bar',
-				oauth_callback: 'oob',
-			});
-			return callback( null, { oauth_token: 'spam' } );
+		self.oauth = {
+			makeAuthorizationHeader: function( oauthConfig, oauthOptions ) {
+				test.equal( oauthOptions.method, 'POST' );
+				test.equal( oauthOptions.url, 'https://example.com/oauth1/request' );
+				test.deepEqual( oauthConfig, {
+					oauth_consumer_key: 'foo',
+					oauth_consumer_secret: 'bar',
+					oauth_callback: 'oob',
+				});
+				return 'OAuthFakeAuthorizationHeader';
+			},
 		};
 
 		self.wpApi = new WpApi( self.request, self.oauth );
@@ -67,8 +67,8 @@ module.exports[ 'authenticate' ] = {
 
 		self.wpApi.fetchOauthRequestToken( self.oauthConfig, function ( error, response ) {
 			test.deepEqual( response, {
-				oauth_token: 'spam',
-				authorizeUrl: 'https://example.com/oauth1/authorize?oauth_token=spam',
+				oauth_token: 'OAuthFakeToken',
+				authorizeUrl: 'https://example.com/oauth1/authorize?oauth_token=OAuthFakeToken',
 			});
 			test.done();
 		});
@@ -86,39 +86,41 @@ module.exports[ 'authenticate' ] = {
 				},
 			};
 
-		test.expect( 4 );
+		test.expect( 8 );
 
 		self.request = function ( options, callback ) {
 			var	url = options.url,
 				method = options.method;
 			if ( method === 'GET' ) {
-				if ( url === 'https://example.com/wp-json/' ) {
-					return callback( null, { statusCode: 200 }, fakeDescription );
-				}
-				test.ok( false, 'unexpected get request: ' + url );
-				return callback( 'unexpected get request: ' + url );
+				test.equal( url, 'https://example.com/wp-json/' );
+				return callback( null, { statusCode: 200 }, fakeDescription );
 			}
 			if ( method === 'HEAD' ) {
-				if ( url === 'https://example.com' ) {
-					return callback( null, {
-						statusCode: 200,
-						headers: {
-							link: '<https://example.com/wp-json/>; rel="https://github.com/WP-API/WP-API"',
-						},
-					}, '' );
-				}
-				test.ok( false, 'unexpected head request: ' + url );
-				return callback( 'unexpected head request: ' + url );
+				test.equal( url, 'https://example.com' );
+				return callback( null, {
+					statusCode: 200,
+					headers: {
+						link: '<https://example.com/wp-json/>; rel="https://github.com/WP-API/WP-API"',
+					},
+				}, '' );
 			}
+			if ( method === 'POST' ) {
+				test.equal( url, 'https://example.com/oauth1/access' );
+				test.equal( options.headers.Authorization, 'OAuthFakeAuthorizationHeader' );
+				return callback( null, { statusCode: 200 }, 'oauth_fake=FakeOAuthResponse' );
+			}
+			test.ok( false, 'Unexpected request.' );
 		};
 
 		self.oauth = {};
 
-		self.oauth.fetchAccessToken = function ( oauthConfig, url, form, callback ) {
-			test.equal( url, 'https://example.com/oauth1/access' );
-			test.equal( form, null );
-			test.equal( oauthConfig, 'fake-oauth-config' );
-			return callback( null, 'fake-oauth-response' );
+		self.oauth = {
+			makeAuthorizationHeader: function( oauthConfig, oauthOptions ) {
+				test.equal( oauthOptions.method, 'POST' );
+				test.equal( oauthOptions.url, 'https://example.com/oauth1/access' );
+				test.equal( oauthConfig, 'fake-oauth-config' );
+				return 'OAuthFakeAuthorizationHeader';
+			},
 		};
 
 		self.wpApi = new WpApi( self.request, self.oauth );
@@ -127,7 +129,7 @@ module.exports[ 'authenticate' ] = {
 		self.oauthConfig = 'fake-oauth-config';
 
 		self.wpApi.fetchOauthAccessToken( self.oauthConfig, function ( error, response ) {
-			test.equal( response, 'fake-oauth-response' );
+			test.deepEqual( response, { oauth_fake: 'FakeOAuthResponse' } );
 			test.done();
 		});
 	}
