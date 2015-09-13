@@ -4,6 +4,8 @@ CLI for WordPress.org REST API v2
 
 [![Build status of master branch](https://travis-ci.org/thiago-negri/wp-api-cli.svg?branch=master)](https://travis-ci.org/thiago-negri/wp-api-cli)
 [![Code coverage of master branch](http://codecov.io/github/thiago-negri/wp-api-cli/coverage.svg?branch=master)](http://codecov.io/github/thiago-negri/wp-api-cli?branch=master)
+[![Code climate of master branch](https://codeclimate.com/github/thiago-negri/wp-api-cli/badges/gpa.svg)](https://codeclimate.com/github/thiago-negri/wp-api-cli)
+[![Dependency status of master branch](https://gemnasium.com/thiago-negri/wp-api-cli.svg)](https://gemnasium.com/thiago-negri/wp-api-cli)
 
 CLI to help test-drive the WordPress.org REST API.
 
