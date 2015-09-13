@@ -207,10 +207,8 @@ module.exports[ 'features' ] = {
 	'basic auth': testRequest( 'path_a --http_user foo --http_pass bar', {
 		method: 'GET',
 		url: 'https://example.com/wp-json/path_a',
-		auth: {
-			user: 'foo',
-			pass: 'bar',
-			sendImmediately: true,
+		headers: {
+			Authorization: 'Basic Zm9vOmJhcg=='
 		},
 	}),
 
