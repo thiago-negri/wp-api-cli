@@ -31,7 +31,9 @@
   "dependencies": {
     "basic-authorization-header": "^0.2.7",
     "cli": "^0.10.0",
+    "commander": "^2.8.1",
     "md5": "^2.0.0",
+    "merge": "^1.2.0",
     "nodeunit": "^0.9.1",
     "oauth-lite": "^0.1.1",
     "open": "0.0.5",

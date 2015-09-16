@@ -52,7 +52,6 @@ function testRequest( args, expectedRequest, flattenFile ) {
 				}
 			}
 			test.deepEqual( actual, expectedRequest );
-			test.done();
 		};
 
 		if ( typeof args === 'string' ) {
@@ -61,7 +60,9 @@ function testRequest( args, expectedRequest, flattenFile ) {
 			args.unshift( 'wp-api-cli' );
 		}
 
-		cli.main( args, this.context, this.wpApi );
+		cli.main( args, this.context, this.wpApi, function () {
+			test.done();
+		});
 	};
 }
 

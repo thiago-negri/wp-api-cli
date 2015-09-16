@@ -63,7 +63,7 @@ Update CLI definitions
 The first command you should run is `update` to make sure you have the latest API description from your site.
 
 ```bash
-wp-api-cli update --site https://example.com
+wp-api-cli update https://example.com
 ```
 
 After updating the CLI definitions, it will default to use the site from the API description, but you can change it
@@ -86,65 +86,42 @@ Want to see arguments accepted by a command or the routes it maps to?
 Easy, just ask for it:
 
 ```bash
-wp-api-cli info posts
+wp-api-cli posts -h
 ```
 
 Example output:
 
 ```
-INFO: Using OAuth authentication.
-INFO:
-INFO: Route: /wp/v2/posts
-INFO:   Arguments for GET:
-INFO:     --context.............: Defines which properties to project (Accepts view, embed, edit)
-INFO:     --page................: Number of page to load
-INFO:     --per_page............: Quantity of posts to fetch per page
-INFO:     --filter..............: Filter to apply to the query
-INFO:   Arguments for POST:
-INFO:     --date................: The date the object was published.
-INFO:     --date_gmt............: The date the object was published, as GMT.
-INFO:     --modified............: The date the object was last modified.
-INFO:     --modified_gmt........: The date the object was last modified, as GMT.
-INFO:     --password............: A password to protect access to the post.
-INFO:     --slug................: An alphanumeric identifier for the object unique to its type.
-INFO:     --status..............: A named status for the object.
-INFO:     --title...............: The title for the object.
-INFO:     --content.............: The content for the object.
-INFO:     --author..............: The ID for the author of the object.
-INFO:     --excerpt.............: The excerpt for the object.
-INFO:     --featured_image......: ID of the featured image for the object.
-INFO:     --comment_status......: Whether or not comments are open on the object.
-INFO:     --ping_status.........: Whether or not the object can be pinged.
-INFO:     --format..............: The format for the object.
-INFO:     --sticky..............: Whether or not the object should be treated as sticky.
-INFO:
-INFO: Route: /wp/v2/posts/(?P<id>[\d]+)
-INFO:   Path arguments (required):
-INFO:     --id
-INFO:   Arguments for GET:
-INFO:     --context
-INFO:   Arguments for POST, PUT, PATCH:
-INFO:     --date................: The date the object was published.
-INFO:     --date_gmt............: The date the object was published, as GMT.
-INFO:     --modified............: The date the object was last modified.
-INFO:     --modified_gmt........: The date the object was last modified, as GMT.
-INFO:     --password............: A password to protect access to the post.
-INFO:     --slug................: An alphanumeric identifier for the object unique to its type.
-INFO:     --status..............: A named status for the object.
-INFO:     --title...............: The title for the object.
-INFO:     --content.............: The content for the object.
-INFO:     --author..............: The ID for the author of the object.
-INFO:     --excerpt.............: The excerpt for the object.
-INFO:     --featured_image......: ID of the featured image for the object.
-INFO:     --comment_status......: Whether or not comments are open on the object.
-INFO:     --ping_status.........: Whether or not the object can be pinged.
-INFO:     --format..............: The format for the object.
-INFO:     --sticky..............: Whether or not the object should be treated as sticky.
-INFO:   Arguments for DELETE:
-INFO:     --force
-```
+  Usage: posts [options]
 
-(!) This will only work with commands fetched from the API description.
+  "/wp/v2/posts", "/wp/v2/posts/(?P<id>[\d]+)"
+
+  Options:
+
+    -h, --help                output usage information
+    --context <value>         Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --page <value>            Used by "/wp/v2/posts"
+    --per_page <value>        Used by "/wp/v2/posts"
+    --filter <value>          Used by "/wp/v2/posts"
+    --date <value>            Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --date_gmt <value>        Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --modified <value>        Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --modified_gmt <value>    Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --password <value>        Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --slug <value>            Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --status <value>          Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --title <value>           Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --content <value>         Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --author <value>          Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --excerpt <value>         Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --featured_image <value>  Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --comment_status <value>  Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --ping_status <value>     Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --format <value>          Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --sticky <value>          Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --id <value>              Used by "/wp/v2/posts/(?P<id>[\d]+)"
+    --force <value>           Used by "/wp/v2/posts/(?P<id>[\d]+)"
+```
 
 Commands
 --------

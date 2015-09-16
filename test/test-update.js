@@ -8,7 +8,7 @@ module.exports[ 'update' ] = function ( test ) {
 	var	fakeDescription = { url: 'foo' },
 		self = this;
 
-	test.expect( 2 );
+	test.expect( 4 );
 
 	self.context = {
 		oauthFile: __dirname + '/test-oauth.json',
@@ -24,29 +24,23 @@ module.exports[ 'update' ] = function ( test ) {
 			var	url = options.url,
 				method = options.method;
 			if ( method === 'GET' ) {
-				if ( url === 'https://example.com/wp-json/?context=help' ) {
-					return callback( null, { statusCode: 200 }, fakeDescription );
-				}
-				test.ok( false, 'unexpected get request: ' + url );
-				return callback( 'unexpected get request: ' + url );
+				test.equal( url, 'https://example.com/wp-json/?context=help' );
+				return callback( null, { statusCode: 200 }, fakeDescription );
 			}
 			if ( method === 'HEAD' ) {
-				if ( url === 'https://example.com' ) {
-					return callback( null, {
-						statusCode: 200,
-						headers: {
-							link: '<https://example.com/wp-json/>; rel="https://github.com/WP-API/WP-API"',
-						},
-					}, '' );
-				}
-				test.ok( false, 'unexpected get request: ' + url );
-				return callback( 'unexpected head request: ' + url );
+				test.equal( url, 'https://example.com' );
+				return callback( null, {
+					statusCode: 200,
+					headers: {
+						link: '<https://example.com/wp-json/>; rel="https://github.com/WP-API/WP-API"',
+					},
+				}, '' );
 			}
 		};
 
 		self.wpApi = new WpApi( self.request );
 
-		cli.main( 'wp-api-cli update --site https://example.com', self.context, self.wpApi, function () {
+		cli.main( 'wp-api-cli update https://example.com', self.context, self.wpApi, function () {
 			fs.readFile( self.context.apiDescriptionFile, 'utf8', function ( error, content ) {
 				test.ifError( error );
 				test.deepEqual( JSON.parse( content ), fakeDescription );

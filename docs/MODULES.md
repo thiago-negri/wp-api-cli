@@ -9,7 +9,7 @@ Load
 Property:
 
 ```javascript
-	load: function ( context, wpApi, callback ) {
+	load: function ( context, api, callback ) {
 	}
 ```
 
@@ -21,11 +21,13 @@ Init
 Property:
 
 ```javascript
-	init: function ( context, cli, args, options, wpApi, callback ) {
+	init: function ( context, api, options, callback ) {
 	}
 ```
 
 Fired after parsing command line arguments, before handling the command.
+
+The `options` object is relative to the command, the global options are in `options.parent`.
 
 Options
 -------
@@ -37,8 +39,7 @@ Property:
 		'full_name': {
 			alias: 'short_name',
 			label: 'description',
-			type: 'type',
-			defaultValue: 'defaultValue'
+			type: 'type'
 		}
 	}
 ```
@@ -49,7 +50,7 @@ Read after `load` and before `init`.
 - `full_name` is the full name of the option, e.g. `site` will result in an option `--site`.
 - `short_name` is the alias of the option, e.g. `s` will result in an option `-s`.
 - `description` is the description of the option, used to output in `--help`.
-- `type` is the type of the option, types are the same available by `cli` package.
+- `type` is the type of the option, accept `'STRING'` and `'BOOLEAN'`, default is `'BOOLEAN'`.
 - `defaultValue` sets a default value for the option.
 
 Commands
@@ -60,8 +61,17 @@ Property:
 ```javascript
 	commands: {
 		'command_name': {
+			args: [ 'arg_0', 'arg_1' ]
 			label: 'description',
-			handler: function ( context, cli, args, options, api ) {
+			options: {
+				'full_name': {
+					alias: 'short_name',
+					label: 'description',
+					type: 'type',
+					defaultValue: 'defaultValue'
+				}
+			},
+			handler: function ( context, api, arg_0, arg_1, options, callback ) {
 			}
 		}
 	}
@@ -72,6 +82,8 @@ Read after `load` and before `init`.
 
 - `command_name` is the command name, e.g. `authenticate`.
 - `description` is the description of the command, used to output in `--help`.
+- `args` is an array with the positional command line arguments that this command needs.
+- `options` should contain an object with the same properties as the module options, it defines options that aren't global.
 - The `handler` function is called when the user wants to execute this command.
 
 Full Example
@@ -100,9 +112,9 @@ Create the file `lib/modules/greet.js`:
 			});
 		},
 
-		init: function ( context, cli, args, options, wpApi, callback ) {
-			if ( options.salutation ) {
-				salutation = options.salutation;
+		init: function ( context, api, options, callback ) {
+			if ( options.parent.salutation ) {
+				salutation = options.parent.salutation;
 				return fs.writeFile( 'salutation.default', salutation, function ( error ) {
 					if ( error ) {
 						return callback( error );
@@ -110,7 +122,7 @@ Create the file `lib/modules/greet.js`:
 					return callback();
 				});
 			} else if ( ! salutation ) {
-				return cli.fatal( 'Please, provide an initial salutation. ' +
+				return callback( 'Please, provide an initial salutation. ' +
 				                  'It will be cached in a file afterwards.' );
 			}
 			return callback();
@@ -122,26 +134,31 @@ Create the file `lib/modules/greet.js`:
 				label: 'Salutation to use.',
 				type : 'STRING',
 			},
-			'name': {
-				alias: 'n',
-				label: 'Name to be greeted.',
-				type :'STRING',
-				defaultValue: 'World',
-			},
 		},
 
 		commands: {
 			'greet': {
+				args    : [ 'name' ],
 				label   : 'Greet someone.',
-				handler : function ( context, cli, args, options, api ) {
+				options : {
+					'strong': {
+						alias: 'p',
+						label: 'A strong greeting',
+					},
+				},
+				handler : function ( context, api, name, options, callback ) {
 					var	greetings;
-					greetings = salutation + ', ' + options.name;
-					cli.ok( greetings );
+					greetings = salutation + ', ' + name;
+					if ( options.strong ) {
+						greetings += '!';
+					}
+					console.log( greetings );
+					return callback();
 				}
 			},
 		},
 
-	}
+	};
 ```
 
 Add the module in `lib/modules.js`:
@@ -155,15 +172,41 @@ Have fun!
 Usage:
 
 ```
-$ wp-api-cli greet
-ERROR: Please, provide an initial salutation. It will be cached in a file afterwards.
+$ wp-api-cli -h
 
-$ wp-api-cli greet --salutation Hello
-OK: Hello, World
+  Usage: index [options] [command]
 
-$ wp-api-cli greet --name Thiago
-OK: Hello, Thiago
 
-$ wp-api-cli greet -x Ola -n Mundo
-OK: Ola, Mundo
+  Commands:
+
+    greet [options] <name>  Greet someone.
+
+  Options:
+
+    -h, --help                 output usage information
+    -V, --version              output the version number
+    -x, --salutation <string>  Salutation to use.
+
+$ wp-api-cli greet -h
+
+  Usage: greet [options] <name>
+
+  Greet someone.
+
+  Options:
+
+    -h, --help    output usage information
+	-p, --strong  A strong greeting
+
+$ wp-api-cli greet World
+ERROR: Init Error: Please, provide an initial salutation. It will be cached in a file afterwards.
+
+$ wp-api-cli greet World --salutation Hello
+Hello, World
+
+$ wp-api-cli greet Thiago
+Hello, Thiago
+
+$ wp-api-cli greet Mundo -x Ola -p
+Ola, Mundo!
 ```
