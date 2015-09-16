@@ -17,6 +17,7 @@ Installing
 	- There are some fixes that I made concerning file uploads and missing metadata, consider using [the branch 'tnegri' of my fork](https://github.com/thiago-negri/WP-API/tree/tnegri) if the fixes are not already merged.
 3. Install [Node.js](https://nodejs.org/).
 4. Install the latest published version of this CLI on your system: `npm install --global wp-api-cli`.
+5. Update CLI from API description: `wp-api-cli update https://yoursite.com'.
 
 ### Authenticating with OAuth 1.0
 
@@ -32,10 +33,9 @@ Installing
 4. Authenticate this CLI:
 
     ```bash
-    wp-api-cli --site=http://example.com \
-        --oauth_key=CONSUMER_KEY         \
-        --oauth_secret=CONSUMER_SECRET   \
-        authenticate
+    wp-api-cli authenticate            \
+        --oauth_key=CONSUMER_KEY       \
+        --oauth_secret=CONSUMER_SECRET
     ```
 
 5. It will ask for an authorization token. Follow the steps on the browser, copy the authorization token and paste it on console.
@@ -58,7 +58,7 @@ Commands
 After installing the CLI, you need to update its definition:
 
 ```bash
-wp-api-cli --site=https://example.com update
+wp-api-cli update https://example.com
 ```
 
 After updating, ask for help to see everything available in your site:
