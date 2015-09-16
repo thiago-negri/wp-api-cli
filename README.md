@@ -17,7 +17,7 @@ Installing
 	- There are some fixes that I made concerning file uploads and missing metadata, consider using [the branch 'tnegri' of my fork](https://github.com/thiago-negri/WP-API/tree/tnegri) if the fixes are not already merged.
 3. Install [Node.js](https://nodejs.org/).
 4. Install the latest published version of this CLI on your system: `npm install --global wp-api-cli`.
-5. Update CLI from API description: `wp-api-cli update https://yoursite.com'.
+5. Update CLI from API description: `wp-api-cli update https://yoursite.com`.
 
 ### Authenticating with OAuth 1.0
 
