@@ -15,6 +15,7 @@ Basic options
 - `--method` or `-X` defines the HTTP verb to use in the request, defaults to `GET`.
 - `--yaml` or `-y` to set output to YAML format.
 - `--table` or `-t` to set output to table (ASCII) format.
+- `--project` or `-p` to set which properties you want to see in the output, the value is comma separated.
 
 Helpers
 -------
