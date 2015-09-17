@@ -67,6 +67,36 @@ After updating, ask for help to see everything available in your site:
 wp-api-cli --help
 ```
 
+### Examples
+
+*Show all posts*
+
+```
+$ wp-api-cli posts --table --project id,date,title
+
+----------------------------------------------
+ | id | date                | title         |
+----------------------------------------------
+ | 6  | 2015-08-22T20:27:32 | Hello, WP-API |
+ | 1  | 2015-08-18T23:09:35 | Hello world!  |
+----------------------------------------------
+```
+
+*Show a specific post*
+
+```
+$ wp-api-cli posts --yaml --id 6 --project id,date,title,content,comment_status
+
+id: 6
+date: '2015-08-22T20:27:32'
+title:
+  rendered: 'Hello, WP-API'
+content:
+  rendered: |
+    <p>Hello, dear WP-API!</p>
+comment_status: open
+```
+
 See [docs/COMMANDS.md](docs/COMMANDS.md) for a full documentation on commands.
 
 Developers
