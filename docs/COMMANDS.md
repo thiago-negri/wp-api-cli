@@ -13,6 +13,7 @@ Basic options
 - `--insecure` or `-k` lets you connect to insecure sites (e.g. with self-signed certificates).
 - `--site` or `-s` will set the site to connect to.
 - `--method` or `-X` defines the HTTP verb to use in the request, defaults to `GET`.
+- `--yaml` or `-y` to set output to YAML format.
 
 Helpers
 -------
