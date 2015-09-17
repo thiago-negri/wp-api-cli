@@ -29,6 +29,7 @@
     "url": "http://github.com/thiago-negri/wp-api-cli.git"
   },
   "dependencies": {
+    "asciitable": "0.0.7",
     "basic-authorization-header": "^0.2.7",
     "cli": "^0.10.0",
     "commander": "^2.8.1",
